@@ -10,55 +10,16 @@ use App\Models\Sample;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class SampleController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('sample_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Sample::query()->select(sprintf('%s.*', (new Sample())->table));
-            $table = Datatables::of($query);
+        $samples = Sample::all();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'sample_show';
-                $editGate = 'sample_edit';
-                $deleteGate = 'sample_delete';
-                $crudRoutePart = 'samples';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('sample', function ($row) {
-                return $row->sample ? $row->sample : '';
-            });
-            $table->editColumn('name', function ($row) {
-                return $row->name ? $row->name : '';
-            });
-            $table->editColumn('sample_type', function ($row) {
-                return $row->sample_type ? Sample::SAMPLE_TYPE_SELECT[$row->sample_type] : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.samples.index');
+        return view('admin.samples.index', compact('samples'));
     }
 
     public function create()

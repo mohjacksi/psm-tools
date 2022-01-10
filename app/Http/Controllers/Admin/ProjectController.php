@@ -10,49 +10,16 @@ use App\Models\Project;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class ProjectController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Project::query()->select(sprintf('%s.*', (new Project())->table));
-            $table = Datatables::of($query);
+        $projects = Project::all();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'project_show';
-                $editGate = 'project_edit';
-                $deleteGate = 'project_delete';
-                $crudRoutePart = 'projects';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('project_name', function ($row) {
-                return $row->project_name ? $row->project_name : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.projects.index');
+        return view('admin.projects.index', compact('projects'));
     }
 
     public function create()

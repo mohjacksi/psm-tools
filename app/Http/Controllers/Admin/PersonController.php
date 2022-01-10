@@ -11,56 +11,16 @@ use App\Models\Project;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class PersonController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('person_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Person::with(['project'])->select(sprintf('%s.*', (new Person())->table));
-            $table = Datatables::of($query);
+        $people = Person::with(['project'])->get();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'person_show';
-                $editGate = 'person_edit';
-                $deleteGate = 'person_delete';
-                $crudRoutePart = 'people';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('patient_name', function ($row) {
-                return $row->patient_name ? $row->patient_name : '';
-            });
-
-            $table->editColumn('sex', function ($row) {
-                return $row->sex ? Person::SEX_RADIO[$row->sex] : '';
-            });
-            $table->addColumn('project_project_name', function ($row) {
-                return $row->project ? $row->project->project_name : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder', 'project']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.people.index');
+        return view('admin.people.index', compact('people'));
     }
 
     public function create()

@@ -11,62 +11,16 @@ use App\Models\Transcript;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class TranscriptController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('transcript_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Transcript::with(['dna_location'])->select(sprintf('%s.*', (new Transcript())->table));
-            $table = Datatables::of($query);
+        $transcripts = Transcript::with(['dna_location'])->get();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'transcript_show';
-                $editGate = 'transcript_edit';
-                $deleteGate = 'transcript_delete';
-                $crudRoutePart = 'transcripts';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('transcript', function ($row) {
-                return $row->transcript ? $row->transcript : '';
-            });
-            $table->editColumn('name', function ($row) {
-                return $row->name ? $row->name : '';
-            });
-            $table->editColumn('type', function ($row) {
-                return $row->type ? Transcript::TYPE_SELECT[$row->type] : '';
-            });
-            $table->addColumn('dna_location_name', function ($row) {
-                return $row->dna_location ? $row->dna_location->name : '';
-            });
-
-            $table->editColumn('transcript_sequence', function ($row) {
-                return $row->transcript_sequence ? $row->transcript_sequence : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder', 'dna_location']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.transcripts.index');
+        return view('admin.transcripts.index', compact('transcripts'));
     }
 
     public function create()
