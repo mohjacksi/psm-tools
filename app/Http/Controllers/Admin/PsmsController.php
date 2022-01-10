@@ -10,49 +10,16 @@ use App\Models\Psm;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class PsmsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('psm_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Psm::query()->select(sprintf('%s.*', (new Psm())->table));
-            $table = Datatables::of($query);
+        $psms = Psm::all();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'psm_show';
-                $editGate = 'psm_edit';
-                $deleteGate = 'psm_delete';
-                $crudRoutePart = 'psms';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('psm_info', function ($row) {
-                return $row->psm_info ? $row->psm_info : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.psms.index');
+        return view('admin.psms.index', compact('psms'));
     }
 
     public function create()

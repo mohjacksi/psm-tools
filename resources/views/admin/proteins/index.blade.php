@@ -15,33 +15,82 @@
     </div>
 
     <div class="card-body">
-        <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Protein">
-            <thead>
-                <tr>
-                    <th width="10">
+        <div class="table-responsive">
+            <table class=" table table-bordered table-striped table-hover datatable datatable-Protein">
+                <thead>
+                    <tr>
+                        <th width="10">
 
-                    </th>
-                    <th>
-                        {{ trans('cruds.protein.fields.id') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.protein.fields.protein') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.protein.fields.name') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.protein.fields.type') }}
-                    </th>
-                    <th>
-                        {{ trans('cruds.protein.fields.protein_sequence') }}
-                    </th>
-                    <th>
-                        &nbsp;
-                    </th>
-                </tr>
-            </thead>
-        </table>
+                        </th>
+                        <th>
+                            {{ trans('cruds.protein.fields.id') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.protein.fields.protein') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.protein.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.protein.fields.type') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.protein.fields.protein_sequence') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($proteins as $key => $protein)
+                        <tr data-entry-id="{{ $protein->id }}">
+                            <td>
+
+                            </td>
+                            <td>
+                                {{ $protein->id ?? '' }}
+                            </td>
+                            <td>
+                                {{ $protein->protein ?? '' }}
+                            </td>
+                            <td>
+                                {{ $protein->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ App\Models\Protein::TYPE_SELECT[$protein->type] ?? '' }}
+                            </td>
+                            <td>
+                                {{ $protein->protein_sequence ?? '' }}
+                            </td>
+                            <td>
+                                @can('protein_show')
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.proteins.show', $protein->id) }}">
+                                        {{ trans('global.view') }}
+                                    </a>
+                                @endcan
+
+                                @can('protein_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.proteins.edit', $protein->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                @endcan
+
+                                @can('protein_delete')
+                                    <form action="{{ route('admin.proteins.destroy', $protein->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                    </form>
+                                @endcan
+
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -54,14 +103,14 @@
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('protein_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}';
+  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.proteins.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-          return entry.id
+      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+          return $(entry).data('entry-id')
       });
 
       if (ids.length === 0) {
@@ -83,33 +132,18 @@
   dtButtons.push(deleteButton)
 @endcan
 
-  let dtOverrideGlobals = {
-    buttons: dtButtons,
-    processing: true,
-    serverSide: true,
-    retrieve: true,
-    aaSorting: [],
-    ajax: "{{ route('admin.proteins.index') }}",
-    columns: [
-      { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{ data: 'protein', name: 'protein' },
-{ data: 'name', name: 'name' },
-{ data: 'type', name: 'type' },
-{ data: 'protein_sequence', name: 'protein_sequence' },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
-    ],
+  $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 50,
-  };
-  let table = $('.datatable-Protein').DataTable(dtOverrideGlobals);
+  });
+  let table = $('.datatable-Protein:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
   
-});
+})
 
 </script>
 @endsection

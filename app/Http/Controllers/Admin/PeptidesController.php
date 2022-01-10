@@ -10,52 +10,16 @@ use App\Models\Peptide;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class PeptidesController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('peptide_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Peptide::query()->select(sprintf('%s.*', (new Peptide())->table));
-            $table = Datatables::of($query);
+        $peptides = Peptide::all();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'peptide_show';
-                $editGate = 'peptide_edit';
-                $deleteGate = 'peptide_delete';
-                $crudRoutePart = 'peptides';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('sequence', function ($row) {
-                return $row->sequence ? $row->sequence : '';
-            });
-            $table->editColumn('genomic_location', function ($row) {
-                return $row->genomic_location ? $row->genomic_location : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.peptides.index');
+        return view('admin.peptides.index', compact('peptides'));
     }
 
     public function create()

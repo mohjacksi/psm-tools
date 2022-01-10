@@ -10,58 +10,16 @@ use App\Models\Protein;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yajra\DataTables\Facades\DataTables;
 
 class ProteinsController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         abort_if(Gate::denies('protein_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        if ($request->ajax()) {
-            $query = Protein::query()->select(sprintf('%s.*', (new Protein())->table));
-            $table = Datatables::of($query);
+        $proteins = Protein::all();
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
-
-            $table->editColumn('actions', function ($row) {
-                $viewGate = 'protein_show';
-                $editGate = 'protein_edit';
-                $deleteGate = 'protein_delete';
-                $crudRoutePart = 'proteins';
-
-                return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
-            });
-
-            $table->editColumn('id', function ($row) {
-                return $row->id ? $row->id : '';
-            });
-            $table->editColumn('protein', function ($row) {
-                return $row->protein ? $row->protein : '';
-            });
-            $table->editColumn('name', function ($row) {
-                return $row->name ? $row->name : '';
-            });
-            $table->editColumn('type', function ($row) {
-                return $row->type ? Protein::TYPE_SELECT[$row->type] : '';
-            });
-            $table->editColumn('protein_sequence', function ($row) {
-                return $row->protein_sequence ? $row->protein_sequence : '';
-            });
-
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
-        }
-
-        return view('admin.proteins.index');
+        return view('admin.proteins.index', compact('proteins'));
     }
 
     public function create()
