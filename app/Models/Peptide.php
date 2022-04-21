@@ -30,6 +30,16 @@ class Peptide extends Model
         'deleted_at',
     ];
 
+    public function peptidePeptidePsms()
+    {
+        return $this->hasMany(PeptidePsm::class, 'peptide_id', 'id');
+    }
+
+    public function peptidePeptideProteins()
+    {
+        return $this->hasMany(PeptideProtein::class, 'peptide_id', 'id');
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

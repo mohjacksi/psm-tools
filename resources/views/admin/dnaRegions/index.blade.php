@@ -6,6 +6,10 @@
             <a class="btn btn-success" href="{{ route('admin.dna-regions.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.dnaRegion.title_singular') }}
             </a>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
+                {{ trans('global.app_csvImport') }}
+            </button>
+            @include('csvImport.modal', ['model' => 'DnaRegion', 'route' => 'admin.dna-regions.parseCsvImport'])
         </div>
     </div>
 @endcan
@@ -30,6 +34,18 @@
                     <th>
                         &nbsp;
                     </th>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                    </td>
                 </tr>
             </thead>
         </table>
@@ -89,7 +105,7 @@
     ],
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 50,
+    pageLength: 100,
   };
   let table = $('.datatable-DnaRegion').DataTable(dtOverrideGlobals);
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
@@ -97,6 +113,27 @@
           .columns.adjust();
   });
   
+let visibleColumnsIndexes = null;
+$('.datatable thead').on('input', '.search', function () {
+      let strict = $(this).attr('strict') || false
+      let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+      let index = $(this).parent().index()
+      if (visibleColumnsIndexes !== null) {
+        index = visibleColumnsIndexes[index]
+      }
+
+      table
+        .column(index)
+        .search(value, strict)
+        .draw()
+  });
+table.on('column-visibility.dt', function(e, settings, column, state) {
+      visibleColumnsIndexes = []
+      table.columns(":visible").every(function(colIdx) {
+          visibleColumnsIndexes.push(colIdx);
+      });
+  })
 });
 
 </script>

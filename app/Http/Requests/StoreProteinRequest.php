@@ -25,10 +25,6 @@ class StoreProteinRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'protein_sequence' => [
-                'string',
-                'nullable',
-            ],
         ];
     }
 }

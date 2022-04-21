@@ -14,7 +14,9 @@
                 <label for="sequence">{{ trans('cruds.peptide.fields.sequence') }}</label>
                 <input class="form-control {{ $errors->has('sequence') ? 'is-invalid' : '' }}" type="text" name="sequence" id="sequence" value="{{ old('sequence', $peptide->sequence) }}">
                 @if($errors->has('sequence'))
-                    <span class="text-danger">{{ $errors->first('sequence') }}</span>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('sequence') }}
+                    </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.peptide.fields.sequence_helper') }}</span>
             </div>
@@ -22,7 +24,9 @@
                 <label for="genomic_location">{{ trans('cruds.peptide.fields.genomic_location') }}</label>
                 <input class="form-control {{ $errors->has('genomic_location') ? 'is-invalid' : '' }}" type="text" name="genomic_location" id="genomic_location" value="{{ old('genomic_location', $peptide->genomic_location) }}">
                 @if($errors->has('genomic_location'))
-                    <span class="text-danger">{{ $errors->first('genomic_location') }}</span>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('genomic_location') }}
+                    </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.peptide.fields.genomic_location_helper') }}</span>
             </div>

@@ -17,7 +17,7 @@ class StorePersonRequest extends FormRequest
     public function rules()
     {
         return [
-            'patient_name' => [
+            'name' => [
                 'string',
                 'nullable',
             ],

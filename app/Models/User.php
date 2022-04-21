@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use \DateTimeInterface;
+use App\Traits\Auditable;
 use Carbon\Carbon;
 use Hash;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -16,6 +17,7 @@ class User extends Authenticatable
 {
     use SoftDeletes;
     use Notifiable;
+    use Auditable;
     use HasFactory;
 
     public $table = 'users';

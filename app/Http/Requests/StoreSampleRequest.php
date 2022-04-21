@@ -17,11 +17,11 @@ class StoreSampleRequest extends FormRequest
     public function rules()
     {
         return [
-            'sample' => [
+            'name' => [
                 'string',
                 'nullable',
             ],
-            'name' => [
+            'sample_condition' => [
                 'string',
                 'nullable',
             ],
