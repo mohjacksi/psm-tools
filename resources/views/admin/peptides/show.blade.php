@@ -50,6 +50,30 @@
     </div>
 </div>
 
-
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#peptide_peptide_psms" role="tab" data-toggle="tab">
+                {{ trans('cruds.peptidePsm.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#peptide_peptide_proteins" role="tab" data-toggle="tab">
+                {{ trans('cruds.peptideProtein.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="peptide_peptide_psms">
+            @includeIf('admin.peptides.relationships.peptidePeptidePsms', ['peptidePsms' => $peptide->peptidePeptidePsms])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="peptide_peptide_proteins">
+            @includeIf('admin.peptides.relationships.peptidePeptideProteins', ['peptideProteins' => $peptide->peptidePeptideProteins])
+        </div>
+    </div>
+</div>
 
 @endsection

@@ -25,10 +25,154 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.psm.fields.psm_info') }}
+                            {{ trans('cruds.psm.fields.spectra') }}
                         </th>
                         <td>
-                            {{ $psm->psm_info }}
+                            {{ $psm->spectra }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.fraction') }}
+                        </th>
+                        <td>
+                            {{ $psm->fraction->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.peptide_modification') }}
+                        </th>
+                        <td>
+                            {!! $psm->peptide_modification !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.scan_num') }}
+                        </th>
+                        <td>
+                            {{ $psm->scan_num }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.precursor') }}
+                        </th>
+                        <td>
+                            {{ $psm->precursor }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.isotope_error') }}
+                        </th>
+                        <td>
+                            {{ $psm->isotope_error }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.precursor_error') }}
+                        </th>
+                        <td>
+                            {{ $psm->precursor_error }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.charge') }}
+                        </th>
+                        <td>
+                            {{ $psm->charge }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.de_novo_score') }}
+                        </th>
+                        <td>
+                            {{ $psm->de_novo_score }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.msgf_score') }}
+                        </th>
+                        <td>
+                            {{ $psm->msgf_score }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.space_evalue') }}
+                        </th>
+                        <td>
+                            {{ $psm->space_evalue }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.evalue') }}
+                        </th>
+                        <td>
+                            {{ $psm->evalue }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.precursor_svm_score') }}
+                        </th>
+                        <td>
+                            {{ $psm->precursor_svm_score }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.psm_q_value') }}
+                        </th>
+                        <td>
+                            {{ $psm->psm_q_value }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.peptide_q_value') }}
+                        </th>
+                        <td>
+                            {{ $psm->peptide_q_value }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.missed_clevage') }}
+                        </th>
+                        <td>
+                            {{ $psm->missed_clevage }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.experimental_pl') }}
+                        </th>
+                        <td>
+                            {{ $psm->experimental_pl }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.predicted_pl') }}
+                        </th>
+                        <td>
+                            {{ $psm->predicted_pl }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.delta_pl') }}
+                        </th>
+                        <td>
+                            {{ $psm->delta_pl }}
                         </td>
                     </tr>
                 </tbody>
@@ -42,6 +186,30 @@
     </div>
 </div>
 
-
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#psm_channel_psms" role="tab" data-toggle="tab">
+                {{ trans('cruds.channelPsm.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#psm_peptide_psms" role="tab" data-toggle="tab">
+                {{ trans('cruds.peptidePsm.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="psm_channel_psms">
+            @includeIf('admin.psms.relationships.psmChannelPsms', ['channelPsms' => $psm->psmChannelPsms])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="psm_peptide_psms">
+            @includeIf('admin.psms.relationships.psmPeptidePsms', ['peptidePsms' => $psm->psmPeptidePsms])
+        </div>
+    </div>
+</div>
 
 @endsection

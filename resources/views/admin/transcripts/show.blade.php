@@ -49,14 +49,6 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transcript.fields.dna_location') }}
-                        </th>
-                        <td>
-                            {{ $transcript->dna_location->name ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.transcript.fields.transcript_sequence') }}
                         </th>
                         <td>

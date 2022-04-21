@@ -25,10 +25,10 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.person.fields.patient_name') }}
+                            {{ trans('cruds.person.fields.name') }}
                         </th>
                         <td>
-                            {{ $person->patient_name }}
+                            {{ $person->name }}
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,15 @@
                             {{ trans('cruds.person.fields.project') }}
                         </th>
                         <td>
-                            {{ $person->project->project_name ?? '' }}
+                            {{ $person->project->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.person.fields.projects') }}
+                        </th>
+                        <td>
+                            {{ $person->projects->name ?? '' }}
                         </td>
                     </tr>
                 </tbody>
@@ -66,6 +74,22 @@
     </div>
 </div>
 
-
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#person_samples" role="tab" data-toggle="tab">
+                {{ trans('cruds.sample.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="person_samples">
+            @includeIf('admin.people.relationships.personSamples', ['samples' => $person->personSamples])
+        </div>
+    </div>
+</div>
 
 @endsection

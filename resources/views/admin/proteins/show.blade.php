@@ -33,6 +33,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.protein.fields.sequence') }}
+                        </th>
+                        <td>
+                            {!! $protein->sequence !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.protein.fields.name') }}
                         </th>
                         <td>
@@ -49,10 +57,18 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.protein.fields.protein_sequence') }}
+                            {{ trans('cruds.protein.fields.source') }}
                         </th>
                         <td>
-                            {{ $protein->protein_sequence }}
+                            {!! $protein->source !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.protein.fields.metadata') }}
+                        </th>
+                        <td>
+                            {!! $protein->metadata !!}
                         </td>
                     </tr>
                 </tbody>
@@ -66,6 +82,22 @@
     </div>
 </div>
 
-
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#protein_peptide_proteins" role="tab" data-toggle="tab">
+                {{ trans('cruds.peptideProtein.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="protein_peptide_proteins">
+            @includeIf('admin.proteins.relationships.proteinPeptideProteins', ['peptideProteins' => $protein->proteinPeptideProteins])
+        </div>
+    </div>
+</div>
 
 @endsection

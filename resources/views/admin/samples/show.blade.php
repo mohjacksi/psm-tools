@@ -25,14 +25,6 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.sample.fields.sample') }}
-                        </th>
-                        <td>
-                            {{ $sample->sample }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.sample.fields.name') }}
                         </th>
                         <td>
@@ -41,10 +33,66 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.sample.fields.details') }}
+                        </th>
+                        <td>
+                            {!! $sample->details !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.sample.fields.sample_type') }}
                         </th>
                         <td>
                             {{ App\Models\Sample::SAMPLE_TYPE_SELECT[$sample->sample_type] ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.person') }}
+                        </th>
+                        <td>
+                            {{ $sample->person->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.project') }}
+                        </th>
+                        <td>
+                            {{ $sample->project->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.channel') }}
+                        </th>
+                        <td>
+                            {{ $sample->channel->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.metadata') }}
+                        </th>
+                        <td>
+                            {!! $sample->metadata !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.tissue') }}
+                        </th>
+                        <td>
+                            {{ $sample->tissue->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.sample_condition') }}
+                        </th>
+                        <td>
+                            {{ $sample->sample_condition }}
                         </td>
                     </tr>
                 </tbody>

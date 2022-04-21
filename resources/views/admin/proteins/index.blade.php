@@ -6,6 +6,10 @@
             <a class="btn btn-success" href="{{ route('admin.proteins.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.protein.title_singular') }}
             </a>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
+                {{ trans('global.app_csvImport') }}
+            </button>
+            @include('csvImport.modal', ['model' => 'Protein', 'route' => 'admin.proteins.parseCsvImport'])
         </div>
     </div>
 @endcan
@@ -34,11 +38,31 @@
                         {{ trans('cruds.protein.fields.type') }}
                     </th>
                     <th>
-                        {{ trans('cruds.protein.fields.protein_sequence') }}
-                    </th>
-                    <th>
                         &nbsp;
                     </th>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <select class="search" strict="true">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach(App\Models\Protein::TYPE_SELECT as $key => $item)
+                                <option value="{{ $key }}">{{ $item }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                    </td>
                 </tr>
             </thead>
         </table>
@@ -96,12 +120,11 @@
 { data: 'protein', name: 'protein' },
 { data: 'name', name: 'name' },
 { data: 'type', name: 'type' },
-{ data: 'protein_sequence', name: 'protein_sequence' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 50,
+    pageLength: 100,
   };
   let table = $('.datatable-Protein').DataTable(dtOverrideGlobals);
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
@@ -109,6 +132,27 @@
           .columns.adjust();
   });
   
+let visibleColumnsIndexes = null;
+$('.datatable thead').on('input', '.search', function () {
+      let strict = $(this).attr('strict') || false
+      let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+      let index = $(this).parent().index()
+      if (visibleColumnsIndexes !== null) {
+        index = visibleColumnsIndexes[index]
+      }
+
+      table
+        .column(index)
+        .search(value, strict)
+        .draw()
+  });
+table.on('column-visibility.dt', function(e, settings, column, state) {
+      visibleColumnsIndexes = []
+      table.columns(":visible").every(function(colIdx) {
+          visibleColumnsIndexes.push(colIdx);
+      });
+  })
 });
 
 </script>

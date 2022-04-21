@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\CsvImportTrait;
 use App\Http\Requests\MassDestroyDnaRegionRequest;
 use App\Http\Requests\StoreDnaRegionRequest;
 use App\Http\Requests\UpdateDnaRegionRequest;
@@ -14,6 +15,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DnaRegionController extends Controller
 {
+    use CsvImportTrait;
+
     public function index(Request $request)
     {
         abort_if(Gate::denies('dna_region_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -86,8 +89,6 @@ class DnaRegionController extends Controller
     public function show(DnaRegion $dnaRegion)
     {
         abort_if(Gate::denies('dna_region_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $dnaRegion->load('dnaLocationTranscripts');
 
         return view('admin.dnaRegions.show', compact('dnaRegion'));
     }

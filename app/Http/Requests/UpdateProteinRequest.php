@@ -25,10 +25,6 @@ class UpdateProteinRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'protein_sequence' => [
-                'string',
-                'nullable',
-            ],
         ];
     }
 }

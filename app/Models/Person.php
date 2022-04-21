@@ -16,9 +16,9 @@ class Person extends Model
     use HasFactory;
 
     public const SEX_RADIO = [
-        'male'   => 'male',
+        'male'   => 'Male',
         'female' => 'female',
-        'other'  => 'other',
+        'other'  => 'Other',
     ];
 
     public $table = 'people';
@@ -31,14 +31,20 @@ class Person extends Model
     ];
 
     protected $fillable = [
-        'patient_name',
+        'name',
         'birth_date',
         'sex',
         'project_id',
+        'projects_id',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+    public function personSamples()
+    {
+        return $this->hasMany(Sample::class, 'person_id', 'id');
+    }
 
     public function getBirthDateAttribute($value)
     {
@@ -53,6 +59,11 @@ class Person extends Model
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    public function projects()
+    {
+        return $this->belongsTo(Project::class, 'projects_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)
