@@ -25,14 +25,6 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.sample.fields.sample') }}
-                        </th>
-                        <td>
-                            {{ $sample->sample }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.sample.fields.name') }}
                         </th>
                         <td>
@@ -41,10 +33,60 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.sample.fields.sample_type') }}
+                            {{ trans('cruds.sample.fields.details') }}
                         </th>
                         <td>
-                            {{ App\Models\Sample::SAMPLE_TYPE_SELECT[$sample->sample_type] ?? '' }}
+                            {!! $sample->details !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.replicate_number') }}
+                        </th>
+                        <td>
+                            {{ $sample->replicate_number }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.project') }}
+                        </th>
+                        <td>
+                            {{ $sample->project->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.channel') }}
+                        </th>
+                        <td>
+                            @foreach($sample->channels as $key => $channel)
+                                <span class="label label-info">{{ $channel->name }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.species') }}
+                        </th>
+                        <td>
+                            {{ $sample->species->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.tissue') }}
+                        </th>
+                        <td>
+                            {{ $sample->tissue->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.sample.fields.sample_condition') }}
+                        </th>
+                        <td>
+                            {{ $sample->sample_condition->name ?? '' }}
                         </td>
                     </tr>
                 </tbody>

@@ -25,10 +25,10 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.protein.fields.protein') }}
+                            {{ trans('cruds.protein.fields.sequence') }}
                         </th>
                         <td>
-                            {{ $protein->protein }}
+                            {!! $protein->sequence !!}
                         </td>
                     </tr>
                     <tr>
@@ -41,18 +41,34 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.protein.fields.type') }}
+                            {{ trans('cruds.protein.fields.source') }}
                         </th>
                         <td>
-                            {{ App\Models\Protein::TYPE_SELECT[$protein->type] ?? '' }}
+                            {!! $protein->source !!}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.protein.fields.protein_sequence') }}
+                            {{ trans('cruds.protein.fields.metadata') }}
                         </th>
                         <td>
-                            {{ $protein->protein_sequence }}
+                            {!! $protein->metadata !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.protein.fields.peptide') }}
+                        </th>
+                        <td>
+                            {{ $protein->peptide->sequence ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.protein.fields.type') }}
+                        </th>
+                        <td>
+                            {{ $protein->type->name ?? '' }}
                         </td>
                     </tr>
                 </tbody>

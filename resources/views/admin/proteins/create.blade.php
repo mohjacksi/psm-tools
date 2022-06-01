@@ -10,41 +10,72 @@
         <form method="POST" action="{{ route("admin.proteins.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="protein">{{ trans('cruds.protein.fields.protein') }}</label>
-                <input class="form-control {{ $errors->has('protein') ? 'is-invalid' : '' }}" type="text" name="protein" id="protein" value="{{ old('protein', '') }}">
-                @if($errors->has('protein'))
-                    <span class="text-danger">{{ $errors->first('protein') }}</span>
+                <label for="sequence">{{ trans('cruds.protein.fields.sequence') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('sequence') ? 'is-invalid' : '' }}" name="sequence" id="sequence">{!! old('sequence') !!}</textarea>
+                @if($errors->has('sequence'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('sequence') }}
+                    </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.protein.fields.protein_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.protein.fields.sequence_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="name">{{ trans('cruds.protein.fields.name') }}</label>
                 <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
                 @if($errors->has('name'))
-                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('name') }}
+                    </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.protein.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
-                <label>{{ trans('cruds.protein.fields.type') }}</label>
-                <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" id="type">
-                    <option value disabled {{ old('type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Protein::TYPE_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('type', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                <label for="source">{{ trans('cruds.protein.fields.source') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('source') ? 'is-invalid' : '' }}" name="source" id="source">{!! old('source') !!}</textarea>
+                @if($errors->has('source'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('source') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.protein.fields.source_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="metadata">{{ trans('cruds.protein.fields.metadata') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('metadata') ? 'is-invalid' : '' }}" name="metadata" id="metadata">{!! old('metadata') !!}</textarea>
+                @if($errors->has('metadata'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('metadata') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.protein.fields.metadata_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="peptide_id">{{ trans('cruds.protein.fields.peptide') }}</label>
+                <select class="form-control select2 {{ $errors->has('peptide') ? 'is-invalid' : '' }}" name="peptide_id" id="peptide_id" required>
+                    @foreach($peptides as $id => $entry)
+                        <option value="{{ $id }}" {{ old('peptide_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('peptide'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('peptide') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.protein.fields.peptide_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="type_id">{{ trans('cruds.protein.fields.type') }}</label>
+                <select class="form-control select2 {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type_id" id="type_id">
+                    @foreach($types as $id => $entry)
+                        <option value="{{ $id }}" {{ old('type_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('type'))
-                    <span class="text-danger">{{ $errors->first('type') }}</span>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('type') }}
+                    </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.protein.fields.type_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="protein_sequence">{{ trans('cruds.protein.fields.protein_sequence') }}</label>
-                <input class="form-control {{ $errors->has('protein_sequence') ? 'is-invalid' : '' }}" type="text" name="protein_sequence" id="protein_sequence" value="{{ old('protein_sequence', '') }}">
-                @if($errors->has('protein_sequence'))
-                    <span class="text-danger">{{ $errors->first('protein_sequence') }}</span>
-                @endif
-                <span class="help-block">{{ trans('cruds.protein.fields.protein_sequence_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
@@ -56,5 +87,72 @@
 </div>
 
 
+
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function () {
+  function SimpleUploadAdapter(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
+      return {
+        upload: function() {
+          return loader.file
+            .then(function (file) {
+              return new Promise(function(resolve, reject) {
+                // Init request
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ route('admin.proteins.storeCKEditorImages') }}', true);
+                xhr.setRequestHeader('x-csrf-token', window._token);
+                xhr.setRequestHeader('Accept', 'application/json');
+                xhr.responseType = 'json';
+
+                // Init listeners
+                var genericErrorText = `Couldn't upload file: ${ file.name }.`;
+                xhr.addEventListener('error', function() { reject(genericErrorText) });
+                xhr.addEventListener('abort', function() { reject() });
+                xhr.addEventListener('load', function() {
+                  var response = xhr.response;
+
+                  if (!response || xhr.status !== 201) {
+                    return reject(response && response.message ? `${genericErrorText}\n${xhr.status} ${response.message}` : `${genericErrorText}\n ${xhr.status} ${xhr.statusText}`);
+                  }
+
+                  $('form').append('<input type="hidden" name="ck-media[]" value="' + response.id + '">');
+
+                  resolve({ default: response.url });
+                });
+
+                if (xhr.upload) {
+                  xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                      loader.uploadTotal = e.total;
+                      loader.uploaded = e.loaded;
+                    }
+                  });
+                }
+
+                // Send request
+                var data = new FormData();
+                data.append('upload', file);
+                data.append('crud_id', '{{ $protein->id ?? 0 }}');
+                xhr.send(data);
+              });
+            })
+        }
+      };
+    }
+  }
+
+  var allEditors = document.querySelectorAll('.ckeditor');
+  for (var i = 0; i < allEditors.length; ++i) {
+    ClassicEditor.create(
+      allEditors[i], {
+        extraPlugins: [SimpleUploadAdapter]
+      }
+    );
+  }
+});
+</script>
 
 @endsection

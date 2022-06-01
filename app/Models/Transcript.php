@@ -32,17 +32,11 @@ class Transcript extends Model
         'transcript',
         'name',
         'type',
-        'dna_location_id',
         'transcript_sequence',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
-
-    public function dna_location()
-    {
-        return $this->belongsTo(DnaRegion::class, 'dna_location_id');
-    }
 
     protected function serializeDate(DateTimeInterface $date)
     {

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\CsvImportTrait;
 use App\Http\Requests\MassDestroyTranscriptRequest;
 use App\Http\Requests\StoreTranscriptRequest;
 use App\Http\Requests\UpdateTranscriptRequest;
-use App\Models\DnaRegion;
 use App\Models\Transcript;
 use Gate;
 use Illuminate\Http\Request;
@@ -15,12 +15,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TranscriptController extends Controller
 {
+    use CsvImportTrait;
+
     public function index(Request $request)
     {
         abort_if(Gate::denies('transcript_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = Transcript::with(['dna_location'])->select(sprintf('%s.*', (new Transcript())->table));
+            $query = Transcript::query()->select(sprintf('%s.*', (new Transcript())->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -53,15 +55,11 @@ class TranscriptController extends Controller
             $table->editColumn('type', function ($row) {
                 return $row->type ? Transcript::TYPE_SELECT[$row->type] : '';
             });
-            $table->addColumn('dna_location_name', function ($row) {
-                return $row->dna_location ? $row->dna_location->name : '';
-            });
-
             $table->editColumn('transcript_sequence', function ($row) {
                 return $row->transcript_sequence ? $row->transcript_sequence : '';
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'dna_location']);
+            $table->rawColumns(['actions', 'placeholder']);
 
             return $table->make(true);
         }
@@ -73,9 +71,7 @@ class TranscriptController extends Controller
     {
         abort_if(Gate::denies('transcript_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $dna_locations = DnaRegion::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('admin.transcripts.create', compact('dna_locations'));
+        return view('admin.transcripts.create');
     }
 
     public function store(StoreTranscriptRequest $request)
@@ -89,11 +85,7 @@ class TranscriptController extends Controller
     {
         abort_if(Gate::denies('transcript_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $dna_locations = DnaRegion::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $transcript->load('dna_location');
-
-        return view('admin.transcripts.edit', compact('dna_locations', 'transcript'));
+        return view('admin.transcripts.edit', compact('transcript'));
     }
 
     public function update(UpdateTranscriptRequest $request, Transcript $transcript)
@@ -106,8 +98,6 @@ class TranscriptController extends Controller
     public function show(Transcript $transcript)
     {
         abort_if(Gate::denies('transcript_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $transcript->load('dna_location');
 
         return view('admin.transcripts.show', compact('transcript'));
     }

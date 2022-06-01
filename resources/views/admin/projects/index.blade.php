@@ -6,6 +6,10 @@
             <a class="btn btn-success" href="{{ route('admin.projects.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.project.title_singular') }}
             </a>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
+                {{ trans('global.app_csvImport') }}
+            </button>
+            @include('csvImport.modal', ['model' => 'Project', 'route' => 'admin.projects.parseCsvImport'])
         </div>
     </div>
 @endcan
@@ -25,11 +29,39 @@
                         {{ trans('cruds.project.fields.id') }}
                     </th>
                     <th>
-                        {{ trans('cruds.project.fields.project_name') }}
+                        {{ trans('cruds.project.fields.name') }}
+                    </th>
+                    <th>
+                        {{ trans('cruds.project.fields.public') }}
+                    </th>
+                    <th>
+                        {{ trans('cruds.project.fields.created_by') }}
                     </th>
                     <th>
                         &nbsp;
                     </th>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <select class="search">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach($users as $key => $item)
+                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                    </td>
                 </tr>
             </thead>
         </table>
@@ -84,12 +116,14 @@
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
-{ data: 'project_name', name: 'project_name' },
+{ data: 'name', name: 'name' },
+{ data: 'public', name: 'public' },
+{ data: 'created_by_name', name: 'created_by.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 50,
+    pageLength: 100,
   };
   let table = $('.datatable-Project').DataTable(dtOverrideGlobals);
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
@@ -97,6 +131,27 @@
           .columns.adjust();
   });
   
+let visibleColumnsIndexes = null;
+$('.datatable thead').on('input', '.search', function () {
+      let strict = $(this).attr('strict') || false
+      let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+      let index = $(this).parent().index()
+      if (visibleColumnsIndexes !== null) {
+        index = visibleColumnsIndexes[index]
+      }
+
+      table
+        .column(index)
+        .search(value, strict)
+        .draw()
+  });
+table.on('column-visibility.dt', function(e, settings, column, state) {
+      visibleColumnsIndexes = []
+      table.columns(":visible").every(function(colIdx) {
+          visibleColumnsIndexes.push(colIdx);
+      });
+  })
 });
 
 </script>

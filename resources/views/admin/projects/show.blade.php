@@ -25,10 +25,34 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.project.fields.project_name') }}
+                            {{ trans('cruds.project.fields.name') }}
                         </th>
                         <td>
-                            {{ $project->project_name }}
+                            {{ $project->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.description') }}
+                        </th>
+                        <td>
+                            {!! $project->description !!}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.public') }}
+                        </th>
+                        <td>
+                            <input type="checkbox" disabled="disabled" {{ $project->public ? 'checked' : '' }}>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.created_by') }}
+                        </th>
+                        <td>
+                            {{ $project->created_by->name ?? '' }}
                         </td>
                     </tr>
                 </tbody>
@@ -48,14 +72,30 @@
     </div>
     <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
         <li class="nav-item">
-            <a class="nav-link" href="#project_people" role="tab" data-toggle="tab">
-                {{ trans('cruds.person.title') }}
+            <a class="nav-link" href="#project_samples" role="tab" data-toggle="tab">
+                {{ trans('cruds.sample.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#project_experiments" role="tab" data-toggle="tab">
+                {{ trans('cruds.experiment.title') }}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#project_upload_forms" role="tab" data-toggle="tab">
+                {{ trans('cruds.uploadForm.title') }}
             </a>
         </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane" role="tabpanel" id="project_people">
-            @includeIf('admin.projects.relationships.projectPeople', ['people' => $project->projectPeople])
+        <div class="tab-pane" role="tabpanel" id="project_samples">
+            @includeIf('admin.projects.relationships.projectSamples', ['samples' => $project->projectSamples])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="project_experiments">
+            @includeIf('admin.projects.relationships.projectExperiments', ['experiments' => $project->projectExperiments])
+        </div>
+        <div class="tab-pane" role="tabpanel" id="project_upload_forms">
+            @includeIf('admin.projects.relationships.projectUploadForms', ['uploadForms' => $project->projectUploadForms])
         </div>
     </div>
 </div>
