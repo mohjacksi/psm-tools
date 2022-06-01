@@ -6,6 +6,10 @@
             <a class="btn btn-success" href="{{ route('admin.transcripts.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.transcript.title_singular') }}
             </a>
+            <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
+                {{ trans('global.app_csvImport') }}
+            </button>
+            @include('csvImport.modal', ['model' => 'Transcript', 'route' => 'admin.transcripts.parseCsvImport'])
         </div>
     </div>
 @endcan
@@ -34,14 +38,37 @@
                         {{ trans('cruds.transcript.fields.type') }}
                     </th>
                     <th>
-                        {{ trans('cruds.transcript.fields.dna_location') }}
-                    </th>
-                    <th>
                         {{ trans('cruds.transcript.fields.transcript_sequence') }}
                     </th>
                     <th>
                         &nbsp;
                     </th>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <select class="search" strict="true">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach(App\Models\Transcript::TYPE_SELECT as $key => $item)
+                                <option value="{{ $key }}">{{ $item }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                    </td>
                 </tr>
             </thead>
         </table>
@@ -99,13 +126,12 @@
 { data: 'transcript', name: 'transcript' },
 { data: 'name', name: 'name' },
 { data: 'type', name: 'type' },
-{ data: 'dna_location_name', name: 'dna_location.name' },
 { data: 'transcript_sequence', name: 'transcript_sequence' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 50,
+    pageLength: 100,
   };
   let table = $('.datatable-Transcript').DataTable(dtOverrideGlobals);
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
@@ -113,6 +139,27 @@
           .columns.adjust();
   });
   
+let visibleColumnsIndexes = null;
+$('.datatable thead').on('input', '.search', function () {
+      let strict = $(this).attr('strict') || false
+      let value = strict && this.value ? "^" + this.value + "$" : this.value
+
+      let index = $(this).parent().index()
+      if (visibleColumnsIndexes !== null) {
+        index = visibleColumnsIndexes[index]
+      }
+
+      table
+        .column(index)
+        .search(value, strict)
+        .draw()
+  });
+table.on('column-visibility.dt', function(e, settings, column, state) {
+      visibleColumnsIndexes = []
+      table.columns(":visible").every(function(colIdx) {
+          visibleColumnsIndexes.push(colIdx);
+      });
+  })
 });
 
 </script>

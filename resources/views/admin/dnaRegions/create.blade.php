@@ -13,7 +13,9 @@
                 <label for="name">{{ trans('cruds.dnaRegion.fields.name') }}</label>
                 <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
                 @if($errors->has('name'))
-                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('name') }}
+                    </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.dnaRegion.fields.name_helper') }}</span>
             </div>

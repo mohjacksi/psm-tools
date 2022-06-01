@@ -29,11 +29,6 @@ class DnaRegion extends Model
         'deleted_at',
     ];
 
-    public function dnaLocationTranscripts()
-    {
-        return $this->hasMany(Transcript::class, 'dna_location_id', 'id');
-    }
-
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');

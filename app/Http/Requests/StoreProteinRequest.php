@@ -17,17 +17,13 @@ class StoreProteinRequest extends FormRequest
     public function rules()
     {
         return [
-            'protein' => [
-                'string',
-                'nullable',
-            ],
             'name' => [
                 'string',
                 'nullable',
             ],
-            'protein_sequence' => [
-                'string',
-                'nullable',
+            'peptide_id' => [
+                'required',
+                'integer',
             ],
         ];
     }

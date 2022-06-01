@@ -17,13 +17,21 @@ class UpdateSampleRequest extends FormRequest
     public function rules()
     {
         return [
-            'sample' => [
-                'string',
-                'nullable',
-            ],
             'name' => [
                 'string',
                 'nullable',
+            ],
+            'replicate_number' => [
+                'nullable',
+                'integer',
+                'min:-2147483648',
+                'max:2147483647',
+            ],
+            'channels.*' => [
+                'integer',
+            ],
+            'channels' => [
+                'array',
             ],
         ];
     }

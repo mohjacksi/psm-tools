@@ -14,17 +14,48 @@
                 <label for="sequence">{{ trans('cruds.peptide.fields.sequence') }}</label>
                 <input class="form-control {{ $errors->has('sequence') ? 'is-invalid' : '' }}" type="text" name="sequence" id="sequence" value="{{ old('sequence', $peptide->sequence) }}">
                 @if($errors->has('sequence'))
-                    <span class="text-danger">{{ $errors->first('sequence') }}</span>
+                    <div class="invalid-feedback">
+                        {{ $errors->first('sequence') }}
+                    </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.peptide.fields.sequence_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="genomic_location">{{ trans('cruds.peptide.fields.genomic_location') }}</label>
-                <input class="form-control {{ $errors->has('genomic_location') ? 'is-invalid' : '' }}" type="text" name="genomic_location" id="genomic_location" value="{{ old('genomic_location', $peptide->genomic_location) }}">
-                @if($errors->has('genomic_location'))
-                    <span class="text-danger">{{ $errors->first('genomic_location') }}</span>
+                <div class="form-check {{ $errors->has('canonical') ? 'is-invalid' : '' }}">
+                    <input type="hidden" name="canonical" value="0">
+                    <input class="form-check-input" type="checkbox" name="canonical" id="canonical" value="1" {{ $peptide->canonical || old('canonical', 0) === 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="canonical">{{ trans('cruds.peptide.fields.canonical') }}</label>
+                </div>
+                @if($errors->has('canonical'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('canonical') }}
+                    </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.peptide.fields.genomic_location_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.peptide.fields.canonical_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="canonical_frame_value">{{ trans('cruds.peptide.fields.canonical_frame_value') }}</label>
+                <textarea class="form-control {{ $errors->has('canonical_frame_value') ? 'is-invalid' : '' }}" name="canonical_frame_value" id="canonical_frame_value">{{ old('canonical_frame_value', $peptide->canonical_frame_value) }}</textarea>
+                @if($errors->has('canonical_frame_value'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('canonical_frame_value') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.peptide.fields.canonical_frame_value_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="category_id">{{ trans('cruds.peptide.fields.category') }}</label>
+                <select class="form-control select2 {{ $errors->has('category') ? 'is-invalid' : '' }}" name="category_id" id="category_id">
+                    @foreach($categories as $id => $entry)
+                        <option value="{{ $id }}" {{ (old('category_id') ? old('category_id') : $peptide->category->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('category'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('category') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.peptide.fields.category_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

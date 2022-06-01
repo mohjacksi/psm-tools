@@ -21,10 +21,6 @@ class StorePeptideRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'genomic_location' => [
-                'string',
-                'nullable',
-            ],
         ];
     }
 }
