@@ -7,8 +7,9 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.upload-forms.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("admin.upload-forms.store") }}" enctype="multipart/form-data" id="psmForm">
             @csrf
+            <input type="hidden" value="{{Auth()->user()->id}}" name="created_by_id">
             <div class="form-group">
                 <label class="required" for="project_id">{{ trans('cruds.uploadForm.fields.project') }}</label>
                 <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" required>
@@ -41,6 +42,7 @@
                 <label class="required" for="psm_file">{{ trans('cruds.uploadForm.fields.psm_file') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('psm_file') ? 'is-invalid' : '' }}" id="psm_file-dropzone">
                 </div>
+                {{-- <input class="{{$errors->has('psm_file') ? 'is-invalid' : '' }}" id="psm_file-dropzone" type="file" name="psm_file" > --}}
                 @if($errors->has('psm_file'))
                     <div class="invalid-feedback">
                         {{ $errors->first('psm_file') }}
@@ -75,13 +77,14 @@
       size: 1024
     },
     success: function (file, response) {
-      $('form').find('input[name="psm_file"]').remove()
-      $('form').append('<input type="hidden" name="psm_file" value="' + response.name + '">')
+        console.log(response);
+      $('#psmForm').find('input[name="psm_file"]').remove()
+      $('#psmForm').append('<input type="hidden" name="psm_file" value="' + response.name + '">')
     },
     removedfile: function (file) {
       file.previewElement.remove()
       if (file.status !== 'error') {
-        $('form').find('input[name="psm_file"]').remove()
+        $('#psmForm').find('input[name="psm_file"]').remove()
         this.options.maxFiles = this.options.maxFiles + 1
       }
     },
@@ -90,7 +93,7 @@
       var file = {!! json_encode($uploadForm->psm_file) !!}
           this.options.addedfile.call(this, file)
       file.previewElement.classList.add('dz-complete')
-      $('form').append('<input type="hidden" name="psm_file" value="' + file.file_name + '">')
+      $('#psmForm').append('<input type="hidden" name="psm_file" value="' + file.file_name + '">')
       this.options.maxFiles = this.options.maxFiles - 1
 @endif
     },

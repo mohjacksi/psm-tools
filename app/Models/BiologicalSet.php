@@ -40,6 +40,10 @@ class BiologicalSet extends Model
         return $this->belongsToMany(Experiment::class);
     }
 
+    public function hasExperiment($experiment) {
+        return $this->experiments->contains($experiment);
+    }
+
     public function stripe()
     {
         return $this->belongsTo(Stripe::class, 'stripe_id');

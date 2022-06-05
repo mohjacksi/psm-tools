@@ -15,6 +15,15 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
+use App\Imports\PsmImport;
+use App\Models\BiologicalSet;
+use App\Models\Fraction;
+use App\Models\FragmentMethod;
+use App\Models\Peptide;
+use App\Models\PeptideWithModification;
+use App\Models\Psm;
+use CreateBiologicalSetExperimentPivotTable;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UploadFormController extends Controller
 {
@@ -38,12 +47,12 @@ class UploadFormController extends Controller
                 $crudRoutePart = 'upload-forms';
 
                 return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
             });
 
             $table->editColumn('id', function ($row) {
@@ -85,6 +94,102 @@ class UploadFormController extends Controller
         $uploadForm = UploadForm::create($request->all());
 
         if ($request->input('psm_file', false)) {
+
+            $psmFile = storage_path('tmp/uploads/' . basename($request->input('psm_file')));
+            $psmAsArray = Excel::toArray('', $psmFile);
+            $psmFields = array(
+                "SpectraFile",
+                "Biological set",
+                "SpecID",
+                "ScanNum",
+                "FragMethod",
+                "Precursor",
+                "IsotopeError",
+                "PrecursorError(ppm)",
+                "Charge",
+                "Peptide",
+                "Protein",
+                "DeNovoScore",
+                "MSGFScore",
+                "SpecEValue",
+                "EValue",
+                "percolator svm-score",
+                "PSM q-value",
+                "peptide q-value"
+            );
+            $fieldsOrder = [];
+            foreach ($psmFields as $field) {
+                $fieldsOrder[$field] = array_search($field, $psmAsArray[0][0]);
+            }
+            // dd($fieldsOrder);
+            $chanelsOdrer = array_filter($psmAsArray[0][0], function ($item) {
+                if (stripos($item, 'tmt10plex') !== false) {
+                    return $item;
+                }
+                return false;
+            });
+            // dd($fieldsOrder , $psmAsArray[0][0]);
+            $experiment = Experiment::find($request->input('experiment_id'))->first();
+            foreach ($psmAsArray[0] as $key => $psm) {
+                if ($key > 0) {
+                    $FragmentMethod = FragmentMethod::where('name', $psm[$fieldsOrder['FragMethod']])->firstOrCreate(
+                        [
+                            'name' => $psm[$fieldsOrder['FragMethod']],
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $BiologicalSet = BiologicalSet::where('name', $psm[$fieldsOrder['Biological set']])->firstOrCreate(
+                        [
+                            'name' => $psm[$fieldsOrder['Biological set']],
+                            'created_by_id' => auth()->user()->id,
+                            'fragment_method_id' => $FragmentMethod->id,
+                        ]
+                    );
+                    if (!$BiologicalSet->hasExperiment($experiment)) {
+                        $BiologicalSet->experiments()->attach($experiment);
+                    }
+                    $Fraction = Fraction::where('name', $psm[$fieldsOrder['SpectraFile']])->firstOrCreate(
+                        [
+                            'name' => $psm[$fieldsOrder['SpectraFile']],
+                            'spectra_file_name' => $psm[$fieldsOrder['SpectraFile']],
+                            'biological_set_id' => $BiologicalSet->id,
+                        ]
+                    );
+                    $PeptideWithModification = PeptideWithModification::where('name', $psm[$fieldsOrder['Peptide']])->firstOrCreate(
+                        [
+                            'name' => $psm[$fieldsOrder['Peptide']],
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $PeptideAZ = preg_replace("/[^A-Z]+/", "", $psm[$fieldsOrder['Peptide']]);
+                    $Peptide = Peptide::where('sequence', $PeptideAZ)->firstOrCreate(
+                        [
+                            'sequence' => $PeptideAZ,
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $newPsm = Psm::create([
+                        'spectra' => $psm[$fieldsOrder['SpectraFile']],
+                        'peptide_modification' => $psm[$fieldsOrder['Peptide']],
+                        'scan_num' => $psm[$fieldsOrder['ScanNum']],
+                        'precursor' => $psm[$fieldsOrder['Precursor']],
+                        'isotope_error' => $psm[$fieldsOrder['IsotopeError']],
+                        'precursor_error' => $psm[$fieldsOrder['PrecursorError(ppm)']],
+                        'charge' => $psm[$fieldsOrder['Charge']],
+                        'de_novo_score' => $psm[$fieldsOrder['DeNovoScore']],
+                        'msgf_score' => $psm[$fieldsOrder['MSGFScore']],
+                        'space_evalue' => $psm[$fieldsOrder['SpecEValue']],
+                        'evalue' => $psm[$fieldsOrder['EValue']],
+                        'precursor_svm_score' => $psm[$fieldsOrder['percolator svm-score']],
+                        'psm_q_value' => $psm[$fieldsOrder['PSM q-value']],
+                        'peptide_q_value' => $psm[$fieldsOrder['peptide q-value']],
+                        'fraction_id' => $Fraction->id,
+                        'peptide_with_modification_id' => $PeptideWithModification->id,
+                        'created_by_id' => auth()->user()->id,
+                    ]);
+                }
+            }
+
             $uploadForm->addMedia(storage_path('tmp/uploads/' . basename($request->input('psm_file'))))->toMediaCollection('psm_file');
         }
 
