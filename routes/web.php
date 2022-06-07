@@ -1,5 +1,17 @@
 <?php
 
+Route::get('/clear', function() {
+    //        Artisan::call('vendor:publish');
+    //    dd("done");
+    
+        Artisan::call('view:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('config:cache');
+        dd("done");
+    });
+
+    
 Route::view('/', 'welcome');
 Route::get('userVerification/{token}', 'UserVerificationController@approve')->name('userVerification');
 Auth::routes();

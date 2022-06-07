@@ -22,6 +22,9 @@ use App\Models\FragmentMethod;
 use App\Models\Peptide;
 use App\Models\PeptideWithModification;
 use App\Models\Psm;
+use App\Models\Sample;
+use App\Models\ChannelSample;
+use App\Models\Channel;
 use CreateBiologicalSetExperimentPivotTable;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -86,7 +89,9 @@ class UploadFormController extends Controller
 
         $experiments = Experiment::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.uploadForms.create', compact('experiments', 'projects'));
+        $samples = Sample::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        return view('admin.uploadForms.create', compact('experiments', 'projects','samples'));
     }
 
     public function store(StoreUploadFormRequest $request)
@@ -121,14 +126,6 @@ class UploadFormController extends Controller
             foreach ($psmFields as $field) {
                 $fieldsOrder[$field] = array_search($field, $psmAsArray[0][0]);
             }
-            // dd($fieldsOrder);
-            $chanelsOdrer = array_filter($psmAsArray[0][0], function ($item) {
-                if (stripos($item, 'tmt10plex') !== false) {
-                    return $item;
-                }
-                return false;
-            });
-            // dd($fieldsOrder , $psmAsArray[0][0]);
             $experiment = Experiment::find($request->input('experiment_id'))->first();
             foreach ($psmAsArray[0] as $key => $psm) {
                 if ($key > 0) {
@@ -187,6 +184,32 @@ class UploadFormController extends Controller
                         'peptide_with_modification_id' => $PeptideWithModification->id,
                         'created_by_id' => auth()->user()->id,
                     ]);
+
+                    if($request->all()['sample_number'] > 0){
+                        foreach ($request->all()['samples'] as $key=>$sample){
+                            $channelOdrer=array_search($request->all()['chennels'][$key], $psmAsArray[0][0]);
+                            if($channelOdrer){
+                                $newChennel = Channel::where('name', $request->all()['chennels'][$key])->firstOrCreate(
+                                    [
+                                        'name' => $request->all()['chennels'][$key],
+                                        'created_by_id' => auth()->user()->id
+                                    ]
+                                );
+                                $channelSample = ChannelSample::where('channel_id', $newChennel->id)
+                                ->where('psm_id', $newPsm->id)
+                                ->where('sample_id', $sample)
+                                ->firstOrCreate(
+                                    [
+                                        'channel_id' => $newChennel->id,
+                                        'psm_id' => $newPsm->id,
+                                        'sample_id' => $sample,
+                                        'chennel_value' => $psm[$channelOdrer],
+                                    ]
+                                );
+                            }
+                            
+                        }
+                    } 
                 }
             }
 

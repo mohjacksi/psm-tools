@@ -39,10 +39,36 @@
                 <span class="help-block">{{ trans('cruds.uploadForm.fields.experiment_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="sample_number">Number of Samples</label>
+                <input type="number" class="form-control {{ $errors->has('sample_number') ? 'is-invalid' : '' }}" name="sample_number" id="sample_number" onchange="sampleInputs()">
+                @if($errors->has('sample_number'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('sample_number') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.uploadForm.fields.experiment_helper') }}</span>
+            </div>
+            <table class="table table-bordered table-hover" id="sample_table" style="display: none;">
+				<thead>
+					<tr>
+						<th class="text-center">Sample</th>
+						<th class="text-center">channel</th>
+					</tr>
+				</thead>
+				<tbody>
+                    
+                    
+				</tbody>
+			</table>
+            <select class="form-control" id="sample_id" style="display: none;">
+                @foreach($samples as $id => $entry)
+                    <option value="{{ $id }}">{{ $entry }}</option>
+                @endforeach
+            </select>
+            <div class="form-group">
                 <label class="required" for="psm_file">{{ trans('cruds.uploadForm.fields.psm_file') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('psm_file') ? 'is-invalid' : '' }}" id="psm_file-dropzone">
                 </div>
-                {{-- <input class="{{$errors->has('psm_file') ? 'is-invalid' : '' }}" id="psm_file-dropzone" type="file" name="psm_file" > --}}
                 @if($errors->has('psm_file'))
                     <div class="invalid-feedback">
                         {{ $errors->first('psm_file') }}
@@ -113,6 +139,30 @@
 
          return _results
      }
+}
+
+function sampleInputs(){
+    var sample_number = $('#sample_number').val();
+    $('#sample_table').css('display', 'none');
+    if(sample_number > 0){
+        $('#sample_table').css('display', '');
+        $("#sample_table").find('tbody').empty();
+        for (let i = 0; i < sample_number; i++) {
+            var sample_id= $("#sample_id").clone();
+            sample_id.css('display', '');
+            sample_id.attr('id', '');
+            sample_id.attr('name', 'samples['+(i+1)+']');
+            $("#sample_table").find('tbody')
+            .append($('<tr>')
+                .append($('<td>')
+                    .append(sample_id)
+                )
+                .append($('<td>')
+                    .append('<input type="text" class="form-control" name="chennels['+(i+1)+']" placeholder="Chennel '+(i+1)+'">')
+                )
+            );
+        }
+    }
 }
 </script>
 @endsection

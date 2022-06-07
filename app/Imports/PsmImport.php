@@ -14,7 +14,6 @@ class PsmImport implements ToModel
     */
     public function model(array $row)
     {
-        dd($row);
         return new Psm([
             //
         ]);
