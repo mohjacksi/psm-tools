@@ -25,6 +25,10 @@ use App\Models\Psm;
 use App\Models\Sample;
 use App\Models\ChannelSample;
 use App\Models\Channel;
+use App\Models\User;
+use App\Models\Species;
+use App\Models\Tissue;
+use App\Models\SampleCondition;
 use CreateBiologicalSetExperimentPivotTable;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -90,8 +94,13 @@ class UploadFormController extends Controller
         $experiments = Experiment::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $samples = Sample::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $created_bies = User::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $species = Species::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $channels = Channel::pluck('name', 'id');
+        $tissues = Tissue::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $sample_conditions = SampleCondition::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.uploadForms.create', compact('experiments', 'projects','samples'));
+        return view('admin.uploadForms.create', compact('experiments', 'projects','samples','created_bies','species','channels','tissues','sample_conditions'));
     }
 
     public function store(StoreUploadFormRequest $request)

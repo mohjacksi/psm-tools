@@ -112,7 +112,9 @@ class ExperimentController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $experiment->id]);
         }
-
+        if ($request->ajax()) {
+            return $experiment;
+        }
         return redirect()->route('admin.experiments.index');
     }
 

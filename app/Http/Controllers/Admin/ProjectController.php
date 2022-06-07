@@ -87,6 +87,10 @@ class ProjectController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $project->id]);
         }
 
+        if ($request->ajax()) {
+            return $project;
+        } 
+
         return redirect()->route('admin.projects.index');
     }
 

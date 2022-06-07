@@ -125,6 +125,9 @@ class SampleController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $sample->id]);
         }
 
+        if ($request->ajax()) {
+            return $sample;
+        }
         return redirect()->route('admin.samples.index');
     }
 
