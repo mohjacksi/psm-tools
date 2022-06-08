@@ -14,7 +14,7 @@
                 <label class="required" for="project_id">{{ trans('cruds.uploadForm.fields.project') }}</label>
                 <div class="input-group mb-3">
                     <div class="mr-2" style="width: 90%">
-                    <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" required>
+                    <select class="project_id form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" required>
                         @foreach($projects as $id => $entry)
                             <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                         @endforeach
@@ -202,7 +202,7 @@
                 </div>
                 <div class="form-group">
                     <label for="project_id">{{ trans('cruds.experiment.fields.project') }}</label>
-                    <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id">
+                    <select class="project_id form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id">
                         @foreach($projects as $id => $entry)
                             <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                         @endforeach
@@ -375,7 +375,7 @@
                 </div>
                 <div class="form-group">
                     <label for="project_id">{{ trans('cruds.sample.fields.project') }}</label>
-                    <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id">
+                    <select class="project_id form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id">
                         @foreach($projects as $id => $entry)
                             <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                         @endforeach
@@ -553,7 +553,7 @@ $("#projectForm").submit(function(e) {
         {
             $('#projectModal .projectClose').click();
             $('.modal-backdrop').attr('class', '');
-            $('#project_id').append('<option value="'+data.id+'">'+data.name+'</option>')
+            $('.project_id').append('<option value="'+data.id+'">'+data.name+'</option>')
         }
     });
 

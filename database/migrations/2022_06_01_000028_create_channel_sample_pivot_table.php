@@ -16,7 +16,7 @@ class CreateChannelSamplePivotTable extends Migration
             $table->unsignedBigInteger('channel_id');
             $table->foreign('channel_id', 'channel_id_fk_6713817')->references('id')->on('channels')->onDelete('cascade');
             $table->unsignedBigInteger('psm_id');
-            $table->foreign('channel_id', 'psm_id_fk_6713817')->references('id')->on('psms')->onDelete('cascade');
+            $table->foreign('psm_id', 'psm_id_fk_6713817')->references('id')->on('psms')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
