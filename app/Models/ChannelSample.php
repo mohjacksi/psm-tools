@@ -23,7 +23,7 @@ class ChannelSample extends Model
     ];
 
     protected $fillable = [
-        'chennel_value',
+        'channel_value',
         'psm_id',
         'sample_id',
         'channel_id',
