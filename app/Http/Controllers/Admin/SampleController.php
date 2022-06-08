@@ -67,9 +67,9 @@ class SampleController extends Controller
 
             $table->editColumn('channel', function ($row) {
                 $labels = [];
-                foreach ($row->channels as $channel) {
-                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $channel->name);
-                }
+                // foreach ($row->channels as $channel) {
+                //     $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $channel->name);
+                // }
 
                 return implode(' ', $labels);
             });

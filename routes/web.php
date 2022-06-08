@@ -1,17 +1,35 @@
 <?php
 
-Route::get('/clear', function() {
-    //        Artisan::call('vendor:publish');
-    //    dd("done");
-    
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
-        Artisan::call('config:clear');
-        Artisan::call('config:cache');
-        dd("done");
-    });
+use App\Models\Channel;
+use App\Models\Peptide;
+use App\Models\Protein;
+use App\Models\Psm;
+use Illuminate\Support\Facades\DB;
 
-    
+Route::get('/clear', function() {
+
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+
+    dd("done");
+});
+
+Route::get('/clear-data', function() {
+    DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+    Psm::truncate();
+    DB::table('channel_sample')->delete();
+    Protein::truncate();
+    Channel::truncate();
+    Peptide::truncate();
+    DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+
+
+    dd("PSM, Peptide, Channel, Channel-Sample tables truncated successfully!");
+});
 Route::view('/', 'welcome');
 Route::get('userVerification/{token}', 'UserVerificationController@approve')->name('userVerification');
 Auth::routes();

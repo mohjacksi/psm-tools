@@ -339,6 +339,13 @@
                 </a>
             </li>
         @endcan
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link {{ request()->is('profile/password') || request()->is('profile/password/*') ? 'c-active' : '' }}" href="/clear-data" target="_blank">
+                <i class="fa-fw fas fa-key c-sidebar-nav-icon">
+                </i>
+                Clear data
+            </a>
+        </li>
         @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
             @can('profile_password_edit')
                 <li class="c-sidebar-nav-item">

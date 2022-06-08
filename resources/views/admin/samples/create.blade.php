@@ -53,7 +53,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.sample.fields.project_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="channels">{{ trans('cruds.sample.fields.channel') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
@@ -70,7 +70,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.sample.fields.channel_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="species_id">{{ trans('cruds.sample.fields.species') }}</label>
                 <select class="form-control select2 {{ $errors->has('species') ? 'is-invalid' : '' }}" name="species_id" id="species_id">

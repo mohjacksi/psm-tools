@@ -30,6 +30,7 @@ use App\Models\Species;
 use App\Models\Tissue;
 use App\Models\SampleCondition;
 use CreateBiologicalSetExperimentPivotTable;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UploadFormController extends Controller
@@ -108,7 +109,7 @@ class UploadFormController extends Controller
         $uploadForm = UploadForm::create($request->all());
 
         if ($request->input('psm_file', false)) {
-
+            DB::beginTransaction();
             $psmFile = storage_path('tmp/uploads/' . basename($request->input('psm_file')));
             $psmAsArray = Excel::toArray('', $psmFile);
             $psmFields = array(
@@ -216,13 +217,14 @@ class UploadFormController extends Controller
                                     ]
                                 );
                             }
-                            
+
                         }
-                    } 
+                    }
                 }
             }
 
             $uploadForm->addMedia(storage_path('tmp/uploads/' . basename($request->input('psm_file'))))->toMediaCollection('psm_file');
+            DB::commit();
         }
 
         if ($media = $request->input('ck-media', false)) {
