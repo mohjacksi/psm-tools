@@ -10,7 +10,7 @@ class CreateChannelSamplePivotTable extends Migration
     {
         Schema::create('channel_sample', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('chennel_vaue')->nullable();
+            $table->string('channel_value')->nullable();
             $table->unsignedBigInteger('sample_id');
             $table->foreign('sample_id', 'sample_id_fk_6713817')->references('id')->on('samples')->onDelete('cascade');
             $table->unsignedBigInteger('channel_id');

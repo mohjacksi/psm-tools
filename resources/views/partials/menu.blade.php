@@ -341,7 +341,7 @@
         @endcan
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link {{ request()->is('profile/password') || request()->is('profile/password/*') ? 'c-active' : '' }}" href="/clear-data" target="_blank">
-                <i class="fa-fw fas fa-key c-sidebar-nav-icon">
+                <i class="fa-fw fas fa-trash c-sidebar-nav-icon">
                 </i>
                 Clear data
             </a>

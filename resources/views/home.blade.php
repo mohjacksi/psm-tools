@@ -6,11 +6,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    Dashboard
+                    <h1>Admin Control Panel</h1>
                 </div>
-                @php
-                    phpinfo();
-                @endphp
                 <div class="card-body">
                     @if(session('status'))
                         <div class="alert alert-success" role="alert">
@@ -18,7 +15,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    Welcome to PSM tools project 👨‍🔬 👩‍🔬
                 </div>
             </div>
         </div>

@@ -213,7 +213,7 @@ class UploadFormController extends Controller
                                         'channel_id' => $newChennel->id,
                                         'psm_id' => $newPsm->id,
                                         'sample_id' => $sample,
-                                        'chennel_value' => $psm[$channelOdrer],
+                                        'channel_value' => $psm[$channelOdrer],
                                     ]
                                 );
                             }
