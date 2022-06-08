@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="required" for="project_id">{{ trans('cruds.uploadForm.fields.project') }}</label>
                 <div class="input-group mb-3">
-                    <div class="mr-2" style="width: 80%">
+                    <div class="mr-2" style="width: 90%">
                     <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" required>
                         @foreach($projects as $id => $entry)
                             <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
@@ -21,7 +21,7 @@
                     </select>
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectModal" id="button-addon2">
-                         or Create New Project
+                        <i class="fa fa-plus"></i>
                       </button>                    
                 </div>                
                 @if($errors->has('project'))
@@ -34,7 +34,7 @@
             <div class="form-group">
                 <label class="required" for="experiment_id">{{ trans('cruds.uploadForm.fields.experiment') }}</label>
                 <div class="input-group mb-3">
-                    <div class="mr-2" style="width: 80%">
+                    <div class="mr-2" style="width: 90%">
                         <select class="form-control select2 {{ $errors->has('experiment') ? 'is-invalid' : '' }}" name="experiment_id" id="experiment_id" required>
                             @foreach($experiments as $id => $entry)
                                 <option value="{{ $id }}" {{ old('experiment_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
@@ -42,7 +42,7 @@
                         </select>
                     </div>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#experimentModal" id="button-addon2">
-                         or Create New Experiment
+                        <i class="fa fa-plus"></i>
                       </button>                    
                 </div>
                 @if($errors->has('experiment'))
@@ -68,7 +68,7 @@
 						<th class="text-center">
                             Sample  
                             <button type="button" class="btn btn-primary small" data-toggle="modal" data-target="#sampleModal" id="button-addon2" style="float: right">
-                            or Create New Sample
+                                <i class="fa fa-plus"></i>
                             </button></th>
 						<th class="text-center">channel</th>
 					</tr>
