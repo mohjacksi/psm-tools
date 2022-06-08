@@ -2,6 +2,7 @@
 
 use App\Models\Channel;
 use App\Models\Peptide;
+use App\Models\PeptideWithModification;
 use App\Models\Protein;
 use App\Models\Psm;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ Route::get('/clear-data', function() {
     Protein::truncate();
     Channel::truncate();
     Peptide::truncate();
+    PeptideWithModification::truncate();
     DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
 
