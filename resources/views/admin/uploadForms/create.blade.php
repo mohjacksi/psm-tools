@@ -108,7 +108,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
+          <h5 class="modal-title">Add New Project</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -116,6 +116,7 @@
         <div class="modal-body">
             <form method="POST" action="{{ route("admin.projects.store") }}" enctype="multipart/form-data" id="projectForm">
                 @csrf
+                <input type="hidden" value="{{Auth()->user()->id}}" name="created_by_id">
                 <div class="form-group">
                     <label for="name">{{ trans('cruds.project.fields.name') }}</label>
                     <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
@@ -150,20 +151,6 @@
                     <span class="help-block">{{ trans('cruds.project.fields.public_helper') }}</span>
                 </div>
                 <div class="form-group">
-                    <label for="created_by_id">{{ trans('cruds.project.fields.created_by') }}</label>
-                    <select class="form-control select2 {{ $errors->has('created_by') ? 'is-invalid' : '' }}" name="created_by_id" id="created_by_id">
-                        @foreach($created_bies as $id => $entry)
-                            <option value="{{ $id }}" {{ old('created_by_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
-                        @endforeach
-                    </select>
-                    @if($errors->has('created_by'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('created_by') }}
-                        </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.project.fields.created_by_helper') }}</span>
-                </div>
-                <div class="form-group">
                     <button class="btn btn-danger" type="submit">
                         {{ trans('global.save') }}
                     </button>
@@ -171,7 +158,7 @@
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary projectClose" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary projectClose" data-dismiss="modal" hidden>Close</button>
         </div>
       </div>
     </div>
@@ -182,7 +169,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
+          <h5 class="modal-title">Add New Experiment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -324,7 +311,7 @@
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary experimentClose" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary experimentClose" data-dismiss="modal" hidden>Close</button>
         </div>
       </div>
     </div>
@@ -335,7 +322,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
+          <h5 class="modal-title">Add New Sample</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -455,7 +442,7 @@
             </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary sampleClose" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary sampleClose" data-dismiss="modal" hidden>Close</button>
         </div>
       </div>
     </div>

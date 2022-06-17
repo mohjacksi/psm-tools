@@ -127,6 +127,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('channels', 'ChannelController');
 
     // Protein
+    Route::get('proteins/uploadTsv', function(){
+        return view('admin.proteins.uploadTsv');
+    })->name('proteins.uploadTsv');
+    Route::post('proteins/uploadTsv', 'ProteinController@uploadTsv')->name('proteins.saveUploadTsv');
+
     Route::delete('proteins/destroy', 'ProteinController@massDestroy')->name('proteins.massDestroy');
     Route::post('proteins/media', 'ProteinController@storeMedia')->name('proteins.storeMedia');
     Route::post('proteins/ckmedia', 'ProteinController@storeCKEditorImages')->name('proteins.storeCKEditorImages');
@@ -135,6 +140,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('proteins', 'ProteinController');
 
     // Peptide
+    Route::get('peptides/uploadTsv', function(){
+        return view('admin.peptides.uploadTsv');
+    })->name('peptides.uploadTsv');
+    Route::post('peptides/uploadTsv', 'PeptideController@uploadTsv')->name('peptides.saveUploadTsv');
+
     Route::delete('peptides/destroy', 'PeptideController@massDestroy')->name('peptides.massDestroy');
     Route::post('peptides/parse-csv-import', 'PeptideController@parseCsvImport')->name('peptides.parseCsvImport');
     Route::post('peptides/process-csv-import', 'PeptideController@processCsvImport')->name('peptides.processCsvImport');

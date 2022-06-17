@@ -431,6 +431,7 @@ return [
             'type_helper'       => ' ',
             'created_by'        => 'Created By',
             'created_by_helper' => ' ',
+            'protein_file'                   => 'Protein File',
         ],
     ],
     'peptide' => [
@@ -455,6 +456,7 @@ return [
             'category_helper'              => ' ',
             'created_by'                   => 'Created By',
             'created_by_helper'            => ' ',
+            'peptide_file'                   => 'Peptide File',
         ],
     ],
     'tissue' => [

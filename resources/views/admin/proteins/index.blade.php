@@ -9,6 +9,9 @@
             <button class="btn btn-warning" data-toggle="modal" data-target="#csvImportModal">
                 {{ trans('global.app_csvImport') }}
             </button>
+            <a class="btn btn-info" href="{{ route('admin.proteins.uploadTsv') }}">
+                {{ trans('global.add') }} Tsv {{ trans('cruds.protein.title_singular') }}
+            </a>
             @include('csvImport.modal', ['model' => 'Protein', 'route' => 'admin.proteins.parseCsvImport'])
         </div>
     </div>

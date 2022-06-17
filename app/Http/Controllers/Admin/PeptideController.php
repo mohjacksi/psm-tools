@@ -9,11 +9,14 @@ use App\Http\Requests\StorePeptideRequest;
 use App\Http\Requests\UpdatePeptideRequest;
 use App\Models\PeptidCategory;
 use App\Models\Peptide;
+use App\Models\Sample;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class PeptideController extends Controller
 {
@@ -129,5 +132,63 @@ class PeptideController extends Controller
         Peptide::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function uploadTsv(Request $request)
+    {
+        // dd($peptideAsArray[0]);
+        $peptideFile = storage_path('tmp/uploads/' . basename($request->input('peptide_file')));
+        $peptideAsArray = Excel::toArray('', $peptideFile);
+        $peptideFields = array(
+            "Peptide",
+            "Protein_types",
+            "Samples",
+            "Category",
+            "is_canonical_frame",
+        );
+        $fieldsOrder = [];
+        foreach ($peptideFields as $field) {
+            $fieldsOrder[$field] = array_search($field, $peptideAsArray[0][0]);
+        }
+        foreach ($peptideAsArray[0] as $key => $peptide) {
+            if ($key > 0) {
+                $category = PeptidCategory::where('name', $peptide[$fieldsOrder['Category']])->firstOrCreate(
+                    [
+                        'name' => $peptide[$fieldsOrder['Category']],
+                        'created_by_id' => auth()->user()->id
+                    ]
+                );
+                $samples = explode(",", $peptide[$fieldsOrder['Samples']]);
+                if(count($samples) > 0){
+                    foreach($samples as $sampleName){
+                        $sample = Sample::where('name', $sampleName)->firstOrCreate(
+                            [
+                                'name' => $sampleName,
+                                'created_by_id' => auth()->user()->id
+                            ]
+                        );
+                    }
+                }
+                if($peptide[$fieldsOrder['is_canonical_frame']] != 'non_canonical'){
+                    $canonical = 1;
+                    $canonical_frame_value = $peptide[$fieldsOrder['is_canonical_frame']];
+                }else{
+                    $canonical = 0;
+                    $canonical_frame_value = null;
+                }
+                
+                $newPeptide = Peptide::where('sequence', $peptide[$fieldsOrder['Peptide']])->firstOrCreate(
+                    [
+                        'sequence' => $peptide[$fieldsOrder['Peptide']],
+                        'canonical' => $canonical,
+                        'canonical_frame_value' => $canonical_frame_value,
+                        'category_id' => $category->id,
+                        'created_by_id' => auth()->user()->id
+                    ]
+                );
+            }
+        }
+
+        return redirect()->route('admin.peptides.index');
     }
 }

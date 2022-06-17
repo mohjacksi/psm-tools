@@ -8,9 +8,13 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyPsmRequest;
 use App\Http\Requests\StorePsmRequest;
 use App\Http\Requests\UpdatePsmRequest;
+use App\Models\BiologicalSet;
+use App\Models\Experiment;
 use App\Models\Fraction;
 use App\Models\PeptideWithModification;
+use App\Models\Project;
 use App\Models\Psm;
+use App\Models\Sample;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -28,8 +32,10 @@ class PsmController extends Controller
         abort_if(Gate::denies('psm_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = Psm::with(['fraction', 'peptide_with_modification', 'created_by'])->select(sprintf('%s.*', (new Psm())->table));
+            $query = Psm::with(['peptide_with_modification', 'created_by', 'samples.project', 'fraction.biological_set.experiments'])->select(sprintf('%s.*', (new Psm())->table));
             $table = Datatables::of($query);
+
+            // dd($query->samples->project);
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
@@ -54,6 +60,26 @@ class PsmController extends Controller
             });
             $table->editColumn('spectra', function ($row) {
                 return $row->spectra ? $row->spectra : '';
+            });
+            $table->addColumn('samples', function ($row) {
+                $samples['name']='';
+                if($row->samples->count()>0){
+                    foreach($row->samples as $sample){
+                        $samples['name'] = $samples['name'] ."\r\n".$sample->name;
+                    }
+                }
+                return $samples['name'];
+            });
+            $table->addColumn('project', function ($row) {
+                return $row->samples->count()>0 ? ($row->samples[0]->project ? $row->samples[0]->project->name : '') : '';
+            });
+            $table->addColumn('biological_set', function ($row) {
+                return $row->fraction->count()>0 ? 
+                ($row->fraction->biological_set ? $row->fraction->biological_set->name : '') : '';
+            });
+            $table->addColumn('experiments', function ($row) {
+                return $row->fraction->biological_set->count()>0 ? 
+                ($row->fraction->biological_set->experiments ? $row->fraction->biological_set->experiments[0]->name : '') : '';
             });
             $table->addColumn('fraction_name', function ($row) {
                 return $row->fraction ? $row->fraction->name : '';
@@ -119,8 +145,12 @@ class PsmController extends Controller
         $fractions                  = Fraction::get();
         $peptide_with_modifications = PeptideWithModification::get();
         $users                      = User::get();
+        $samples                    = Sample::get();
+        $projects                   = Project::get();
+        $biological_set             = BiologicalSet::get();
+        $experiment                 = Experiment::get();
 
-        return view('admin.psms.index', compact('fractions', 'peptide_with_modifications', 'users'));
+        return view('admin.psms.index', compact('fractions', 'peptide_with_modifications', 'users', 'projects','experiment','biological_set', 'samples'));
     }
 
     public function create()
@@ -169,7 +199,9 @@ class PsmController extends Controller
     {
         abort_if(Gate::denies('psm_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $psm->load('fraction', 'peptide_with_modification', 'created_by');
+        $psm->load('samples.project', 'fraction', 'peptide_with_modification', 'created_by');
+        dd($psm->samples[0]->project->name);
+
 
         return view('admin.psms.show', compact('psm'));
     }

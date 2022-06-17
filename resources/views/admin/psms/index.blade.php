@@ -19,7 +19,7 @@
     </div>
 
     <div class="card-body">
-        <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Psm">
+        <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Psm">   
             <thead>
                 <tr>
                     <th width="10">
@@ -30,6 +30,18 @@
                     </th>
                     <th>
                         {{ trans('cruds.psm.fields.spectra') }}
+                    </th>
+                    <th>
+                        Project
+                    </th>
+                    <th>
+                        Experiment
+                    </th>
+                    <th>
+                        Biological Set
+                    </th>
+                    <th>
+                        Samples
                     </th>
                     <th>
                         {{ trans('cruds.psm.fields.fraction') }}
@@ -97,6 +109,38 @@
                     </td>
                     <td>
                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                    </td>
+                    <td>
+                        <select class="search" strict="true">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach($projects as $key => $item)
+                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>                    
+                    </td>
+                    <td>
+                        <select class="search" strict="true">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach($experiment as $key => $item)
+                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>                    
+                    </td>
+                    <td>
+                        <select class="search" strict="true">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach($biological_set as $key => $item)
+                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>                    
+                    </td>
+                    <td>
+                        <select class="search" strict="true">
+                            <option value>{{ trans('global.all') }}</option>
+                            @foreach($samples as $key => $item)
+                                <option value="{{ $item->name }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
                     </td>
                     <td>
                         <select class="search">
@@ -219,7 +263,11 @@
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
 { data: 'spectra', name: 'spectra' },
-{ data: 'fraction_name', name: 'fraction.name' },
+{ data: 'project', name: 'samples.project.name'},
+{ data: 'experiments', name: 'fraction.biological_set.experiments.name'},
+{ data: 'biological_set', name: 'fraction.biological_set.name'},
+{ data: 'samples', name: 'samples.name'},
+{ data: 'fraction_name', name: 'fraction.name'},
 { data: 'scan_num', name: 'scan_num' },
 { data: 'precursor', name: 'precursor' },
 { data: 'isotope_error', name: 'isotope_error' },
@@ -262,7 +310,7 @@ $('.datatable thead').on('input', '.search', function () {
       table
         .column(index)
         .search(value, strict)
-        .draw()
+        .draw();
   });
 table.on('column-visibility.dt', function(e, settings, column, state) {
       visibleColumnsIndexes = []

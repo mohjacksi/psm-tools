@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyProteinRequest;
 use App\Http\Requests\StoreProteinRequest;
 use App\Http\Requests\UpdateProteinRequest;
+use App\Models\Sample;
 use App\Models\Peptide;
 use App\Models\Protein;
 use App\Models\ProteinType;
@@ -17,6 +18,8 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ProteinController extends Controller
 {
@@ -152,5 +155,61 @@ class ProteinController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function uploadTsv(Request $request)
+    {
+        // dd($request->input('protein_file'));
+            $proteinFile = storage_path('tmp/uploads/' . basename($request->input('protein_file')));
+            $proteinAsArray = Excel::toArray('', $proteinFile);
+            $proteinFields = array(
+                "ProteinID",
+                "Name",
+                "Biotype",
+                "Samples",
+                "Peptides",
+            );
+            $fieldsOrder = [];
+            foreach ($proteinFields as $field) {
+                $fieldsOrder[$field] = array_search($field, $proteinAsArray[0][0]);
+            }
+            foreach ($proteinAsArray[0] as $key => $protein) {
+                if ($key > 0) {
+                    $type = ProteinType::where('name', $protein[$fieldsOrder['Biotype']])->firstOrCreate(
+                        [
+                            'name' => $protein[$fieldsOrder['Biotype']],
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $peptide = Peptide::where('sequence', $protein[$fieldsOrder['Peptides']])->firstOrCreate(
+                        [
+                            'sequence' => $protein[$fieldsOrder['Peptides']],
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $samples = explode(",", $protein[$fieldsOrder['Samples']]);
+                    if(count($samples) > 0){
+                        foreach($samples as $sampleName){
+                            $sample = Sample::where('name', $sampleName)->firstOrCreate(
+                                [
+                                    'name' => $sampleName,
+                                    'created_by_id' => auth()->user()->id
+                                ]
+                            );
+                        }
+                    }
+                    $newProtein = Protein::where('sequence', $protein[$fieldsOrder['ProteinID']])->firstOrCreate(
+                        [
+                            'sequence' => $protein[$fieldsOrder['ProteinID']],
+                            'name' => $protein[$fieldsOrder['Name']],
+                            'peptide_id' => $peptide->id,
+                            'type_id' => $type->id,
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                }
+            }
+
+            return redirect()->route('admin.proteins.index');
     }
 }

@@ -76,6 +76,11 @@ class Psm extends Model implements HasMedia
         return $this->hasMany(ChennelSample::class);
     }
 
+    public function samples()
+    {
+        return $this->belongsToMany(Sample::class, 'channel_sample');
+    }
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by_id');
