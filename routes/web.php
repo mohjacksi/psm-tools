@@ -89,6 +89,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('psms', 'PsmController');
 
     // Experiment
+    Route::get('experiments/project/{project_id?}', 'ExperimentController@experimentsOfProject')->name('experiments.experimentsOfProject');
     Route::delete('experiments/destroy', 'ExperimentController@massDestroy')->name('experiments.massDestroy');
     Route::post('experiments/media', 'ExperimentController@storeMedia')->name('experiments.storeMedia');
     Route::post('experiments/ckmedia', 'ExperimentController@storeCKEditorImages')->name('experiments.storeCKEditorImages');

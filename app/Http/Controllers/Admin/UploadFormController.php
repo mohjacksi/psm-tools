@@ -106,6 +106,15 @@ class UploadFormController extends Controller
 
     public function store(StoreUploadFormRequest $request)
     {
+        // dd($request->input('protein_file') != null);
+
+        if($request->input('peptide_file') != null){
+            app('App\Http\Controllers\Admin\PeptideController')->uploadTsv($request);
+        }
+        if($request->input('protein_file') != null){
+            app('App\Http\Controllers\Admin\ProteinController')->uploadTsv($request);
+        }
+
         $uploadForm = UploadForm::create($request->all());
 
         if ($request->input('psm_file', false)) {
@@ -223,6 +232,7 @@ class UploadFormController extends Controller
                 }
             }
 
+            
             $uploadForm->addMedia(storage_path('tmp/uploads/' . basename($request->input('psm_file'))))->toMediaCollection('psm_file');
             DB::commit();
         }

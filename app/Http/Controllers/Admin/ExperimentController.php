@@ -10,6 +10,7 @@ use App\Http\Requests\StoreExperimentRequest;
 use App\Http\Requests\UpdateExperimentRequest;
 use App\Models\Experiment;
 use App\Models\Project;
+use App\Models\Sample;
 use App\Models\Species;
 use App\Models\User;
 use Gate;
@@ -173,5 +174,23 @@ class ExperimentController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function experimentsOfProject($project_id)
+    {
+        if($project_id > 0){
+            $experiments = Experiment::where('project_id', $project_id)->get();
+            $samples = Sample::where('project_id', $project_id)->get();
+        }else{
+            $experiments = Experiment::get();
+            $samples = Sample::get();
+        }
+
+        $response = [
+            'experiments'=>$experiments,
+            'samples'=>$samples,
+        ];
+
+        return $response;
     }
 }

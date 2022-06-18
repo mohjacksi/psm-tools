@@ -11,7 +11,7 @@
             @csrf
             <div class="form-group">
                 <label class="required" for="peptide_file">{{ trans('cruds.peptide.fields.peptide_file') }}</label>
-                <div class="needsclick dropzone {{ $errors->has('peptide_file') ? 'is-invalid' : '' }}" id="psm_file-dropzone">
+                <div class="needsclick dropzone {{ $errors->has('peptide_file') ? 'is-invalid' : '' }}" id="peptide_file-dropzone">
                 </div>
                 @if($errors->has('peptide_file'))
                     <div class="invalid-feedback">
@@ -33,7 +33,7 @@
 
 @section('scripts')
 <script>
-    Dropzone.options.psmFileDropzone = {
+    Dropzone.options.peptideFileDropzone = {
     url: '{{ route('admin.upload-forms.storeMedia') }}',
     maxFilesize: 1024, // MB
     maxFiles: 1,
@@ -55,15 +55,6 @@
         $('#peptideForm').find('input[name="peptide_file"]').remove()
         this.options.maxFiles = this.options.maxFiles + 1
       }
-    },
-    init: function () {
-@if(isset($uploadForm) && $uploadForm->psm_file)
-      var file = {!! json_encode($uploadForm->psm_file) !!}
-          this.options.addedfile.call(this, file)
-      file.previewElement.classList.add('dz-complete')
-      $('#peptideForm').append('<input type="hidden" name="peptide_file" value="' + file.file_name + '">')
-      this.options.maxFiles = this.options.maxFiles - 1
-@endif
     },
      error: function (file, response) {
          if ($.type(response) === 'string') {
