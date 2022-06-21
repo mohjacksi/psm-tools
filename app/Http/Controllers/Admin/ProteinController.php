@@ -160,6 +160,11 @@ class ProteinController extends Controller
     public function uploadTsv(Request $request)
     {
         // dd($request->input('protein_file'));
+        if($request->input('project_id')){
+            $project_id = $request->input('project_id');
+        }else{
+            $project_id = null;
+        }
             $proteinFile = storage_path('tmp/uploads/' . basename($request->input('protein_file')));
             $proteinAsArray = Excel::toArray('', $proteinFile);
             $proteinFields = array(
@@ -193,6 +198,7 @@ class ProteinController extends Controller
                             $sample = Sample::where('name', $sampleName)->firstOrCreate(
                                 [
                                     'name' => $sampleName,
+                                    'project_id' => $project_id,
                                     'created_by_id' => auth()->user()->id
                                 ]
                             );

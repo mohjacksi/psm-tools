@@ -81,6 +81,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('transcripts', 'TranscriptController');
 
     // Psm
+    Route::get('psms/samples', 'PsmController@getSamples')->name('psms.getSamples');
     Route::delete('psms/destroy', 'PsmController@massDestroy')->name('psms.massDestroy');
     Route::post('psms/media', 'PsmController@storeMedia')->name('psms.storeMedia');
     Route::post('psms/ckmedia', 'PsmController@storeCKEditorImages')->name('psms.storeCKEditorImages');

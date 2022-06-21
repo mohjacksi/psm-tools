@@ -86,7 +86,7 @@
                     </thead>
                     <tbody>
 
-
+                        {{-- here will add the samples form --}}
                     </tbody>
                 </table>
                 <select class="form-control" id="sample_id" style="display: none;">
@@ -94,26 +94,6 @@
                         <option value="{{ $id }}">{{ $entry }}</option>
                     @endforeach
                 </select>
-                {{-- <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="psm_file">{{ trans('cruds.peptide.fields.peptide_file') }}</label>
-                        <input class="form-control" type="file" name="peptide_file">
-                        @if ($errors->has('peptide_file'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('peptide_file') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="psm_file">{{ trans('cruds.protein.fields.protein_file') }}</label>
-                        <input class="form-control" type="file" name="protein_file">
-                        @if ($errors->has('protein_file'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('protein_file') }}
-                            </div>
-                        @endif
-                    </div>
-                </div> --}}
                
                 <div class="form-group">
                     <label class="required" for="psm_file">{{ trans('cruds.uploadForm.fields.psm_file') }}</label>
@@ -621,88 +601,88 @@
             }
         }
 
-        Dropzone.options.peptideFileDropzone = {
-    url: '{{ route('admin.upload-forms.storeMedia') }}',
-    maxFilesize: 1024, // MB
-    maxFiles: 1,
-    addRemoveLinks: true,
-    headers: {
-      'X-CSRF-TOKEN': "{{ csrf_token() }}"
-    },
-    params: {
-      size: 1024
-    },
-    success: function (file, response) {
-        console.log(response);
-      $('#psmForm').find('input[name="peptide_file"]').remove()
-      $('#psmForm').append('<input type="hidden" name="peptide_file" value="' + response.name + '">')
-    },
-    removedfile: function (file) {
-      file.previewElement.remove()
-      if (file.status !== 'error') {
+    Dropzone.options.peptideFileDropzone = {
+        url: '{{ route('admin.upload-forms.storeMedia') }}',
+        maxFilesize: 1024, // MB
+        maxFiles: 1,
+        addRemoveLinks: true,
+        headers: {
+        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        params: {
+        size: 1024
+        },
+        success: function (file, response) {
+            console.log(response);
         $('#psmForm').find('input[name="peptide_file"]').remove()
-        this.options.maxFiles = this.options.maxFiles + 1
-      }
-    },
-     error: function (file, response) {
-         if ($.type(response) === 'string') {
-             var message = response //dropzone sends it's own error messages in string
-         } else {
-             var message = response.errors.file
-         }
-         file.previewElement.classList.add('dz-error')
-         _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
-         _results = []
-         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-             node = _ref[_i]
-             _results.push(node.textContent = message)
-         }
+        $('#psmForm').append('<input type="hidden" name="peptide_file" value="' + response.name + '">')
+        },
+        removedfile: function (file) {
+        file.previewElement.remove()
+        if (file.status !== 'error') {
+            $('#psmForm').find('input[name="peptide_file"]').remove()
+            this.options.maxFiles = this.options.maxFiles + 1
+        }
+        },
+        error: function (file, response) {
+            if ($.type(response) === 'string') {
+                var message = response //dropzone sends it's own error messages in string
+            } else {
+                var message = response.errors.file
+            }
+            file.previewElement.classList.add('dz-error')
+            _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
+            _results = []
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                node = _ref[_i]
+                _results.push(node.textContent = message)
+            }
 
-         return _results
-     }
-}
+            return _results
+        }
+    }
 
 
-Dropzone.options.proteinFileDropzone = {
-    url: '{{ route('admin.upload-forms.storeMedia') }}',
-    maxFilesize: 1024, // MB
-    maxFiles: 1,
-    addRemoveLinks: true,
-    headers: {
-      'X-CSRF-TOKEN': "{{ csrf_token() }}"
-    },
-    params: {
-      size: 1024
-    },
-    success: function (file, response) {
-        console.log(response);
-      $('#psmForm').find('input[name="protein_file"]').remove()
-      $('#psmForm').append('<input type="hidden" name="protein_file" value="' + response.name + '">')
-    },
-    removedfile: function (file) {
-      file.previewElement.remove()
-      if (file.status !== 'error') {
+    Dropzone.options.proteinFileDropzone = {
+        url: '{{ route('admin.upload-forms.storeMedia') }}',
+        maxFilesize: 1024, // MB
+        maxFiles: 1,
+        addRemoveLinks: true,
+        headers: {
+        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        params: {
+        size: 1024
+        },
+        success: function (file, response) {
+            console.log(response);
         $('#psmForm').find('input[name="protein_file"]').remove()
-        this.options.maxFiles = this.options.maxFiles + 1
-      }
-    },
-     error: function (file, response) {
-         if ($.type(response) === 'string') {
-             var message = response //dropzone sends it's own error messages in string
-         } else {
-             var message = response.errors.file
-         }
-         file.previewElement.classList.add('dz-error')
-         _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
-         _results = []
-         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-             node = _ref[_i]
-             _results.push(node.textContent = message)
-         }
+        $('#psmForm').append('<input type="hidden" name="protein_file" value="' + response.name + '">')
+        },
+        removedfile: function (file) {
+        file.previewElement.remove()
+        if (file.status !== 'error') {
+            $('#psmForm').find('input[name="protein_file"]').remove()
+            this.options.maxFiles = this.options.maxFiles + 1
+        }
+        },
+        error: function (file, response) {
+            if ($.type(response) === 'string') {
+                var message = response //dropzone sends it's own error messages in string
+            } else {
+                var message = response.errors.file
+            }
+            file.previewElement.classList.add('dz-error')
+            _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
+            _results = []
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                node = _ref[_i]
+                _results.push(node.textContent = message)
+            }
 
-         return _results
-     }
-}
+            return _results
+        }
+    }
 
 
         function sampleInputs() {

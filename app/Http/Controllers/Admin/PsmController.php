@@ -145,12 +145,19 @@ class PsmController extends Controller
         $fractions                  = Fraction::get();
         $peptide_with_modifications = PeptideWithModification::get();
         $users                      = User::get();
-        $samples                    = Sample::get();
+        $samples                    = Sample::with('psms')->get();
         $projects                   = Project::get();
         $biological_set             = BiologicalSet::get();
         $experiment                 = Experiment::get();
 
         return view('admin.psms.index', compact('fractions', 'peptide_with_modifications', 'users', 'projects','experiment','biological_set', 'samples'));
+    }
+
+    public function getSamples()
+    {
+        $samples = Sample::with('psms')->get();
+
+        return $samples;
     }
 
     public function create()

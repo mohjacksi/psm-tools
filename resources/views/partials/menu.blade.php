@@ -16,13 +16,45 @@
             </a>
         </li>
         @can('upload_form_access')
-            <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.upload-forms.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/upload-forms") || request()->is("admin/upload-forms/*") ? "c-active" : "" }}">
+            
+
+            <li class="c-sidebar-nav-dropdown {{ request()->is("admin/upload-forms*") ? "c-show" : "" }} {{ request()->is("admin/upload-forms*") ? "c-show" : "" }} {{ request()->is("admin/upload-forms*") ? "c-show" : "" }} {{ request()->is("admin/peptid-categories*") ? "c-show" : "" }} {{ request()->is("admin/protein-types*") ? "c-show" : "" }}">
+                <a class="c-sidebar-nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-cloud-upload-alt c-sidebar-nav-icon">
 
                     </i>
                     {{ trans('cruds.uploadForm.title') }}
                 </a>
+                <ul class="c-sidebar-nav-dropdown-items">
+                    <li class="c-sidebar-nav-item">
+                        <a href="{{ route("admin.upload-forms.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/upload-forms") || request()->is("admin/upload-forms/*") ? "c-active" : "" }}">
+                            <i class="fa-fw fas fa-file-import c-sidebar-nav-icon">
+        
+                            </i>
+                            {{ trans('cruds.uploadForm.title') }}
+                        </a>
+                    </li>
+                    @can('peptide_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.peptides.uploadTsv") }}" class="c-sidebar-nav-link {{ request()->is("admin/peptides/uploadTsv") }}">
+                                <i class="fa-fw fas fa-ellipsis-h c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('global.upload') }} Tsv {{ trans('cruds.peptide.title_singular') }} File
+                            </a>
+                        </li>
+                    @endcan
+                    @can('protein_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.proteins.uploadTsv") }}" class="c-sidebar-nav-link {{ request()->is("admin/proteins/uploadTsv") }}">
+                                <i class="fa-fw fas fa-signature c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('global.upload') }} Tsv {{ trans('cruds.protein.title_singular') }} File
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
             </li>
         @endcan
         @can('user_management_access')

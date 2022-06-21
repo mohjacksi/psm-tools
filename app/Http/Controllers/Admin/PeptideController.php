@@ -137,6 +137,11 @@ class PeptideController extends Controller
     public function uploadTsv(Request $request)
     {
         // dd($peptideAsArray[0]);
+        if($request->input('project_id')){
+            $project_id = $request->input('project_id');
+        }else{
+            $project_id = null;
+        }
         $peptideFile = storage_path('tmp/uploads/' . basename($request->input('peptide_file')));
         $peptideAsArray = Excel::toArray('', $peptideFile);
         $peptideFields = array(
@@ -164,6 +169,7 @@ class PeptideController extends Controller
                         $sample = Sample::where('name', $sampleName)->firstOrCreate(
                             [
                                 'name' => $sampleName,
+                                'project_id' => $project_id,
                                 'created_by_id' => auth()->user()->id
                             ]
                         );

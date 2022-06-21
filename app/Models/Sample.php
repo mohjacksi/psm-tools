@@ -78,6 +78,11 @@ class Sample extends Model implements HasMedia
         return $this->belongsTo(User::class, 'created_by_id');
     }
 
+    public function psms()
+    {
+        return $this->belongsToMany(Psm::class,'channel_sample');
+    }
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
