@@ -145,8 +145,8 @@ class UploadFormController extends Controller
             foreach ($psmFields as $field) {
                 $fieldsOrder[$field] = array_search($field, $psmAsArray[0][0]);
             }
-            $experiment = Experiment::find($request->input('experiment_id'))->first();
-            $project = Project::find($request->input('project_id'))->first();
+            $experiment = Experiment::find($request->input('experiment_id'));
+            $project = Project::find($request->input('project_id'));
             foreach ($psmAsArray[0] as $key => $psm) {
                 if ($key > 0) {
                     $FragmentMethod = FragmentMethod::where('name', $psm[$fieldsOrder['FragMethod']])->firstOrCreate(
