@@ -41,6 +41,30 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.psm.fields.project') }}
+                        </th>
+                        <td>
+                            {{ $psm->project->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.experiment') }}
+                        </th>
+                        <td>
+                            {{ $psm->experiment->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.psm.fields.biological_set') }}
+                        </th>
+                        <td>
+                            {{ $psm->biological_set->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.psm.fields.peptide_modification') }}
                         </th>
                         <td>

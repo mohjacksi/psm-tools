@@ -16,12 +16,15 @@
 
     <div>
         <div class="row">
-            <div style="height: 300px;" class="col-6" id="projects"> </div>
-            <div style="height: 300px;" class="col-6" id="experiments"> </div>
+            <div style="height: 300px;" class="col-3" id="projects"> </div>
+            <div style="height: 300px;" class="col-3" id="experiments"> </div>
+        {{-- </div>
+        <div class="row"> --}}
+            <div style="height: 300px;" class="col-3" id="biological"> </div>
+            <div style="height: 300px;" class="col-3" id="samples"> </div>
         </div>
         <div class="row">
-            <div style="height: 300px;" class="col-6" id="biological"> </div>
-            <div style="height: 300px;" class="col-6" id="samples"> </div>
+            <div style="height: 300px;" class="col-3" id="fractions"> </div>
         </div>
     </div>
     
@@ -45,16 +48,16 @@
                             {{ trans('cruds.psm.fields.spectra') }}
                         </th>
                         <th>
-                            Project
+                            {{ trans('cruds.psm.fields.project') }}
                         </th>
                         <th>
-                            Experiment
+                            {{ trans('cruds.psm.fields.experiment') }}
                         </th>
                         <th>
-                            Biological Set
+                            {{ trans('cruds.psm.fields.biological_set') }}
                         </th>
                         <th>
-                            Samples
+                            {{ trans('cruds.psm.fields.samples') }}
                         </th>
                         <th>
                             {{ trans('cruds.psm.fields.fraction') }}
@@ -124,7 +127,7 @@
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
                         <td>
-                            <select class="search" strict="true">
+                            <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($projects as $key => $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
@@ -132,17 +135,17 @@
                             </select>
                         </td>
                         <td>
-                            <select class="search" strict="true">
+                            <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach ($experiment as $key => $item)
+                                @foreach ($experiments as $key => $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
                         <td>
-                            <select class="search" strict="true">
+                            <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach ($biological_set as $key => $item)
+                                @foreach ($biological_sets as $key => $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
@@ -231,7 +234,7 @@
     @parent
     <script src="http://code.highcharts.com/adapters/prototype-adapter.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    {{-- <script src="http://code.highcharts.com/modules/exporting.js"></script> --}}
 
     <script>
         $(function() {
@@ -297,15 +300,15 @@
                     },
                     {
                         data: 'project',
-                        name: 'samples.project.name'
+                        name: 'project.name'
                     },
                     {
-                        data: 'experiments',
-                        name: 'fraction.biological_set.experiments.name'
+                        data: 'experiment',
+                        name: 'experiment.name'
                     },
                     {
                         data: 'biological_set',
-                        name: 'fraction.biological_set.name'
+                        name: 'biological_set.name'
                     },
                     {
                         data: 'samples',
@@ -486,6 +489,21 @@
                     },
                 ],
             });
+
+            var fractions = Highcharts.chart({
+                chart: {
+                    type: 'pie',
+                    renderTo: 'fractions'
+                },
+                title: {
+                    text: 'Fractions',
+                },
+                series: [
+                    {
+                        data: chartData(table,7),
+                    },
+                ],
+            });
             
             // On each draw, update the data in the chart
             table.on('draw', function () {
@@ -493,6 +511,7 @@
                 experiments.series[0].setData(chartData(table,4));
                 biological.series[0].setData(chartData(table,5));
                 samples.series[0].setData(chartData(table,6));
+                fractions.series[0].setData(chartData(table,7));
             });
         });
         

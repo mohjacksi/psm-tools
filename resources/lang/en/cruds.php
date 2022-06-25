@@ -245,6 +245,10 @@ return [
             'created_by_helper'                => ' ',
             'peptide_with_modification'        => 'Peptide With Modification',
             'peptide_with_modification_helper' => ' ',
+            'project'                          => 'Projects',
+            'experiment'                       => 'Experiments',
+            'biological_set'                   => 'Biological Set',
+            'samples'                   => 'Samples',
         ],
     ],
     'option' => [

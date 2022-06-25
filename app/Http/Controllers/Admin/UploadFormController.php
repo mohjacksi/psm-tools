@@ -106,7 +106,7 @@ class UploadFormController extends Controller
 
     public function store(StoreUploadFormRequest $request)
     {
-        // dd($request->input('protein_file') != null);
+        // dd($request->all());
 
         if($request->input('peptide_file') != null){
             app('App\Http\Controllers\Admin\PeptideController')->uploadTsv($request);
@@ -146,6 +146,7 @@ class UploadFormController extends Controller
                 $fieldsOrder[$field] = array_search($field, $psmAsArray[0][0]);
             }
             $experiment = Experiment::find($request->input('experiment_id'))->first();
+            $project = Project::find($request->input('project_id'))->first();
             foreach ($psmAsArray[0] as $key => $psm) {
                 if ($key > 0) {
                     $FragmentMethod = FragmentMethod::where('name', $psm[$fieldsOrder['FragMethod']])->firstOrCreate(
@@ -200,6 +201,9 @@ class UploadFormController extends Controller
                         'psm_q_value' => $psm[$fieldsOrder['PSM q-value']],
                         'peptide_q_value' => $psm[$fieldsOrder['peptide q-value']],
                         'fraction_id' => $Fraction->id,
+                        'project_id' => $project->id,
+                        'experiment_id' => $experiment->id,
+                        'biological_set_id' => $BiologicalSet->id,
                         'peptide_with_modification_id' => $PeptideWithModification->id,
                         'created_by_id' => auth()->user()->id,
                     ]);

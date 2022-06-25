@@ -31,6 +31,9 @@ class Psm extends Model implements HasMedia
     protected $fillable = [
         'spectra',
         'fraction_id',
+        'project_id',
+        'experiment_id',
+        'biological_set_id',
         'peptide_modification',
         'scan_num',
         'precursor',
@@ -64,6 +67,21 @@ class Psm extends Model implements HasMedia
     public function fraction()
     {
         return $this->belongsTo(Fraction::class, 'fraction_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
+    public function experiment()
+    {
+        return $this->belongsTo(Experiment::class, 'experiment_id');
+    }
+
+    public function biological_set()
+    {
+        return $this->belongsTo(BiologicalSet::class, 'biological_set_id');
     }
 
     public function peptide_with_modification()

@@ -32,7 +32,7 @@ class PsmController extends Controller
         abort_if(Gate::denies('psm_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = Psm::with(['peptide_with_modification', 'created_by', 'samples.project', 'fraction.biological_set.experiments'])->select(sprintf('%s.*', (new Psm())->table));
+            $query = Psm::with(['peptide_with_modification', 'created_by', 'samples', 'project', 'experiment', 'biological_set'])->select(sprintf('%s.*', (new Psm())->table));
             $table = Datatables::of($query);
 
             // dd($query->samples->project);
@@ -71,15 +71,13 @@ class PsmController extends Controller
                 return $samples['name'];
             });
             $table->addColumn('project', function ($row) {
-                return $row->samples->count()>0 ? ($row->samples[0]->project ? $row->samples[0]->project->name : '') : '';
+                return $row->project ? $row->project->name : '';
             });
             $table->addColumn('biological_set', function ($row) {
-                return $row->fraction->count()>0 ? 
-                ($row->fraction->biological_set ? $row->fraction->biological_set->name : '') : '';
+                return $row->biological_set ? $row->biological_set->name : '';
             });
-            $table->addColumn('experiments', function ($row) {
-                return $row->fraction->biological_set->count()>0 ? 
-                ($row->fraction->biological_set->experiments ? $row->fraction->biological_set->experiments[0]->name : '') : '';
+            $table->addColumn('experiment', function ($row) {
+                return $row->experiment ? $row->experiment->name : '';
             });
             $table->addColumn('fraction_name', function ($row) {
                 return $row->fraction ? $row->fraction->name : '';
@@ -147,10 +145,10 @@ class PsmController extends Controller
         $users                      = User::get();
         $samples                    = Sample::with('psms')->get();
         $projects                   = Project::get();
-        $biological_set             = BiologicalSet::get();
-        $experiment                 = Experiment::get();
+        $biological_sets             = BiologicalSet::get();
+        $experiments                = Experiment::get();
 
-        return view('admin.psms.index', compact('fractions', 'peptide_with_modifications', 'users', 'projects','experiment','biological_set', 'samples'));
+        return view('admin.psms.index', compact('fractions', 'peptide_with_modifications', 'users', 'projects','experiments','biological_sets', 'samples'));
     }
 
     public function getSamples()
@@ -165,10 +163,12 @@ class PsmController extends Controller
         abort_if(Gate::denies('psm_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $fractions = Fraction::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
+        $projects = Project::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $experiments = Experiment::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $biological_sets = BiologicalSet::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $peptide_with_modifications = PeptideWithModification::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.psms.create', compact('fractions', 'peptide_with_modifications'));
+        return view('admin.psms.create', compact('fractions', 'projects', 'experiments', 'biological_sets', 'peptide_with_modifications'));
     }
 
     public function store(StorePsmRequest $request)
@@ -187,12 +187,15 @@ class PsmController extends Controller
         abort_if(Gate::denies('psm_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $fractions = Fraction::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $projects = Project::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $experiments = Experiment::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $biological_sets = BiologicalSet::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $peptide_with_modifications = PeptideWithModification::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $psm->load('fraction', 'peptide_with_modification', 'created_by');
+        $psm->load('fraction', 'project', 'experiment', 'biological_set', 'peptide_with_modification', 'created_by');
 
-        return view('admin.psms.edit', compact('fractions', 'peptide_with_modifications', 'psm'));
+        return view('admin.psms.edit', compact('fractions', 'projects', 'experiments', 'biological_sets', 'peptide_with_modifications', 'psm'));
     }
 
     public function update(UpdatePsmRequest $request, Psm $psm)
@@ -206,9 +209,7 @@ class PsmController extends Controller
     {
         abort_if(Gate::denies('psm_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $psm->load('samples.project', 'fraction', 'peptide_with_modification', 'created_by');
-        dd($psm->samples[0]->project->name);
-
+        $psm->load('fraction', 'project', 'experiment', 'biological_set', 'peptide_with_modification', 'created_by');
 
         return view('admin.psms.show', compact('psm'));
     }

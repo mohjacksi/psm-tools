@@ -34,6 +34,45 @@
                 <span class="help-block">{{ trans('cruds.psm.fields.fraction_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="project_id">{{ trans('cruds.psm.fields.project') }}</label>
+                <select class="form-control select2 {{ $errors->has('project_id') ? 'is-invalid' : '' }}" name="project_id" id="project_id" required>
+                    @foreach($projects as $id => $entry)
+                        <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('project_id'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('project_id') }}
+                    </div>
+                @endif
+            </div>
+            <div class="form-group">
+                <label class="required" for="experiment_id">{{ trans('cruds.psm.fields.experiment') }}</label>
+                <select class="form-control select2 {{ $errors->has('experiment_id') ? 'is-invalid' : '' }}" name="experiment_id" id="experiment_id" required>
+                    @foreach($experiments as $id => $entry)
+                        <option value="{{ $id }}" {{ old('experiment_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('experiment_id'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('experiment_id') }}
+                    </div>
+                @endif
+            </div>
+            <div class="form-group">
+                <label class="required" for="biological_set_id">{{ trans('cruds.psm.fields.biological_set') }}</label>
+                <select class="form-control select2 {{ $errors->has('biological_set_id') ? 'is-invalid' : '' }}" name="biological_set_id" id="biological_set_id" required>
+                    @foreach($biological_sets as $id => $entry)
+                        <option value="{{ $id }}" {{ old('biological_set_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('biological_set_id'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('biological_set_id') }}
+                    </div>
+                @endif
+            </div>
+            <div class="form-group">
                 <label for="peptide_modification">{{ trans('cruds.psm.fields.peptide_modification') }}</label>
                 <textarea class="form-control ckeditor {{ $errors->has('peptide_modification') ? 'is-invalid' : '' }}" name="peptide_modification" id="peptide_modification">{!! old('peptide_modification') !!}</textarea>
                 @if($errors->has('peptide_modification'))
