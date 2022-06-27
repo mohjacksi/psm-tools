@@ -67,7 +67,7 @@ class Experiment extends Model implements HasMedia
 
     public function experimentBiologicalSets()
     {
-        return $this->belongsToMany(BiologicalSet::class);
+        return $this->hasMany(BiologicalSet::class);
     }
 
     public function project()

@@ -141,7 +141,7 @@
 { data: 'id', name: 'id' },
 { data: 'name', name: 'name' },
 { data: 'labeling_number', name: 'labeling_number' },
-{ data: 'experiment', name: 'experiments.name' },
+{ data: 'experiment', name: 'experiment.name' },
 { data: 'stripe_name', name: 'stripe.name' },
 { data: 'fragment_method_name', name: 'fragment_method.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }

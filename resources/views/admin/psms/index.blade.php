@@ -127,34 +127,34 @@
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
                         <td>
-                            <select class="search">
+                            <select class="search" id="project_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($projects as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
                         <td>
-                            <select class="search">
+                            <select class="search" id="experiment_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($experiments as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
                         <td>
-                            <select class="search">
+                            <select class="search" id="biological_set_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($biological_sets as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
                         <td>
-                            <select class="search" strict="true" id="samples">
+                            <select class="search" strict="true" id="sample_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($samples as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
@@ -426,6 +426,34 @@
             })
         });
 
+        $("#project_id").change(function() {
+            var project_id = $('option:selected', this).attr('idTag');
+            var experiment = $('#experiment_id');
+            var sample = $('#sample_id');
+            var biological_set = $('#biological_set_id');
+            
+            $.ajax({
+                method: 'GET',
+                url: "{{ route('admin.experiments.experimentsOfProject') }}" + '/' + project_id,
+                success: function(data) {
+                    experiment.empty();
+                    sample.empty();
+                    biological_set.empty();
+                    for (var i = 0; i < data['experiments'].length; i++) {
+                        experiment.append('<option value=' + data['experiments'][i].id + '>' + data[
+                            'experiments'][i].name + '</option>');
+                    };
+                    for (var i = 0; i < data['samples'].length; i++) {
+                        sample.append('<option value=' + data['samples'][i].id + '>' + data['samples'][
+                            i].name + '</option>');
+                    };
+                    for (var i = 0; i < data['biologicalSets'].length; i++) {
+                        biological_set.append('<option value=' + data['samples'][i].id + '>' + data['samples'][
+                            i].name + '</option>');
+                    };
+                }
+            })
+        });
 
         $(document).ready(function () {
             var table = $('#datatable-Psm').DataTable();

@@ -26,7 +26,7 @@ class BiologicalSetController extends Controller
         abort_if(Gate::denies('biological_set_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = BiologicalSet::with(['experiments', 'stripe', 'fragment_method', 'created_by'])->select(sprintf('%s.*', (new BiologicalSet())->table));
+            $query = BiologicalSet::with(['experiment', 'stripe', 'fragment_method', 'created_by'])->select(sprintf('%s.*', (new BiologicalSet())->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -57,12 +57,12 @@ class BiologicalSetController extends Controller
                 return $row->labeling_number ? $row->labeling_number : '';
             });
             $table->editColumn('experiment', function ($row) {
-                $labels = [];
-                foreach ($row->experiments as $experiment) {
-                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $experiment->name);
-                }
-
-                return implode(' ', $labels);
+                return $row->experiment ? $row->experiment->name : '';
+                // $labels = [];
+                // foreach ($row->experiments as $experiment) {
+                //     $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $experiment->name);
+                // }
+                // return implode(' ', $labels);
             });
             $table->addColumn('stripe_name', function ($row) {
                 return $row->stripe ? $row->stripe->name : '';

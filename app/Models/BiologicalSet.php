@@ -33,16 +33,17 @@ class BiologicalSet extends Model
         'updated_at',
         'deleted_at',
         'created_by_id',
+        'experiment_id',
     ];
 
-    public function experiments()
+    public function experiment()
     {
-        return $this->belongsToMany(Experiment::class);
+        return $this->belongsTo(Experiment::class);
     }
 
-    public function hasExperiment($experiment) {
-        return $this->experiments->contains($experiment);
-    }
+    // public function hasExperiment($experiment) {
+    //     return $this->experiments->contains($experiment);
+    // }
 
     public function stripe()
     {

@@ -160,11 +160,15 @@ class UploadFormController extends Controller
                             'name' => $psm[$fieldsOrder['Biological set']],
                             'created_by_id' => auth()->user()->id,
                             'fragment_method_id' => $FragmentMethod->id,
+                            'experiment_id' => $experiment->id,
                         ]
                     );
-                    if (!$BiologicalSet->hasExperiment($experiment)) {
-                        $BiologicalSet->experiments()->attach($experiment);
-                    }
+                    // if (!$BiologicalSet->hasExperiment($experiment)) {
+                    //     $BiologicalSet->experiments()->attach($experiment);
+                    // }
+                    // if (!$experiment->hasBiologicalSet($BiologicalSet)) {
+                    //     $experiment->experimentBiologicalSets()->attach($BiologicalSet);
+                    // }
                     $Fraction = Fraction::where('name', $psm[$fieldsOrder['SpectraFile']])->firstOrCreate(
                         [
                             'name' => $psm[$fieldsOrder['SpectraFile']],
