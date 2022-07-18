@@ -18,7 +18,7 @@
         <div class="row">
             <div style="height: 300px;" class="col-3" id="projects"> </div>
             <div style="height: 300px;" class="col-3" id="experiments"> </div>
-        {{-- </div>
+            {{-- </div>
         <div class="row"> --}}
             <div style="height: 300px;" class="col-3" id="biological"> </div>
             <div style="height: 300px;" class="col-3" id="samples"> </div>
@@ -27,7 +27,7 @@
             <div style="height: 300px;" class="col-3" id="fractions"> </div>
         </div>
     </div>
-    
+
     <div class="card">
         <div class="card-header">
             {{ trans('cruds.psm.title_singular') }} {{ trans('global.list') }}
@@ -35,7 +35,8 @@
 
 
         <div class="card-body">
-            <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-Psm" id="datatable-Psm">
+            <table class=" table table-bordered table-stripd table-hover ajaxTable datatable datatable-Psm"
+                id="datatable-Psm">
                 <thead>
                     <tr>
                         <th width="10">
@@ -130,7 +131,8 @@
                             <select class="search" id="project_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($projects as $key => $item)
-                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </td>
@@ -138,7 +140,8 @@
                             <select class="search" id="experiment_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($experiments as $key => $item)
-                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </td>
@@ -146,7 +149,8 @@
                             <select class="search" id="biological_set_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($biological_sets as $key => $item)
-                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </td>
@@ -154,7 +158,8 @@
                             <select class="search" strict="true" id="sample_id">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach ($samples as $key => $item)
-                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->name }}" idTag="{{ $item->id }}">{{ $item->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </td>
@@ -431,7 +436,7 @@
             var experiment = $('#experiment_id');
             var sample = $('#sample_id');
             var biological_set = $('#biological_set_id');
-            
+
             $.ajax({
                 method: 'GET',
                 url: "{{ route('admin.experiments.experimentsOfProject') }}" + '/' + project_id,
@@ -445,17 +450,20 @@
                     };
                     for (var i = 0; i < data['samples'].length; i++) {
                         sample.append('<option value=' + data['samples'][i].id + '>' + data['samples'][
-                            i].name + '</option>');
+                            i
+                        ].name + '</option>');
                     };
                     for (var i = 0; i < data['biologicalSets'].length; i++) {
-                        biological_set.append('<option value=' + data['samples'][i].id + '>' + data['samples'][
-                            i].name + '</option>');
+                        biological_set.append('<option value=' + data['samples'][i].id + '>' + data[
+                            'samples'][
+                            i
+                        ].name + '</option>');
                     };
                 }
             })
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             var table = $('#datatable-Psm').DataTable();
 
             var projects = Highcharts.chart({
@@ -466,11 +474,9 @@
                 title: {
                     text: 'Projects',
                 },
-                series: [
-                    {
-                        data: chartData(table,3),
-                    },
-                ],
+                series: [{
+                    data: chartData(table, 3),
+                }, ],
             });
 
             var experiments = Highcharts.chart({
@@ -481,11 +487,9 @@
                 title: {
                     text: 'Experiments',
                 },
-                series: [
-                    {
-                        data: chartData(table,4),
-                    },
-                ],
+                series: [{
+                    data: chartData(table, 4),
+                }, ],
             });
 
             var biological = Highcharts.chart({
@@ -496,11 +500,9 @@
                 title: {
                     text: 'Biological Sets',
                 },
-                series: [
-                    {
-                        data: chartData(table,4),
-                    },
-                ],
+                series: [{
+                    data: chartData(table, 4),
+                }, ],
             });
 
             var samples = Highcharts.chart({
@@ -511,11 +513,9 @@
                 title: {
                     text: 'Samples',
                 },
-                series: [
-                    {
-                        data: chartData(table,6),
-                    },
-                ],
+                series: [{
+                    data: chartData(table, 6),
+                }, ],
             });
 
             var fractions = Highcharts.chart({
@@ -526,60 +526,58 @@
                 title: {
                     text: 'Fractions',
                 },
-                series: [
-                    {
-                        data: chartData(table,7),
-                    },
-                ],
+                series: [{
+                    data: chartData(table, 7),
+                }, ],
             });
-            
+
             // On each draw, update the data in the chart
-            table.on('draw', function () {
-                projects.series[0].setData(chartData(table,3));
-                experiments.series[0].setData(chartData(table,4));
-                biological.series[0].setData(chartData(table,5));
-                samples.series[0].setData(chartData(table,6));
-                fractions.series[0].setData(chartData(table,7));
+            table.on('draw', function() {
+                projects.series[0].setData(chartData(table, 3));
+                experiments.series[0].setData(chartData(table, 4));
+                biological.series[0].setData(chartData(table, 5));
+                samples.series[0].setData(chartData(table, 6));
+                fractions.series[0].setData(chartData(table, 7));
             });
         });
-        
-        function chartData(table,index) {
+
+        function chartData(table, index) {
             var counts = {};
-        
+
             // Count the number of entries for each position
             table
-                .column(index, { search: 'applied' })
+                .column(index, {
+                    search: 'applied'
+                })
                 .data()
-                .each(function (val) {
+                .each(function(val) {
                     if (counts[val]) {
                         counts[val] += 1;
                     } else {
                         counts[val] = 1;
                     }
                 });
-                // console.log(counts);
+            // console.log(counts);
             // And map it to the format highcharts uses
-            return $.map(counts, function (val, key) {
-                if(index == 6){
+            return $.map(counts, function(val, key) {
+                if (index == 6) {
                     const result = key.split(/\r?\n/);
-                    return $.map(result, function (resultval, resultkey) {
-                        if(resultkey != ''){
+                    return $.map(result, function(resultval, resultkey) {
+                        if (resultkey != '') {
                             return {
                                 name: resultval,
                                 y: val,
                             };
                         }
                     });
-                }else{
+                } else {
                     return {
                         name: key,
                         y: val,
                     };
                 }
-               
+
             });
         }
-
-        
     </script>
 @endsection

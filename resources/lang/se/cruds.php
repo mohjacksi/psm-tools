@@ -307,8 +307,8 @@ return [
             'deleted_at_helper'      => ' ',
             'name'                   => 'Name',
             'name_helper'            => ' ',
-            'stripe'                 => 'Stripe',
-            'stripe_helper'          => ' ',
+            'strip'                 => 'Strip',
+            'strip_helper'          => ' ',
             'fragment_method'        => 'Fragment Method',
             'fragment_method_helper' => ' ',
             'experiment'             => 'Experiment',
@@ -361,9 +361,9 @@ return [
             'created_by_helper' => ' ',
         ],
     ],
-    'stripe' => [
-        'title'          => 'Stripe',
-        'title_singular' => 'Stripe',
+    'strip' => [
+        'title'          => 'Strip',
+        'title_singular' => 'Strip',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',

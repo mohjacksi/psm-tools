@@ -276,23 +276,23 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 67,
-                'title' => 'stripe_create',
+                'title' => 'strip_create',
             ],
             [
                 'id'    => 68,
-                'title' => 'stripe_edit',
+                'title' => 'strip_edit',
             ],
             [
                 'id'    => 69,
-                'title' => 'stripe_show',
+                'title' => 'strip_show',
             ],
             [
                 'id'    => 70,
-                'title' => 'stripe_delete',
+                'title' => 'strip_delete',
             ],
             [
                 'id'    => 71,
-                'title' => 'stripe_access',
+                'title' => 'strip_access',
             ],
             [
                 'id'    => 72,

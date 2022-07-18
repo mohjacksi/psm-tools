@@ -27,7 +27,7 @@ class BiologicalSet extends Model
     protected $fillable = [
         'name',
         'labeling_number',
-        'stripe_id',
+        'strip_id',
         'fragment_method_id',
         'created_at',
         'updated_at',
@@ -45,9 +45,9 @@ class BiologicalSet extends Model
     //     return $this->experiments->contains($experiment);
     // }
 
-    public function stripe()
+    public function strip()
     {
-        return $this->belongsTo(Stripe::class, 'stripe_id');
+        return $this->belongsTo(Strip::class, 'strip_id');
     }
 
     public function fragment_method()

@@ -157,6 +157,9 @@ class ProteinController extends Controller
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 
+    // proteinID  ProteinName    proteinSequence    matchingPeptideSequences
+
+
     public function uploadTsv(Request $request)
     {
         // dd($request->input('protein_file'));

@@ -17,7 +17,7 @@ class BiologicalSetApiController extends Controller
     {
         abort_if(Gate::denies('biological_set_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new BiologicalSetResource(BiologicalSet::with(['experiments', 'stripe', 'fragment_method', 'created_by'])->get());
+        return new BiologicalSetResource(BiologicalSet::with(['experiments', 'strip', 'fragment_method', 'created_by'])->get());
     }
 
     public function store(StoreBiologicalSetRequest $request)
@@ -34,7 +34,7 @@ class BiologicalSetApiController extends Controller
     {
         abort_if(Gate::denies('biological_set_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new BiologicalSetResource($biologicalSet->load(['experiments', 'stripe', 'fragment_method', 'created_by']));
+        return new BiologicalSetResource($biologicalSet->load(['experiments', 'strip', 'fragment_method', 'created_by']));
     }
 
     public function update(UpdateBiologicalSetRequest $request, BiologicalSet $biologicalSet)

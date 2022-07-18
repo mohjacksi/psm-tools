@@ -41,8 +41,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Fragment Method
     Route::apiResource('fragment-methods', 'FragmentMethodApiController');
 
-    // Stripe
-    Route::apiResource('stripes', 'StripeApiController');
+    // Strip
+    Route::apiResource('strips', 'StripApiController');
 
     // Channel
     Route::apiResource('channels', 'ChannelApiController');

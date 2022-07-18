@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateBiologicalSetRequest;
 use App\Models\BiologicalSet;
 use App\Models\Experiment;
 use App\Models\FragmentMethod;
-use App\Models\Stripe;
+use App\Models\Strip;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ class BiologicalSetController extends Controller
         abort_if(Gate::denies('biological_set_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = BiologicalSet::with(['experiment', 'stripe', 'fragment_method', 'created_by'])->select(sprintf('%s.*', (new BiologicalSet())->table));
+            $query = BiologicalSet::with(['experiment', 'strip', 'fragment_method', 'created_by'])->select(sprintf('%s.*', (new BiologicalSet())->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -39,12 +39,12 @@ class BiologicalSetController extends Controller
                 $crudRoutePart = 'biological-sets';
 
                 return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
             });
 
             $table->editColumn('id', function ($row) {
@@ -64,25 +64,25 @@ class BiologicalSetController extends Controller
                 // }
                 // return implode(' ', $labels);
             });
-            $table->addColumn('stripe_name', function ($row) {
-                return $row->stripe ? $row->stripe->name : '';
+            $table->addColumn('strip_name', function ($row) {
+                return $row->strip ? $row->strip->name : '';
             });
 
             $table->addColumn('fragment_method_name', function ($row) {
                 return $row->fragment_method ? $row->fragment_method->name : '';
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'experiment', 'stripe', 'fragment_method']);
+            $table->rawColumns(['actions', 'placeholder', 'experiment', 'strip', 'fragment_method']);
 
             return $table->make(true);
         }
 
         $experiments      = Experiment::get();
-        $stripes          = Stripe::get();
+        $strips          = Strip::get();
         $fragment_methods = FragmentMethod::get();
         $users            = User::get();
 
-        return view('admin.biologicalSets.index', compact('experiments', 'stripes', 'fragment_methods', 'users'));
+        return view('admin.biologicalSets.index', compact('experiments', 'strips', 'fragment_methods', 'users'));
     }
 
     public function create()
@@ -91,11 +91,11 @@ class BiologicalSetController extends Controller
 
         $experiments = Experiment::pluck('name', 'id');
 
-        $stripes = Stripe::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $strips = Strip::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $fragment_methods = FragmentMethod::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.biologicalSets.create', compact('experiments', 'fragment_methods', 'stripes'));
+        return view('admin.biologicalSets.create', compact('experiments', 'fragment_methods', 'strips'));
     }
 
     public function store(StoreBiologicalSetRequest $request)
@@ -112,13 +112,13 @@ class BiologicalSetController extends Controller
 
         $experiments = Experiment::pluck('name', 'id');
 
-        $stripes = Stripe::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $strips = Strip::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $fragment_methods = FragmentMethod::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $biologicalSet->load('experiments', 'stripe', 'fragment_method', 'created_by');
+        $biologicalSet->load('experiments', 'strip', 'fragment_method', 'created_by');
 
-        return view('admin.biologicalSets.edit', compact('biologicalSet', 'experiments', 'fragment_methods', 'stripes'));
+        return view('admin.biologicalSets.edit', compact('biologicalSet', 'experiments', 'fragment_methods', 'strips'));
     }
 
     public function update(UpdateBiologicalSetRequest $request, BiologicalSet $biologicalSet)
@@ -133,7 +133,7 @@ class BiologicalSetController extends Controller
     {
         abort_if(Gate::denies('biological_set_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $biologicalSet->load('experiments', 'stripe', 'fragment_method', 'created_by');
+        $biologicalSet->load('experiments', 'strip', 'fragment_method', 'created_by');
 
         return view('admin.biologicalSets.show', compact('biologicalSet'));
     }

@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Stripe;
+use App\Models\Strip;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyStripeRequest extends FormRequest
+class MassDestroyStripRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('stripe_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('strip_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -20,7 +20,7 @@ class MassDestroyStripeRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:stripes,id',
+            'ids.*' => 'exists:strips,id',
         ];
     }
 }

@@ -272,7 +272,7 @@ return [
     'start_time'                     => 'Start time',
     'status'                         => 'Status',
     'statuses'                       => 'Statuses',
-    'stripe_transactions'            => 'Stripe Transactions',
+    'strip_transactions'            => 'Strip Transactions',
     'subscription-billing'           => 'Subscriptions',
     'subscription-payments'          => 'Payments',
     'suffix'                         => 'Sufix',

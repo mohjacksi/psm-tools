@@ -9,8 +9,8 @@ class AddRelationshipFieldsToBiologicalSetsTable extends Migration
     public function up()
     {
         Schema::table('biological_sets', function (Blueprint $table) {
-            $table->unsignedBigInteger('stripe_id')->nullable();
-            $table->foreign('stripe_id', 'stripe_fk_6468466')->references('id')->on('stripes');
+            $table->unsignedBigInteger('strip_id')->nullable();
+            $table->foreign('strip_id', 'strip_fk_6468466')->references('id')->on('strips');
             $table->unsignedBigInteger('fragment_method_id')->nullable();
             $table->foreign('fragment_method_id', 'fragment_method_fk_6468467')->references('id')->on('fragment_methods');
             $table->unsignedBigInteger('created_by_id')->nullable();

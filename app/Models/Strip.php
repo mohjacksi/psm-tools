@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Stripe extends Model
+class Strip extends Model
 {
     use SoftDeletes;
     use Auditable;
     use HasFactory;
 
-    public $table = 'stripes';
+    public $table = 'strips';
 
     protected $dates = [
         'created_at',
@@ -29,9 +29,9 @@ class Stripe extends Model
         'deleted_at',
     ];
 
-    public function stripeBiologicalSets()
+    public function stripBiologicalSets()
     {
-        return $this->hasMany(BiologicalSet::class, 'stripe_id', 'id');
+        return $this->hasMany(BiologicalSet::class, 'strip_id', 'id');
     }
 
     protected function serializeDate(DateTimeInterface $date)

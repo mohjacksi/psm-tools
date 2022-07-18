@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateBiologicalSetRequest;
 use App\Models\BiologicalSet;
 use App\Models\Experiment;
 use App\Models\FragmentMethod;
-use App\Models\Stripe;
+use App\Models\Strip;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
@@ -24,17 +24,17 @@ class BiologicalSetController extends Controller
     {
         abort_if(Gate::denies('biological_set_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $biologicalSets = BiologicalSet::with(['experiments', 'stripe', 'fragment_method', 'created_by'])->get();
+        $biologicalSets = BiologicalSet::with(['experiments', 'strip', 'fragment_method', 'created_by'])->get();
 
         $experiments = Experiment::get();
 
-        $stripes = Stripe::get();
+        $strips = Strip::get();
 
         $fragment_methods = FragmentMethod::get();
 
         $users = User::get();
 
-        return view('frontend.biologicalSets.index', compact('biologicalSets', 'experiments', 'fragment_methods', 'stripes', 'users'));
+        return view('frontend.biologicalSets.index', compact('biologicalSets', 'experiments', 'fragment_methods', 'strips', 'users'));
     }
 
     public function create()
@@ -43,11 +43,11 @@ class BiologicalSetController extends Controller
 
         $experiments = Experiment::pluck('name', 'id');
 
-        $stripes = Stripe::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $strips = Strip::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $fragment_methods = FragmentMethod::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('frontend.biologicalSets.create', compact('experiments', 'fragment_methods', 'stripes'));
+        return view('frontend.biologicalSets.create', compact('experiments', 'fragment_methods', 'strips'));
     }
 
     public function store(StoreBiologicalSetRequest $request)
@@ -64,13 +64,13 @@ class BiologicalSetController extends Controller
 
         $experiments = Experiment::pluck('name', 'id');
 
-        $stripes = Stripe::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $strips = Strip::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $fragment_methods = FragmentMethod::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $biologicalSet->load('experiments', 'stripe', 'fragment_method', 'created_by');
+        $biologicalSet->load('experiments', 'strip', 'fragment_method', 'created_by');
 
-        return view('frontend.biologicalSets.edit', compact('biologicalSet', 'experiments', 'fragment_methods', 'stripes'));
+        return view('frontend.biologicalSets.edit', compact('biologicalSet', 'experiments', 'fragment_methods', 'strips'));
     }
 
     public function update(UpdateBiologicalSetRequest $request, BiologicalSet $biologicalSet)
@@ -85,7 +85,7 @@ class BiologicalSetController extends Controller
     {
         abort_if(Gate::denies('biological_set_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $biologicalSet->load('experiments', 'stripe', 'fragment_method', 'created_by');
+        $biologicalSet->load('experiments', 'strip', 'fragment_method', 'created_by');
 
         return view('frontend.biologicalSets.show', compact('biologicalSet'));
     }

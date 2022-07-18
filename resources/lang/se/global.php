@@ -272,7 +272,7 @@ return [
     'start_time'                     => 'Starttid',
     'status'                         => 'Status',
     'statuses'                       => 'Status',
-    'stripe_transactions'            => 'Stripe Transaktioner',
+    'strip_transactions'            => 'Strip Transaktioner',
     'subscription-billing'           => 'Abbonemang',
     'subscription-payments'          => 'Betalningar',
     'suffix'                         => 'Suffix',

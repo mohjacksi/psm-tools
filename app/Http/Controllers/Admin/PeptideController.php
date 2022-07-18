@@ -136,7 +136,6 @@ class PeptideController extends Controller
 
     public function uploadTsv(Request $request)
     {
-        // dd($peptideAsArray[0]);
         if($request->input('project_id')){
             $project_id = $request->input('project_id');
         }else{
@@ -182,7 +181,7 @@ class PeptideController extends Controller
                     $canonical = 0;
                     $canonical_frame_value = null;
                 }
-                
+
                 $newPeptide = Peptide::where('sequence', $peptide[$fieldsOrder['Peptide']])->firstOrCreate(
                     [
                         'sequence' => $peptide[$fieldsOrder['Peptide']],

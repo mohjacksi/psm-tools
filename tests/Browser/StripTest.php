@@ -10,15 +10,15 @@ use Tests\DuskTestCase;
  * @internal
  * @coversNothing
  */
-class StripeTest extends DuskTestCase
+class StripTest extends DuskTestCase
 {
     public function testIndex()
     {
         $admin = App\Models\User::find(1);
         $this->browse(function (Browser $browser) use ($admin) {
             $browser->loginAs($admin);
-            $browser->visit(route('admin.stripe.index'));
-            $browser->assertRouteIs('admin.stripe.index');
+            $browser->visit(route('admin.strip.index'));
+            $browser->assertRouteIs('admin.strip.index');
         });
     }
 }

@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Stripe;
+use App\Models\Strip;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
-class StoreStripeRequest extends FormRequest
+class StoreStripRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('stripe_create');
+        return Gate::allows('strip_create');
     }
 
     public function rules()
@@ -20,7 +20,7 @@ class StoreStripeRequest extends FormRequest
             'name' => [
                 'string',
                 'required',
-                'unique:stripes',
+                'unique:strips',
             ],
         ];
     }

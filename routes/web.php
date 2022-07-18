@@ -7,8 +7,7 @@ use App\Models\Protein;
 use App\Models\Psm;
 use Illuminate\Support\Facades\DB;
 
-Route::get('/clear', function() {
-
+Route::get('/clear', function () {
     Artisan::call('view:clear');
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
@@ -17,7 +16,7 @@ Route::get('/clear', function() {
     dd("done");
 });
 
-Route::get('/clear-data', function() {
+Route::get('/clear-data', function () {
     DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
     Psm::truncate();
@@ -116,11 +115,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('fragment-methods/process-csv-import', 'FragmentMethodController@processCsvImport')->name('fragment-methods.processCsvImport');
     Route::resource('fragment-methods', 'FragmentMethodController');
 
-    // Stripe
-    Route::delete('stripes/destroy', 'StripeController@massDestroy')->name('stripes.massDestroy');
-    Route::post('stripes/parse-csv-import', 'StripeController@parseCsvImport')->name('stripes.parseCsvImport');
-    Route::post('stripes/process-csv-import', 'StripeController@processCsvImport')->name('stripes.processCsvImport');
-    Route::resource('stripes', 'StripeController');
+    // Strip
+    Route::delete('strips/destroy', 'StripController@massDestroy')->name('strips.massDestroy');
+    Route::post('strips/parse-csv-import', 'StripController@parseCsvImport')->name('strips.parseCsvImport');
+    Route::post('strips/process-csv-import', 'StripController@processCsvImport')->name('strips.processCsvImport');
+    Route::resource('strips', 'StripController');
 
     // Channel
     Route::delete('channels/destroy', 'ChannelController@massDestroy')->name('channels.massDestroy');
@@ -129,7 +128,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('channels', 'ChannelController');
 
     // Protein
-    Route::get('proteins/uploadTsv', function(){
+    Route::get('proteins/uploadTsv', function () {
         return view('admin.proteins.uploadTsv');
     })->name('proteins.uploadTsv');
     Route::post('proteins/uploadTsv', 'ProteinController@uploadTsv')->name('proteins.saveUploadTsv');
@@ -142,7 +141,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('proteins', 'ProteinController');
 
     // Peptide
-    Route::get('peptides/uploadTsv', function(){
+    Route::get('peptides/uploadTsv', function () {
         return view('admin.peptides.uploadTsv');
     })->name('peptides.uploadTsv');
     Route::post('peptides/uploadTsv', 'PeptideController@uploadTsv')->name('peptides.saveUploadTsv');
@@ -261,9 +260,9 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::delete('fragment-methods/destroy', 'FragmentMethodController@massDestroy')->name('fragment-methods.massDestroy');
     Route::resource('fragment-methods', 'FragmentMethodController');
 
-    // Stripe
-    Route::delete('stripes/destroy', 'StripeController@massDestroy')->name('stripes.massDestroy');
-    Route::resource('stripes', 'StripeController');
+    // Strip
+    Route::delete('strips/destroy', 'StripController@massDestroy')->name('strips.massDestroy');
+    Route::resource('strips', 'StripController');
 
     // Channel
     Route::delete('channels/destroy', 'ChannelController@massDestroy')->name('channels.massDestroy');

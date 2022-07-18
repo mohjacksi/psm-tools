@@ -4,7 +4,7 @@ namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StripeResource extends JsonResource
+class StripResource extends JsonResource
 {
     public function toArray($request)
     {
