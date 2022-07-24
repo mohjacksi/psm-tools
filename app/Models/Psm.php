@@ -34,6 +34,7 @@ class Psm extends Model implements HasMedia
         'project_id',
         'experiment_id',
         'biological_set_id',
+        'species_id',
         'peptide_modification',
         'scan_num',
         'precursor',
@@ -88,7 +89,7 @@ class Psm extends Model implements HasMedia
     {
         return $this->belongsTo(PeptideWithModification::class, 'peptide_with_modification_id');
     }
-    
+
     public function chennels()
     {
         return $this->hasMany(ChennelSample::class);

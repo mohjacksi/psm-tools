@@ -31,6 +31,7 @@ use App\Models\Tissue;
 use App\Models\SampleCondition;
 use CreateBiologicalSetExperimentPivotTable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UploadFormController extends Controller
@@ -189,6 +190,7 @@ class UploadFormController extends Controller
                             'created_by_id' => auth()->user()->id
                         ]
                     );
+
                     $newPsm = Psm::create([
                         'spectra' => $psm[$fieldsOrder['SpectraFile']],
                         'peptide_modification' => $psm[$fieldsOrder['Peptide']],
@@ -207,6 +209,7 @@ class UploadFormController extends Controller
                         'fraction_id' => $Fraction->id,
                         'project_id' => $project->id,
                         'experiment_id' => $experiment->id,
+                        'species_id' => $experiment->species_id,
                         'biological_set_id' => $BiologicalSet->id,
                         'peptide_with_modification_id' => $PeptideWithModification->id,
                         'created_by_id' => auth()->user()->id,
@@ -240,7 +243,7 @@ class UploadFormController extends Controller
                 }
             }
 
-            
+
             $uploadForm->addMedia(storage_path('tmp/uploads/' . basename($request->input('psm_file'))))->toMediaCollection('psm_file');
             DB::commit();
         }
