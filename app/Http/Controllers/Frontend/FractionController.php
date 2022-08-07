@@ -19,7 +19,6 @@ class FractionController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('fraction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $fractions = Fraction::with(['biological_set'])->get();
 

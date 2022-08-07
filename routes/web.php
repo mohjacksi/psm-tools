@@ -202,8 +202,11 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('profile/destroy', 'ChangePasswordController@destroy')->name('password.destroyProfile');
     }
 });
-Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['auth']], function () {
+Route::group(['as' => 'frontend.', 'namespace' => 'Frontend'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/tables', function () {
+        return view('layouts.tables');
+    })->name('tables');
 
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
@@ -243,6 +246,7 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
     Route::resource('psms', 'PsmController');
 
     // Experiment
+    Route::get('experiments/project/{project_id?}', 'ExperimentController@experimentsOfProject')->name('experiments.experimentsOfProject');
     Route::delete('experiments/destroy', 'ExperimentController@massDestroy')->name('experiments.massDestroy');
     Route::post('experiments/media', 'ExperimentController@storeMedia')->name('experiments.storeMedia');
     Route::post('experiments/ckmedia', 'ExperimentController@storeCKEditorImages')->name('experiments.storeCKEditorImages');

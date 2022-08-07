@@ -48,6 +48,14 @@ class Project extends Model implements HasMedia
     {
         return $this->hasMany(Sample::class, 'project_id', 'id');
     }
+    public function projectPeople()
+    {
+        return $this->hasMany(Sample::class, 'project_id', 'id');
+    }
+    public function projectsPeople()
+    {
+        return $this->hasMany(Sample::class, 'project_id', 'id');
+    }
 
     public function projectExperiments()
     {

@@ -1,295 +1,264 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <meta name="description" content="" />
 
-    <!-- Styles -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
-    <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+
+    <!-- data table -->
+    {{-- <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-        rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css"
-        rel="stylesheet" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" rel="stylesheet" /> --}}
+
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="../assets/js/config.js"></script>
+    {{-- <link href="{{ asset('css/custom.css') }}" rel="stylesheet" /> --}}
     @yield('styles')
+
 </head>
 
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        @guest
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('frontend.home') }}">
-                                    {{ __('Dashboard') }}
-                                </a>
-                            </li>
-                        @endguest
-                    </ul>
+            <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <div class="app-brand demo">
+                    <a href="index.html" class="app-brand-link">
+                        <span class="app-brand-logo demo">
+                            <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <defs>
+                                    <path
+                                        d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
+                                        id="path-1"></path>
+                                    <path
+                                        d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z"
+                                        id="path-3"></path>
+                                    <path
+                                        d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z"
+                                        id="path-4"></path>
+                                    <path
+                                        d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z"
+                                        id="path-5"></path>
+                                </defs>
+                                <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
+                                        <g id="Icon" transform="translate(27.000000, 15.000000)">
+                                            <g id="Mask" transform="translate(0.000000, 8.000000)">
+                                                <mask id="mask-2" fill="white">
+                                                    <use xlink:href="#path-1"></use>
+                                                </mask>
+                                                <use fill="#696cff" xlink:href="#path-1"></use>
+                                                <g id="Path-3" mask="url(#mask-2)">
+                                                    <use fill="#696cff" xlink:href="#path-3"></use>
+                                                    <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
+                                                </g>
+                                                <g id="Path-4" mask="url(#mask-2)">
+                                                    <use fill="#696cff" xlink:href="#path-4"></use>
+                                                    <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
+                                                </g>
+                                            </g>
+                                            <g id="Triangle"
+                                                transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
+                                                <use fill="#696cff" xlink:href="#path-5"></use>
+                                                <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+                    </a>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
-                                    <a class="dropdown-item"
-                                        href="{{ route('frontend.profile.index') }}">{{ __('My profile') }}</a>
-
-                                    @can('user_management_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.userManagement.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('permission_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.permissions.index') }}">
-                                            {{ trans('cruds.permission.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('role_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.roles.index') }}">
-                                            {{ trans('cruds.role.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('user_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.users.index') }}">
-                                            {{ trans('cruds.user.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('general_tab_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.generalTab.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('project_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.projects.index') }}">
-                                            {{ trans('cruds.project.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('sample_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.samples.index') }}">
-                                            {{ trans('cruds.sample.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('channel_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.channels.index') }}">
-                                            {{ trans('cruds.channel.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('psm_tab_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.psmTab.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('psm_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.psms.index') }}">
-                                            {{ trans('cruds.psm.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('experiment_tab_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.experimentTab.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('experiment_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.experiments.index') }}">
-                                            {{ trans('cruds.experiment.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('biological_set_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.biological-sets.index') }}">
-                                            {{ trans('cruds.biologicalSet.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('fraction_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.fractions.index') }}">
-                                            {{ trans('cruds.fraction.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('strip_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.strips.index') }}">
-                                            {{ trans('cruds.strip.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('option_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.option.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('fragment_method_access')
-                                        <a class="dropdown-item ml-3"
-                                            href="{{ route('frontend.fragment-methods.index') }}">
-                                            {{ trans('cruds.fragmentMethod.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('tissue_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.tissues.index') }}">
-                                            {{ trans('cruds.tissue.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('sample_condition_access')
-                                        <a class="dropdown-item ml-3"
-                                            href="{{ route('frontend.sample-conditions.index') }}">
-                                            {{ trans('cruds.sampleCondition.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('peptide_protein_tab_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.peptideProteinTab.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('peptide_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.peptides.index') }}">
-                                            {{ trans('cruds.peptide.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('protein_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.proteins.index') }}">
-                                            {{ trans('cruds.protein.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('peptide_with_modification_access')
-                                        <a class="dropdown-item ml-3"
-                                            href="{{ route('frontend.peptide-with-modifications.index') }}">
-                                            {{ trans('cruds.peptideWithModification.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('peptid_category_access')
-                                        <a class="dropdown-item ml-3"
-                                            href="{{ route('frontend.peptid-categories.index') }}">
-                                            {{ trans('cruds.peptidCategory.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('protein_type_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.protein-types.index') }}">
-                                            {{ trans('cruds.proteinType.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('other_requirement_tab_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.otherRequirementTab.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('dna_region_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.dna-regions.index') }}">
-                                            {{ trans('cruds.dnaRegion.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('transcript_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.transcripts.index') }}">
-                                            {{ trans('cruds.transcript.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('species_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.speciess.index') }}">
-                                            {{ trans('cruds.species.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('upload_form_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.upload-forms.index') }}">
-                                            {{ trans('cruds.uploadForm.title') }}
-                                        </a>
-                                    @endcan
-
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                        style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                    <a href="javascript:void(0);"
+                        class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                    </a>
                 </div>
-            </div>
-        </nav>
 
-        <main class="py-4">
-            @if (session('message'))
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-success" role="alert">{{ session('message') }}</div>
-                        </div>
+                <div class="menu-inner-shadow"></div>
+
+                <ul class="menu-inner py-1">
+                    <!-- Dashboard -->
+                    <li class="menu-item {{ request()->is('/') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.home') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                            <div data-i18n="Home">Home</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->is('psms*') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.psms.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">PSMs</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->is('peptides*') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.peptides.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Peptides</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item {{ request()->is('fractions*') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.fractions.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Fractions</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-item {{ request()->is('proteins*') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.proteins.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Proteins</div>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+
+                <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+                    id="layout-navbar">
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                            <i class="bx bx-menu bx-sm"></i>
+                        </a>
                     </div>
-                </div>
-            @endif
-            @if ($errors->count() > 0)
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="alert alert-danger">
-                                <ul class="list-unstyled mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+
+                    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                        <!-- Search -->
+                        <div class="navbar-nav align-items-center">
+                            <div class="nav-item d-flex align-items-center">
+                                <i class="bx bx-search fs-4 lh-0"></i>
+                                <input type="text" class="form-control border-0 shadow-none"
+                                    placeholder="Search..." aria-label="Search..." />
                             </div>
                         </div>
+                        <!-- /Search -->
+
                     </div>
+                </nav>
+
+                <!-- / Navbar -->
+
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">PSM /</span> Table
+                        </h4>
+
+
+                        @yield('content')
+
+
+                        <hr class="my-5" />
+
+
+                        <!-- Footer -->
+                        <footer class="content-footer footer bg-footer-theme">
+                            <div
+                                class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                                <div class="mb-2 mb-md-0">
+                                    ©
+                                    <script>
+                                        document.write(new Date().getFullYear());
+                                    </script>
+                                    , made with ❤️ by
+                                    <a href="https://mjacksi.com" target="_blank"
+                                        class="footer-link fw-bolder">MJacksi.com</a>
+                                </div>
+                                <div>
+                                    <a href="https://mjacksi.com" target="_blank"
+                                        class="footer-link me-4">Support</a>
+                                </div>
+                            </div>
+                        </footer>
+                        <!-- / Footer -->
+
+                        <div class="content-backdrop fade"></div>
+                    </div>
+                    <!-- Content wrapper -->
                 </div>
-            @endif
-            @yield('content')
-        </main>
-    </div>
+                <!-- / Layout page -->
+            </div>
+
+            <!-- Overlay -->
+            <div class="layout-overlay layout-menu-toggle"></div>
+        </div>
+        <!-- / Layout wrapper -->
+
+        <!-- Core JS -->
+        <!-- build:js assets/vendor/js/core.js -->
+        <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+        <script src="../assets/vendor/libs/popper/popper.js"></script>
+        <script src="../assets/vendor/js/bootstrap.js"></script>
+        <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+        <script src="../assets/vendor/js/menu.js"></script>
+        <!-- endbuild -->
+
+        <!-- Vendors JS -->
+
+        <!-- Main JS -->
+        <script src="../assets/js/main.js"></script>
+
+        <!-- Page JS -->
+
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/perfect-scrollbar.min.js"></script>
+<script src="https://unpkg.com/@coreui/coreui@3.2/dist/js/coreui.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
@@ -303,12 +272,131 @@
 <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"defer</script>
+
+
+
+<script>
+    $(function() {
+        let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
+        let csvButtonTrans = '{{ trans('global.datatables.csv') }}'
+        let excelButtonTrans = '{{ trans('global.datatables.excel') }}'
+        let pdfButtonTrans = '{{ trans('global.datatables.pdf') }}'
+        let printButtonTrans = '{{ trans('global.datatables.print') }}'
+        let colvisButtonTrans = '{{ trans('global.datatables.colvis') }}'
+        let selectAllButtonTrans = '{{ trans('global.select_all') }}'
+        let selectNoneButtonTrans = '{{ trans('global.deselect_all') }}'
+
+        let languages = {
+            'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
+            'se': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Swedish.json'
+        };
+
+        $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, {
+            className: 'btn'
+        })
+        $.extend(true, $.fn.dataTable.defaults, {
+            language: {
+                url: languages['{{ app()->getLocale() }}']
+            },
+            columnDefs: [{
+                orderable: false,
+                className: 'select-checkbox',
+                targets: 0
+            }, {
+                orderable: false,
+                searchable: false,
+                targets: -1
+            }],
+            select: {
+                style: 'multi+shift',
+                selector: 'td:first-child'
+            },
+            order: [],
+            scrollX: true,
+            pageLength: 100,
+            dom: 'lBfrtip<"actions">',
+            buttons: [{
+                    extend: 'selectAll',
+                    className: 'btn-primary',
+                    text: selectAllButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    action: function(e, dt) {
+                        e.preventDefault()
+                        dt.rows().deselect();
+                        dt.rows({
+                            search: 'applied'
+                        }).select();
+                    }
+                },
+                {
+                    extend: 'selectNone',
+                    className: 'btn-primary',
+                    text: selectNoneButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'copy',
+                    className: 'btn-default',
+                    text: copyButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'csv',
+                    className: 'btn-default',
+                    text: csvButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    className: 'btn-default',
+                    text: excelButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    className: 'btn-default',
+                    text: pdfButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    className: 'btn-default',
+                    text: printButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    className: 'btn-default',
+                    text: colvisButtonTrans,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ]
+        });
+
+        $.fn.dataTable.ext.classes.sPageButton = '';
+    });
+</script>
 @yield('scripts')
 
 </html>

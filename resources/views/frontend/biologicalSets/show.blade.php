@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <div class="form-group">
-                                <a class="btn btn-default" href="{{ route('frontend.biological-sets.index') }}">
+                                <a class="btn btn-primary" href="{{ route('frontend.biological-sets.index') }}">
                                     {{ trans('global.back_to_list') }}
                                 </a>
                             </div>
@@ -47,9 +47,9 @@
                                             {{ trans('cruds.biologicalSet.fields.experiment') }}
                                         </th>
                                         <td>
-                                            @foreach ($biologicalSet->experiments as $key => $experiment)
+                                            {{-- @foreach ($biologicalSet->experiments as $key => $experiment)
                                                 <span class="label label-info">{{ $experiment->name }}</span>
-                                            @endforeach
+                                            @endforeach --}}
                                         </td>
                                     </tr>
                                     <tr>
@@ -71,7 +71,7 @@
                                 </tbody>
                             </table>
                             <div class="form-group">
-                                <a class="btn btn-default" href="{{ route('frontend.biological-sets.index') }}">
+                                <a class="btn btn-primary" href="{{ route('frontend.biological-sets.index') }}">
                                     {{ trans('global.back_to_list') }}
                                 </a>
                             </div>

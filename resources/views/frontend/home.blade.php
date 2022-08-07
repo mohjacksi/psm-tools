@@ -5,16 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header"><h4>{{ __('Dashboard') }}</h4></div>
 
                 <div class="card-body">
                     @if(session('status'))
                         <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                            <h1>{{ session('status') }}</h1>
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    <h3>
+                        Welcome to PSM tools project 👨‍🔬 👩‍🔬
+
+                    </h3>
                 </div>
             </div>
         </div>

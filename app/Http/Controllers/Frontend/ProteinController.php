@@ -24,7 +24,6 @@ class ProteinController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('protein_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $proteins = Protein::with(['peptide', 'type', 'created_by'])->get();
 

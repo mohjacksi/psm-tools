@@ -8,8 +8,10 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyExperimentRequest;
 use App\Http\Requests\StoreExperimentRequest;
 use App\Http\Requests\UpdateExperimentRequest;
+use App\Models\BiologicalSet;
 use App\Models\Experiment;
 use App\Models\Project;
+use App\Models\Sample;
 use App\Models\Species;
 use App\Models\User;
 use Gate;
@@ -114,5 +116,28 @@ class ExperimentController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function experimentsOfProject($project_id)
+    {
+        if($project_id > 0){
+            $experiments = Experiment::where('project_id', $project_id)->get();
+            $samples = Sample::where('project_id', $project_id)->get();
+            $biologicalSets = BiologicalSet::whereHas('experiment', function($q) use ($project_id){
+                $q->where('project_id', $project_id);
+            })->get();
+        }else{
+            $experiments = Experiment::get();
+            $samples = Sample::get();
+            $biologicalSets = BiologicalSet::get();
+        }
+
+        $response = [
+            'experiments'=>$experiments,
+            'samples'=>$samples,
+            'biologicalSets'=>$biologicalSets,
+        ];
+
+        return $response;
     }
 }

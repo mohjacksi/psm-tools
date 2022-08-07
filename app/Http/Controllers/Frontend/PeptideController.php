@@ -20,7 +20,6 @@ class PeptideController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('peptide_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $peptides = Peptide::with(['category', 'created_by'])->get();
 

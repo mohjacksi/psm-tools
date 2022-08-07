@@ -18,8 +18,6 @@
         <div class="row">
             <div style="height: 300px;" class="col-3" id="projects"> </div>
             <div style="height: 300px;" class="col-3" id="experiments"> </div>
-            {{-- </div>
-        <div class="row"> --}}
             <div style="height: 300px;" class="col-3" id="biological"> </div>
             <div style="height: 300px;" class="col-3" id="samples"> </div>
         </div>

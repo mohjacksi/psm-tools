@@ -40,6 +40,11 @@ class BiologicalSet extends Model
     {
         return $this->belongsTo(Experiment::class);
     }
+    public function experiments()
+    {
+        return $this->belongsTo(Experiment::class);
+    }
+
 
     // public function hasExperiment($experiment) {
     //     return $this->experiments->contains($experiment);
