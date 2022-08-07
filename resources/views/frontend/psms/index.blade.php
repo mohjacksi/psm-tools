@@ -7,7 +7,7 @@
     rel="stylesheet" type="text/css" /> --}}
 @endsection
 @section('content')
-    <div class="card">
+    {{-- <div class="card">
         <div class="card-body">
 
             <div>
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <hr class="my-5">
+    <hr class="my-5"> --}}
 
     <div class="card">
 
@@ -275,16 +275,16 @@
 @section('scripts')
     @parent
 
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
     <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
 
     <script src="https://nightly.datatables.net/select/js/dataTables.select.js?_=5362e195cd0aabf9b8ced350de2d5907"></script>
 
-    <script src="http://code.highcharts.com/adapters/prototype-adapter.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/adapters/prototype-adapter.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="//cdn.datatables.net/plug-ins/1.10.25/dataRender/ellipsis.js" charset="utf8"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <script>
         $(function() {
