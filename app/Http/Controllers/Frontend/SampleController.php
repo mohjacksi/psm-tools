@@ -27,7 +27,6 @@ class SampleController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('sample_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $samples = Sample::with(['project', 'channels', 'species', 'tissue', 'sample_condition', 'created_by'])->get();
 
@@ -103,7 +102,6 @@ class SampleController extends Controller
 
     public function show(Sample $sample)
     {
-        abort_if(Gate::denies('sample_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $sample->load('project', 'channels', 'species', 'tissue', 'sample_condition', 'created_by');
 

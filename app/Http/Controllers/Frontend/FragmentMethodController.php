@@ -19,7 +19,6 @@ class FragmentMethodController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('fragment_method_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $fragmentMethods = FragmentMethod::with(['created_by'])->get();
 
@@ -60,7 +59,6 @@ class FragmentMethodController extends Controller
 
     public function show(FragmentMethod $fragmentMethod)
     {
-        abort_if(Gate::denies('fragment_method_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $fragmentMethod->load('created_by', 'fragmentMethodBiologicalSets');
 

@@ -63,7 +63,6 @@ class FractionController extends Controller
 
     public function show(Fraction $fraction)
     {
-        abort_if(Gate::denies('fraction_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $fraction->load('biological_set', 'fractionPsms');
 

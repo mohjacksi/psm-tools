@@ -18,7 +18,6 @@ class SpeciesController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('species_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $speciess = Species::all();
 
@@ -27,7 +26,6 @@ class SpeciesController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('species_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('frontend.speciess.create');
     }

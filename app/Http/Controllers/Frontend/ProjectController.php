@@ -22,7 +22,6 @@ class ProjectController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $projects = Project::with(['created_by'])->get();
 
@@ -71,8 +70,6 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $project->load('created_by', 'projectPeople', 'projectsPeople', 'projectSamples', 'projectExperiments');
 
         return view('frontend.projects.show', compact('project'));
