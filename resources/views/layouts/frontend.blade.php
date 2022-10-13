@@ -139,6 +139,12 @@
                             <div data-i18n="Tables">Peptides</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->is('projects*') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.projects.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Projects</div>
+                        </a>
+                    </li>
 
                     <li class="menu-item {{ request()->is('fractions*') ? 'active' : '' }}">
                         <a href="{{ route('frontend.fractions.index') }}" class="menu-link">

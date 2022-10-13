@@ -173,7 +173,7 @@ class ProteinController extends Controller
             $proteinFields = array(
                 "ProteinID",
                 "Name",
-                "Biotype",
+                "Class_codes",
                 "Samples",
                 "Peptides",
             );
@@ -183,9 +183,9 @@ class ProteinController extends Controller
             }
             foreach ($proteinAsArray[0] as $key => $protein) {
                 if ($key > 0) {
-                    $type = ProteinType::where('name', $protein[$fieldsOrder['Biotype']])->firstOrCreate(
+                    $type = ProteinType::where('name', $protein[$fieldsOrder['Class_codes']])->firstOrCreate(
                         [
-                            'name' => $protein[$fieldsOrder['Biotype']],
+                            'name' => $protein[$fieldsOrder['Class_codes']],
                             'created_by_id' => auth()->user()->id
                         ]
                     );

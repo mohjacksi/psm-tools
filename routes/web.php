@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Channel;
+use App\Models\Fraction;
 use App\Models\Peptide;
 use App\Models\PeptideWithModification;
 use App\Models\Protein;
@@ -24,6 +25,7 @@ Route::get('/clear-data', function () {
     Protein::truncate();
     Channel::truncate();
     Peptide::truncate();
+    Fraction::truncate();
     PeptideWithModification::truncate();
     DB::statement('SET FOREIGN_KEY_CHECKS=1');
 

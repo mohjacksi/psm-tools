@@ -26,7 +26,6 @@ class ExperimentController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('experiment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $experiments = Experiment::with(['project', 'species', 'created_by'])->get();
 
@@ -83,8 +82,6 @@ class ExperimentController extends Controller
 
     public function show(Experiment $experiment)
     {
-        abort_if(Gate::denies('experiment_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $experiment->load('project', 'species', 'created_by', 'experimentBiologicalSets');
 
         return view('frontend.experiments.show', compact('experiment'));
