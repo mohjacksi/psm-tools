@@ -32,9 +32,9 @@ class ProteinType extends Model
         'created_by_id',
     ];
 
-    public function typeProteins()
+    public function proteins()
     {
-        return $this->hasMany(Protein::class, 'type_id', 'id');
+        return $this->belongsToMany(Protein::class);
     }
 
     public function created_by()

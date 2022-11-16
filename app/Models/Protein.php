@@ -52,9 +52,9 @@ class Protein extends Model implements HasMedia
         return $this->belongsTo(Peptide::class, 'peptide_id');
     }
 
-    public function type()
+    public function types()
     {
-        return $this->belongsTo(ProteinType::class, 'type_id');
+        return $this->belongsToMany(ProteinType::class);
     }
 
     public function created_by()
