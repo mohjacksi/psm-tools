@@ -139,6 +139,13 @@
                             <div data-i18n="Tables">Peptides</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->is('proteins*') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.proteins.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-table"></i>
+                            <div data-i18n="Tables">Proteins</div>
+                        </a>
+                    </li>
+
                     <li class="menu-item {{ request()->is('projects*') ? 'active' : '' }}">
                         <a href="{{ route('frontend.projects.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
@@ -153,12 +160,6 @@
                         </a>
                     </li>
 
-                    <li class="menu-item {{ request()->is('proteins*') ? 'active' : '' }}">
-                        <a href="{{ route('frontend.proteins.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-table"></i>
-                            <div data-i18n="Tables">Proteins</div>
-                        </a>
-                    </li>
                     <li class="menu-item {{ request()->is('admin.home*') ? 'active' : '' }}">
                         <a href="{{ route('admin.home') }}" class="menu-link" target="_blank">
                             <i class='menu-icon tf-icons bx bxs-user'></i>
