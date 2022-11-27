@@ -25,7 +25,7 @@ class ProteinController extends Controller
     public function index()
     {
 
-        $proteins = Protein::with(['peptide', 'type', 'created_by'])->get();
+        $proteins = Protein::with(['peptide', 'types', 'created_by'])->get();
 
         $peptides = Peptide::get();
 
