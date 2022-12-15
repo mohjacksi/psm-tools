@@ -43,7 +43,10 @@ class Project extends Model implements HasMedia
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
-
+    public function samples()
+    {
+        return $this->hasMany(Sample::class, 'project_id', 'id');
+    }
     public function projectSamples()
     {
         return $this->hasMany(Sample::class, 'project_id', 'id');

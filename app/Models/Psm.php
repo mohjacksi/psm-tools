@@ -89,7 +89,10 @@ class Psm extends Model implements HasMedia
     {
         return $this->belongsTo(PeptideWithModification::class, 'peptide_with_modification_id');
     }
-
+    public function peptide()
+    {
+        return $this->belongsTo(PeptideWithModification::class, 'peptide_id');
+    }
     public function chennels()
     {
         return $this->hasMany(ChennelSample::class);

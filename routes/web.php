@@ -22,6 +22,11 @@ Route::get('/clear-data', function () {
 
     Psm::truncate();
     DB::table('channel_sample')->delete();
+    DB::table('peptid_categories')->delete();
+    DB::table('protein_types')->delete();
+    DB::table('upload_forms')->delete();
+    DB::table('audit_logs')->delete();
+    DB::table('biological_sets')->delete();
     Protein::truncate();
     Channel::truncate();
     Peptide::truncate();
