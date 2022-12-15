@@ -212,7 +212,7 @@ class UploadFormController extends Controller
                         'species_id' => $experiment->species_id,
                         'biological_set_id' => $BiologicalSet->id,
                         'peptide_with_modification_id' => $PeptideWithModification->id,
-                        'peptideid' => $Peptide->id,
+                        'peptide_id' => $Peptide->id,
                         'created_by_id' => auth()->user()->id,
                     ]);
 
