@@ -52,6 +52,7 @@ class Psm extends Model implements HasMedia
         'experimental_pl',
         'predicted_pl',
         'delta_pl',
+        'peptide_id',
         'peptide_with_modification_id',
         'created_at',
         'updated_at',
