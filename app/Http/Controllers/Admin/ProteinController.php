@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 
-
 class ProteinController extends Controller
 {
     use MediaUploadingTrait;
@@ -44,12 +43,12 @@ class ProteinController extends Controller
                 $crudRoutePart = 'proteins';
 
                 return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
             });
 
             $table->editColumn('id', function ($row) {
@@ -163,77 +162,78 @@ class ProteinController extends Controller
     public function uploadTsv(Request $request)
     {
         // dd($request->input('protein_file'));
-        if($request->input('project_id')){
+        if ($request->input('project_id')) {
             $project_id = $request->input('project_id');
-        }else{
+        } else {
             $project_id = null;
         }
-            $proteinFile = storage_path('tmp/uploads/' . basename($request->input('protein_file')));
-            $proteinAsArray = Excel::toArray('', $proteinFile);
-            $proteinFields = array(
-                "ProteinID",
-                "Name",
-                "Class_codes",
-                "Samples",
-                "Peptides",
-            );
-            $fieldsOrder = [];
-            foreach ($proteinFields as $field) {
-                $fieldsOrder[$field] = array_search($field, $proteinAsArray[0][0]);
-            }
+        $proteinFile = storage_path('tmp/uploads/' . basename($request->input('protein_file')));
+        $proteinAsArray = Excel::toArray('', $proteinFile);
+        $proteinFields = array(
+            "ProteinID",
+            "Name",
+            "Class_codes",
+            "Samples",
+            "Peptides",
+        );
+        $fieldsOrder = [];
+        foreach ($proteinFields as $field) {
+            $fieldsOrder[$field] = array_search($field, $proteinAsArray[0][0]);
+        }
 
 
-            foreach ($proteinAsArray[0] as $key => $protein) {
-                if ($key > 0) {
+        foreach ($proteinAsArray[0] as $key => $protein) {
+            if ($key > 0) {
+                $type = ProteinType::where('name', $protein[$fieldsOrder['Class_codes']])->firstOrCreate(
+                    [
+                        'name' => $protein[$fieldsOrder['Class_codes']],
+                        'created_by_id' => auth()->user()->id
+                    ]
+                );
 
-
-                    $type = ProteinType::where('name', $protein[$fieldsOrder['Class_codes']])->firstOrCreate(
+                $peptide_ids = [];
+                $peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
+                foreach ($peptides as $key => $value) {
+                    $peptide = Peptide::where('sequence', $value)->firstOrCreate(
                         [
-                            'name' => $protein[$fieldsOrder['Class_codes']],
+                            'sequence' => $value,
                             'created_by_id' => auth()->user()->id
                         ]
                     );
+                    $peptide_ids[] = $peptide->id;
+                }
 
-                    $peptide_ids = [];
-                    $peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
-                    foreach ($peptides as $key => $value) {
-                        $peptide = Peptide::where('sequence', $value)->firstOrCreate(
+
+                $samples = explode(",", $protein[$fieldsOrder['Samples']]);
+                if (count($samples) > 0) {
+                    foreach ($samples as $sampleName) {
+                        $sample = Sample::where('name', $sampleName)->firstOrCreate(
                             [
-                                'sequence' => $value,
+                                'name' => $sampleName,
+                                'project_id' => $project_id,
                                 'created_by_id' => auth()->user()->id
                             ]
                         );
-                        $peptide_ids[] = $peptide->id;
                     }
-
-
-                    $samples = explode(",", $protein[$fieldsOrder['Samples']]);
-                    if(count($samples) > 0){
-                        foreach($samples as $sampleName){
-                            $sample = Sample::where('name', $sampleName)->firstOrCreate(
-                                [
-                                    'name' => $sampleName,
-                                    'project_id' => $project_id,
-                                    'created_by_id' => auth()->user()->id
-                                ]
-                            );
-                        }
-                    }
-                    $newProtein = Protein::firstOrCreate($protein[$fieldsOrder['ProteinID']],
-                        [
-                            'sequence' => $protein[$fieldsOrder['ProteinID']],
-                            'name' => $protein[$fieldsOrder['Name']],
-                            'type_id' => $type->id,
-                            'created_by_id' => auth()->user()->id
-                        ]
-                    );
-
-                    $newProtein->peptides()->sync($peptide_ids);
                 }
+                $newProtein = Protein::firstOrCreate(
+                    [
+                    'sequence' => $protein[$fieldsOrder['ProteinID']],
+                    ],
+                    [
+                        'sequence' => $protein[$fieldsOrder['ProteinID']],
+                        'name' => $protein[$fieldsOrder['Name']],
+                        'type_id' => $type->id,
+                        'created_by_id' => auth()->user()->id
+                    ]
+                );
+
+                $newProtein->peptides()->sync($peptide_ids);
             }
+        }
 
 
 
-            return redirect()->route('admin.proteins.index');
+        return redirect()->route('admin.proteins.index');
     }
 }
