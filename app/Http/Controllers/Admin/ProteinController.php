@@ -216,7 +216,7 @@ class ProteinController extends Controller
                         );
                     }
                 }
-                $newProtein = Protein::firstOrCreate(
+                $newProtein = Protein::updateOrCreate(
                     [
                     'sequence' => $protein[$fieldsOrder['ProteinID']],
                     ],
