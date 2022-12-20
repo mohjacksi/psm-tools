@@ -51,6 +51,15 @@ class Protein extends Model implements HasMedia
     {
         return $this->belongsTo(Peptide::class, 'peptide_id');
     }
+    public function peptides()
+    {
+        return $this->belongsToMany(
+            Peptide::class,
+            'peptides_proteins',
+            'protein_id',
+            'peptide_id'
+        );
+    }
 
     // TODO: Should be deleted after converting the relationship to many-to-many
     public function type()
@@ -72,5 +81,4 @@ class Protein extends Model implements HasMedia
     {
         return $date->format('Y-m-d H:i:s');
     }
-
 }

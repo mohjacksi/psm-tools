@@ -39,7 +39,15 @@ class Peptide extends Model
     {
         return $this->hasMany(Protein::class, 'peptide_id', 'id');
     }
-
+    public function proteins()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'peptides_proteins',
+            'peptide_id',
+            'protein_id'
+        );
+    }
     public function category()
     {
         return $this->belongsTo(PeptidCategory::class, 'category_id');

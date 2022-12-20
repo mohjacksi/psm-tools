@@ -181,20 +181,32 @@ class ProteinController extends Controller
             foreach ($proteinFields as $field) {
                 $fieldsOrder[$field] = array_search($field, $proteinAsArray[0][0]);
             }
+
+
             foreach ($proteinAsArray[0] as $key => $protein) {
                 if ($key > 0) {
+
+
                     $type = ProteinType::where('name', $protein[$fieldsOrder['Class_codes']])->firstOrCreate(
                         [
                             'name' => $protein[$fieldsOrder['Class_codes']],
                             'created_by_id' => auth()->user()->id
                         ]
                     );
-                    $peptide = Peptide::where('sequence', $protein[$fieldsOrder['Peptides']])->firstOrCreate(
-                        [
-                            'sequence' => $protein[$fieldsOrder['Peptides']],
-                            'created_by_id' => auth()->user()->id
-                        ]
-                    );
+
+                    $peptide_ids = [];
+                    $peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
+                    foreach ($peptides as $key => $value) {
+                        $peptide = Peptide::where('sequence', $protein[$fieldsOrder['Peptides']])->firstOrCreate(
+                            [
+                                'sequence' => $value,
+                                'created_by_id' => auth()->user()->id
+                            ]
+                        );
+                        $peptide_ids[] = $peptide->id;
+                    }
+
+
                     $samples = explode(",", $protein[$fieldsOrder['Samples']]);
                     if(count($samples) > 0){
                         foreach($samples as $sampleName){
@@ -216,8 +228,12 @@ class ProteinController extends Controller
                             'created_by_id' => auth()->user()->id
                         ]
                     );
+
+                    $newProtein->peptides()->sync($peptide_ids);
                 }
             }
+
+
 
             return redirect()->route('admin.proteins.index');
     }
