@@ -9,6 +9,7 @@ use App\Http\Requests\StorePeptideRequest;
 use App\Http\Requests\UpdatePeptideRequest;
 use App\Models\PeptidCategory;
 use App\Models\Peptide;
+use App\Models\Protein;
 use App\Models\Sample;
 use App\Models\User;
 use Gate;
@@ -191,6 +192,23 @@ class PeptideController extends Controller
                         'created_by_id' => auth()->user()->id
                     ]
                 );
+
+
+                $protein_ids = [];
+                $proteins = explode(',', $peptide[$fieldsOrder['Transcripts']]);
+                foreach ($proteins as $key => $value) {
+                    $protein = Protein::where('sequence', $value)->firstOrCreate(
+                        [
+                            'sequence' => $value,
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $protein_ids[] = $protein->id;
+                }
+
+
+                $newPeptide->proteins()->sync($protein_ids);
+
             }
         }
 

@@ -197,7 +197,7 @@ class ProteinController extends Controller
                     $peptide_ids = [];
                     $peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
                     foreach ($peptides as $key => $value) {
-                        $peptide = Peptide::where('sequence', $protein[$fieldsOrder['Peptides']])->firstOrCreate(
+                        $peptide = Peptide::where('sequence', $value)->firstOrCreate(
                             [
                                 'sequence' => $value,
                                 'created_by_id' => auth()->user()->id
@@ -223,7 +223,6 @@ class ProteinController extends Controller
                         [
                             'sequence' => $protein[$fieldsOrder['ProteinID']],
                             'name' => $protein[$fieldsOrder['Name']],
-                            'peptide_id' => $peptide->id,
                             'type_id' => $type->id,
                             'created_by_id' => auth()->user()->id
                         ]
