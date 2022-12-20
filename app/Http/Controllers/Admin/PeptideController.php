@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 
-
 class PeptideController extends Controller
 {
     use CsvImportTrait;
@@ -41,12 +40,12 @@ class PeptideController extends Controller
                 $crudRoutePart = 'peptides';
 
                 return view('partials.datatablesActions', compact(
-                'viewGate',
-                'editGate',
-                'deleteGate',
-                'crudRoutePart',
-                'row'
-            ));
+                    'viewGate',
+                    'editGate',
+                    'deleteGate',
+                    'crudRoutePart',
+                    'row'
+                ));
             });
 
             $table->editColumn('id', function ($row) {
@@ -137,9 +136,9 @@ class PeptideController extends Controller
 
     public function uploadTsv(Request $request)
     {
-        if($request->input('project_id')){
+        if ($request->input('project_id')) {
             $project_id = $request->input('project_id');
-        }else{
+        } else {
             $project_id = null;
         }
         $peptideFile = storage_path('tmp/uploads/' . basename($request->input('peptide_file')));
@@ -165,8 +164,8 @@ class PeptideController extends Controller
                     ]
                 );
                 $samples = explode(",", $peptide[$fieldsOrder['Samples']]);
-                if(count($samples) > 0){
-                    foreach($samples as $sampleName){
+                if (count($samples) > 0) {
+                    foreach ($samples as $sampleName) {
                         $sample = Sample::where('name', $sampleName)->firstOrCreate(
                             [
                                 'name' => $sampleName,
@@ -176,10 +175,10 @@ class PeptideController extends Controller
                         );
                     }
                 }
-                if($peptide[$fieldsOrder['is_canonical_frame']] != 'non_canonical'){
+                if ($peptide[$fieldsOrder['is_canonical_frame']] != 'non_canonical') {
                     $canonical = 1;
                     $canonical_frame_value = $peptide[$fieldsOrder['is_canonical_frame']];
-                }else{
+                } else {
                     $canonical = 0;
                     $canonical_frame_value = null;
                 }
@@ -198,6 +197,9 @@ class PeptideController extends Controller
                 $protein_ids = [];
                 $proteins = explode(',', $peptide[$fieldsOrder['Transcripts']]);
                 foreach ($proteins as $key => $value) {
+                    if ($value == 'NA') {
+                        continue;
+                    }
                     $protein = Protein::where('sequence', $value)->firstOrCreate(
                         [
                             'sequence' => $value,
@@ -209,7 +211,6 @@ class PeptideController extends Controller
 
 
                 $newPeptide->proteins()->sync($protein_ids);
-
             }
         }
 
