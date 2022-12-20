@@ -147,6 +147,7 @@ class PeptideController extends Controller
         $peptideFields = array(
             "Peptide",
             "Protein_types",
+            "Transcripts",
             "Samples",
             "Category",
             "is_canonical_frame",
