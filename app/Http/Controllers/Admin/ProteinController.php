@@ -184,12 +184,17 @@ class ProteinController extends Controller
 
         foreach ($proteinAsArray[0] as $key => $protein) {
             if ($key > 0) {
-                $type = ProteinType::where('name', $protein[$fieldsOrder['Class_codes']])->firstOrCreate(
-                    [
-                        'name' => $protein[$fieldsOrder['Class_codes']],
-                        'created_by_id' => auth()->user()->id
-                    ]
-                );
+                $type_ids = [];
+                $types = explode(',', $protein[$fieldsOrder['Class_codes']]);
+                foreach ($types as $key => $value) {
+                    $type = ProteinType::where('name', $value)->firstOrCreate(
+                        [
+                            'name' => $value,
+                            'created_by_id' => auth()->user()->id
+                        ]
+                    );
+                    $type_ids[] = $type->id;
+                }
 
                 $peptide_ids = [];
                 $peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
@@ -229,6 +234,7 @@ class ProteinController extends Controller
                 );
 
                 $newProtein->peptides()->sync($peptide_ids);
+                $newProtein->types()->sync($type_ids);
             }
         }
 
