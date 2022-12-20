@@ -219,7 +219,7 @@ class ProteinController extends Controller
                             );
                         }
                     }
-                    $newProtein = Protein::where('sequence', $protein[$fieldsOrder['ProteinID']])->firstOrCreate(
+                    $newProtein = Protein::firstOrCreate($protein[$fieldsOrder['ProteinID']],
                         [
                             'sequence' => $protein[$fieldsOrder['ProteinID']],
                             'name' => $protein[$fieldsOrder['Name']],
