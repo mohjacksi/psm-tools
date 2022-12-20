@@ -197,9 +197,7 @@ class PeptideController extends Controller
                 $protein_ids = [];
                 $proteins = explode(',', $peptide[$fieldsOrder['Transcripts']]);
                 foreach ($proteins as $key => $value) {
-                    if ($value == 'NA') {
-                        continue;
-                    }
+                    
                     $protein = Protein::where('sequence', $value)->firstOrCreate(
                         [
                             'sequence' => $value,
