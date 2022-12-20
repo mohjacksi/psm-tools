@@ -27,6 +27,7 @@ Route::get('/clear-data', function () {
     DB::table('upload_forms')->delete();
     DB::table('audit_logs')->delete();
     DB::table('biological_sets')->delete();
+    DB::table('peptides_proteins')->delete();
     Protein::truncate();
     Channel::truncate();
     Peptide::truncate();
