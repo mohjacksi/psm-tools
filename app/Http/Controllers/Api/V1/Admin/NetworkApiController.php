@@ -174,7 +174,7 @@ class NetworkApiController extends Controller
         foreach($channel_sample as $row){
 
             $edges[] = [
-                'key'=> $row->id.'psm'.$protein->id .'sample'.$protein->peptide_id,
+                'key'=> $row->id.'psm'.$row->psm_id .'sample'.$row->sample_id,
                 'source'=> 'psm'.$row->psm_id,
                 'target'=> 'sample'.$row->sample_id,
                 'attributes'=> [
