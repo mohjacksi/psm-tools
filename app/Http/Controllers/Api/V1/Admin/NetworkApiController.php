@@ -31,10 +31,9 @@ class NetworkApiController extends Controller
 
 
         $psm = DB::table('channel_sample')
-
-        //->distinct('sample_id','psm_id','channel_id')
-        ->get();//->groupBy('psm_id')->first();
-        dd($psm) ;
+        // ->distinct('sample_id','psm_id','channel_id')->get();
+        ->get()->groupBy('sample_id');
+        // dd($psm->first()->toArray());
         foreach($psm as $row){
             $edges[] = [
                 'key'=> $row->id.'psm'.$row->psm_id .'sample'.$row->sample_id,
@@ -45,9 +44,9 @@ class NetworkApiController extends Controller
                 ]
             ];
         }
+        dd($edges);
 
 
-        
         $projects = Project::withCount('samples')->get();
         $samples = Sample::withCount('psms')->has('project')->get();
         $psms = Psm::all();
