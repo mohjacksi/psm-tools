@@ -41,8 +41,8 @@ class NetworkApiController extends Controller
             $nodes[] = [
                 'key'=> 'project'.$project->id,
                 'attributes'=> [
-                  'x'=> rand(1,50),
-                  'y'=> rand(1,50),
+                  'x'=> rand(1,15),
+                  'y'=> rand(1,15),
                   'size'=>
                   strlen((string)$project->samples_count) * $size,
                   'label'=> $project->name,
@@ -62,8 +62,8 @@ class NetworkApiController extends Controller
             $nodes[] = [
                 'key'=> 'sample'.$sample->id,
                 'attributes'=> [
-                  'x'=> rand(1,50),
-                  'y'=> rand(1,50),
+                  'x'=> rand(1,15),
+                  'y'=> rand(1,15),
                   'size'=> $size,
                   'label'=> $sample->name,
                   'color'=> $sample->sample_condition_id == 1 ? 'red' : 'green'
@@ -90,8 +90,8 @@ class NetworkApiController extends Controller
             $nodes[] = [
                 'key'=> 'peptide'.$peptide->id,
                 'attributes'=> [
-                  'x'=> rand(1,50),
-                  'y'=> rand(1,50),
+                  'x'=> rand(1,15),
+                  'y'=> rand(1,15),
                   'size'=> $size * $peptide->charge,
                   'label'=> $peptide->sequence,
                   'color'=> $peptide->canonical == 1 ? 'blue' : 'yellow'
@@ -108,8 +108,8 @@ class NetworkApiController extends Controller
             $nodes[] = [
                 'key'=> 'psm'.$psm->id,
                 'attributes'=> [
-                  'x'=> rand(1,50),
-                  'y'=> rand(1,50),
+                  'x'=> rand(1,15),
+                  'y'=> rand(1,15),
                   'size'=> $size * $psm->charge,
                   'label'=> $psm->spectra,
                   'color'=> 'yellow'
@@ -136,8 +136,8 @@ class NetworkApiController extends Controller
             $nodes[] = [
                 'key'=> 'protein'.$protein->id,
                 'attributes'=> [
-                  'x'=> rand(1,50),
-                  'y'=> rand(1,50),
+                  'x'=> rand(1,15),
+                  'y'=> rand(1,15),
                   'size'=> $size ,
                   'label'=> $protein->spectra,
                   'color'=> 'blue'
