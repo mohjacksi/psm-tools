@@ -38,7 +38,7 @@ class NetworkApiController extends Controller
 
         foreach ($projects as $i => $project) {
             $nodes[] = [
-                'key'=> 'project'.$project->id,
+                'id'=> 'project'.$project->id,
                 'attributes'=> [
                   'x'=> 1+$i*$x,
                   'y'=> 1+$i*$y,
@@ -59,7 +59,7 @@ class NetworkApiController extends Controller
 
         foreach ($samples as $i => $sample) {
             $nodes[] = [
-                'key'=> 'sample'.$sample->id,
+                'id'=> 'sample'.$sample->id,
                 'attributes'=> [
                   'x'=> 1+$i*$x,
                   'y'=> 1+$i*$y,
@@ -71,7 +71,7 @@ class NetworkApiController extends Controller
 
 
             $edges[] = [
-                'key'=> 'S'.$sample->id .'P'.$sample->project_id,
+                'id'=> 'S'.$sample->id .'P'.$sample->project_id,
                 'source'=> 'sample'.$sample->id,
                 'target'=> 'project'.$sample->project_id??1,
                 'attributes'=> [
@@ -87,7 +87,7 @@ class NetworkApiController extends Controller
         $size = 3;
         foreach ($peptides as $i => $peptide) {
             $nodes[] = [
-                'key'=> 'peptide'.$peptide->id,
+                'id'=> 'peptide'.$peptide->id,
                 'attributes'=> [
                   'x'=> 1+$i*$x,
                   'y'=> 1+$i*$y,
@@ -105,7 +105,7 @@ class NetworkApiController extends Controller
         $size = 0.5;
         foreach ($psms as $i => $psm) {
             $nodes[] = [
-                'key'=> 'psm'.$psm->id,
+                'id'=> 'psm'.$psm->id,
                 'attributes'=> [
                   'x'=> 1+$i*$x,
                   'y'=> 1+$i*$y,
@@ -117,7 +117,7 @@ class NetworkApiController extends Controller
 
 
             $edges[] = [
-                'key'=> 'psm'.$psm->id .'peptide'.$psm->peptide_with_modification_id,
+                'id'=> 'psm'.$psm->id .'peptide'.$psm->peptide_with_modification_id,
                 'source'=> 'psm'.$psm->id,
                 'target'=> 'peptide'.$psm->peptide_with_modification_id,
                 'attributes'=> [
@@ -133,7 +133,7 @@ class NetworkApiController extends Controller
         $size = 1;
         foreach ($proteins as $i => $protein) {
             $nodes[] = [
-                'key'=> 'protein'.$protein->id,
+                'id'=> 'protein'.$protein->id,
                 'attributes'=> [
                   'x'=> 1+$i*$x,
                   'y'=> 1+$i*$y,
@@ -145,7 +145,7 @@ class NetworkApiController extends Controller
 
 
             $edges[] = [
-                'key'=> 'protein'.$protein->id .'peptide'.$protein->peptide_id,
+                'id'=> 'protein'.$protein->id .'peptide'.$protein->peptide_id,
                 'source'=> 'protein'.$protein->id,
                 'target'=> 'peptide'.$protein->peptide_id,
                 'attributes'=> [
@@ -159,7 +159,7 @@ class NetworkApiController extends Controller
         foreach($channel_sample as $row){
 
             $edges[] = [
-                'key'=> $row->id.'psm'.$protein->id .'sample'.$protein->peptide_id,
+                'id'=> $row->id.'psm'.$protein->id .'sample'.$protein->peptide_id,
                 'source'=> 'psm'.$row->psm_id,
                 'target'=> 'sample'.$row->sample_id,
                 'attributes'=> [

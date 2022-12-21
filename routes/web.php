@@ -39,7 +39,7 @@ Route::get('/clear-data', function () {
 
     dd("PSM, Peptide, Channel, Channel-Sample tables truncated successfully!");
 });
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('main');
 Route::get('userVerification/{token}', 'UserVerificationController@approve')->name('userVerification');
 Auth::routes();
 
@@ -212,6 +212,8 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 });
 Route::group(['as' => 'frontend.', 'namespace' => 'Frontend'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::view('/graph', 'graph')->name('graph');
+
     Route::get('/tables', function () {
         return view('layouts.tables');
     })->name('tables');

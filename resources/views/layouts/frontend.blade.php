@@ -127,6 +127,12 @@
                             <div data-i18n="Home">Home</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->is('/graph') ? 'active' : '' }}">
+                        <a href="{{ route('frontend.graph') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-map"></i>
+                            <div data-i18n="Graph">Graph</div>
+                        </a>
+                    </li>
                     <li class="menu-item {{ request()->is('psms*') ? 'active' : '' }}">
                         <a href="{{ route('frontend.psms.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-table"></i>
@@ -203,8 +209,8 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">PSM /</span> Table
-                        </h4>
+                        {{-- <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span>
+                        </h4> --}}
 
 
                         @yield('content')
