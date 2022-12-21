@@ -168,9 +168,11 @@ class NetworkApiController extends Controller
             ];
 
         }
-
-        $channel_sample = DB::table('channel_sample')->distinct('sample_id','psm_id')->get();
-
+        /* Puse it  for now!
+        $channel_sample = DB::table('channel_sample')
+        ->distinct('sample_id','psm_id','channel_id')
+        ->get();
+        dd($channel_sample->count());
         foreach($channel_sample as $row){
 
             $edges[] = [
@@ -183,7 +185,7 @@ class NetworkApiController extends Controller
             ];
 
         }
-
+        */
         return
         [
             'nodes'=>$nodes,
