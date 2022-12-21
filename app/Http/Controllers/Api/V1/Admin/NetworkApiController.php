@@ -22,9 +22,32 @@ class NetworkApiController extends Controller
 {
     public function index()
     {
+
+
+
+
         $nodes = [];
         $edges = [];
 
+
+        $psm = DB::table('channel_sample')
+
+        //->distinct('sample_id','psm_id','channel_id')
+        ->get();//->groupBy('psm_id')->first();
+        dd($psm) ;
+        foreach($psm as $row){
+            $edges[] = [
+                'key'=> $row->id.'psm'.$row->psm_id .'sample'.$row->sample_id,
+                'source'=> 'psm'.$row->psm_id,
+                'target'=> 'sample'.$row->sample_id,
+                'attributes'=> [
+                  'size'=> $row->channel_value,
+                ]
+            ];
+        }
+
+
+        
         $projects = Project::withCount('samples')->get();
         $samples = Sample::withCount('psms')->has('project')->get();
         $psms = Psm::all();
@@ -186,6 +209,8 @@ class NetworkApiController extends Controller
 
         }
         */
+
+
         return
         [
             'nodes'=>$nodes,
