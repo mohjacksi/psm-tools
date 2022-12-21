@@ -169,7 +169,7 @@ class NetworkApiController extends Controller
 
         }
 
-        $channel_sample = DB::table('channel_sample')->get();
+        $channel_sample = DB::table('channel_sample')->distinct('sample_id','psm_id')->get();
 
         foreach($channel_sample as $row){
 
