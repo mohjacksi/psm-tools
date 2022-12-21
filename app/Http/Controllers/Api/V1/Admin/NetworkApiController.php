@@ -94,7 +94,7 @@ class NetworkApiController extends Controller
                   'y'=> 1+$i*$y,
                   'size'=> $size * $peptide->charge,
                   'label'=> $peptide->sequence,
-                  'color'=> $peptide->canonical == 1 ? 'red' : 'green'
+                  'color'=> $peptide->canonical == 1 ? 'blue' : 'yellow'
                 ]
             ];
         }
