@@ -212,6 +212,7 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 });
 Route::group(['as' => 'frontend.', 'namespace' => 'Frontend'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::view('/network', 'network')->name('network');
     Route::view('/graph', 'graph')->name('graph');
 
     Route::get('/tables', function () {
