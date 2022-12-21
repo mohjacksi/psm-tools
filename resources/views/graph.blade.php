@@ -155,7 +155,7 @@ var graph = {
 }
 
 import myJson from '/data.json' assert {type: 'json'};
-console.log(myJson.nodes);
+console.log(myJson);
 graph = myJson;
 alert(graph.nodes[12].y);
 // load the graph
