@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
@@ -158,9 +159,9 @@ class NetworkApiController extends Controller
 
         foreach ($peptides_proteins as $key => $row) {
             $edges[] = [
-                'key'=> 'protein'.$peptides_proteins->protein_id .'peptide'.$peptides_proteins->peptide_id,
-                'source'=> 'protein'.$peptides_proteins->protein_id,
-                'target'=> 'peptide'.$peptides_proteins->peptide_id,
+                'key'=> 'protein'.$row->protein_id .'peptide'.$row->peptide_id,
+                'source'=> 'protein'.$row->protein_id,
+                'target'=> 'peptide'.$row->peptide_id,
                 'attributes'=> [
                   'size'=> 1,
                 ]
