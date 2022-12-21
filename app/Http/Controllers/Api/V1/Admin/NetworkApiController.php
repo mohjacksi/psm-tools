@@ -144,14 +144,28 @@ class NetworkApiController extends Controller
             ];
 
 
+            // $edges[] = [
+            //     'key'=> 'protein'.$protein->id .'peptide'.$protein->peptide_id,
+            //     'source'=> 'protein'.$protein->id,
+            //     'target'=> 'peptide'.$protein->peptide_id,
+            //     'attributes'=> [
+            //       'size'=> 1,
+            //     ]
+            // ];
+        }
+
+        $peptides_proteins = DB::table('peptides_proteins')->get();
+
+        foreach ($peptides_proteins as $key => $row) {
             $edges[] = [
-                'key'=> 'protein'.$protein->id .'peptide'.$protein->peptide_id,
-                'source'=> 'protein'.$protein->id,
-                'target'=> 'peptide'.$protein->peptide_id,
+                'key'=> 'protein'.$peptides_proteins->protein_id .'peptide'.$peptides_proteins->peptide_id,
+                'source'=> 'protein'.$peptides_proteins->protein_id,
+                'target'=> 'peptide'.$peptides_proteins->peptide_id,
                 'attributes'=> [
                   'size'=> 1,
                 ]
             ];
+
         }
 
         $channel_sample = DB::table('channel_sample')->get();
