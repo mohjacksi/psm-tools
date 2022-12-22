@@ -58,7 +58,7 @@ class NetworkApiController extends Controller
 
         $x = 2;
         $y = .5;
-        $size = 15;
+        $size = 10;
 
 
         foreach ($projects as $i => $project) {
@@ -79,7 +79,7 @@ class NetworkApiController extends Controller
 
         $x = 0.1;
         $y = 0.01;
-        $size = 13;
+        $size = 7;
 
 
         foreach ($samples as $i => $sample) {
@@ -109,7 +109,7 @@ class NetworkApiController extends Controller
 
         $x = 0.01;
         $y = 0.1;
-        $size = 13;
+        $size = 4;
         foreach ($peptides as $i => $peptide) {
             $nodes[] = [
                 'key'=> 'peptide'.$peptide->id,
@@ -127,7 +127,7 @@ class NetworkApiController extends Controller
 
         $x = 0.01;
         $y = 0.1;
-        $size = 10.5;
+        $size = 5;
         foreach ($psms as $i => $psm) {
             $nodes[] = [
                 'key'=> 'psm'.$psm->id,
@@ -155,7 +155,7 @@ class NetworkApiController extends Controller
         // This is wrong relationship between protien and peptides, but it's here for example
         $x = 0.01;
         $y = 0.1;
-        $size = 11;
+        $size = 3;
         foreach ($proteins as $i => $protein) {
             $nodes[] = [
                 'key'=> 'protein'.$protein->id,
