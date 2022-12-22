@@ -70,7 +70,7 @@ class NetworkApiController extends Controller
                   'size'=>
                   strlen((string)$project->samples_count) * $size,
                   'label'=> $project->name,
-                  'color'=> '#D8482D'
+                  'color'=> 'blue'
                 ]
             ];
         }
@@ -118,7 +118,7 @@ class NetworkApiController extends Controller
                   'y'=> rand(1,15),
                   'size'=> $size * $peptide->charge,
                   'label'=> $peptide->sequence,
-                  'color'=> $peptide->canonical == 1 ? 'blue' : 'yellow'
+                  'color'=> $peptide->canonical == 1 ? 'purple' : 'MediumPurple'
                 ]
             ];
         }
@@ -136,7 +136,7 @@ class NetworkApiController extends Controller
                   'y'=> rand(1,15),
                   'size'=> $size * $psm->charge,
                   'label'=> $psm->spectra,
-                  'color'=> 'yellow'
+                  'color'=> 'HotPink'
                 ]
             ];
 
@@ -164,7 +164,7 @@ class NetworkApiController extends Controller
                   'y'=> rand(1,15),
                   'size'=> $size ,
                   'label'=> $protein->spectra,
-                  'color'=> 'blue'
+                  'color'=> 'AntiqueWhite'
                 ]
             ];
 
