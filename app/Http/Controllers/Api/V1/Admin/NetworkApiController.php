@@ -33,6 +33,7 @@ class NetworkApiController extends Controller
         $psm = DB::table('channel_sample')
         // ->distinct('sample_id','psm_id','channel_id')->get();
         ->get()->groupBy('sample_id');
+
         // dd($psm->first()->toArray());
         foreach($psm as $rows){
             foreach($rows as $row){
@@ -69,7 +70,7 @@ class NetworkApiController extends Controller
                   'y'=> rand(1,25),
                   'size'=>
                   strlen((string)$project->samples_count) * $size,
-                  'label'=> $project->name,
+                  'label'=> 'Project:'.$project->name,
                   'color'=> 'blue'
                 ]
             ];
@@ -89,7 +90,7 @@ class NetworkApiController extends Controller
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
                   'size'=> $size,
-                  'label'=> $sample->name,
+                  'label'=> 'Sample:'.$sample->name,
                   'color'=> $sample->sample_condition_id == 1 ? 'red' : 'green'
                 ]
             ];
@@ -117,8 +118,8 @@ class NetworkApiController extends Controller
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
                   'size'=> $size * $peptide->charge,
-                  'label'=> $peptide->sequence,
-                  'color'=> $peptide->canonical == 1 ? 'purple' : 'MediumPurple'
+                  'label'=> 'Pep:'.$peptide->sequence,
+                  'color'=> $peptide->canonical == 1 ? 'purple' : 'mediumpurple'
                 ]
             ];
         }
@@ -127,7 +128,7 @@ class NetworkApiController extends Controller
 
         $x = 0.01;
         $y = 0.1;
-        $size = 5;
+        $size = 0.8;
         foreach ($psms as $i => $psm) {
             $nodes[] = [
                 'key'=> 'psm'.$psm->id,
@@ -135,8 +136,8 @@ class NetworkApiController extends Controller
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
                   'size'=> $size * $psm->charge,
-                  'label'=> $psm->spectra,
-                  'color'=> 'HotPink'
+                  'label'=>'Psm:'.$psm->spectra,
+                  'color'=> 'orange'
                 ]
             ];
 
@@ -163,8 +164,8 @@ class NetworkApiController extends Controller
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
                   'size'=> $size ,
-                  'label'=> $protein->spectra,
-                  'color'=> 'AntiqueWhite'
+                  'label'=> 'Protien:'.$protein->sequence,
+                  'color'=> 'grey'
                 ]
             ];
 
