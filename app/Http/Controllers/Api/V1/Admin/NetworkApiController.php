@@ -65,6 +65,7 @@ class NetworkApiController extends Controller
         foreach ($projects as $i => $project) {
             $nodes[] = [
                 'key'=> 'project'.$project->id,
+                'type'=> 'project',
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
@@ -86,6 +87,7 @@ class NetworkApiController extends Controller
         foreach ($samples as $i => $sample) {
             $nodes[] = [
                 'key'=> 'sample'.$sample->id,
+                'type'=> 'sample',
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
@@ -114,6 +116,7 @@ class NetworkApiController extends Controller
         foreach ($peptides as $i => $peptide) {
             $nodes[] = [
                 'key'=> 'peptide'.$peptide->id,
+                'type'=> 'peptide',
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
@@ -132,6 +135,7 @@ class NetworkApiController extends Controller
         foreach ($psms as $i => $psm) {
             $nodes[] = [
                 'key'=> 'psm'.$psm->id,
+                'type'=> 'psm',
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
@@ -160,6 +164,7 @@ class NetworkApiController extends Controller
         foreach ($proteins as $i => $protein) {
             $nodes[] = [
                 'key'=> 'protein'.$protein->id,
+                'type'=> 'protein',
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
