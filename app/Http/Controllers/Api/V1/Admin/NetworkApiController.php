@@ -85,9 +85,10 @@ class NetworkApiController extends Controller
 
 
         foreach ($samples as $i => $sample) {
+            $type = $sample->sample_condition_id == 1 ? '-cancer' : 'normal';
             $nodes[] = [
                 'key'=> 'sample'.$sample->id,
-                'type'=> 'sample',
+                'type'=> 'sample' . $type,
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
@@ -114,9 +115,10 @@ class NetworkApiController extends Controller
         $y = 0.1;
         $size = 4;
         foreach ($peptides as $i => $peptide) {
+            $type = $peptide->canonical == 1 ? '-canonical' : '';
             $nodes[] = [
                 'key'=> 'peptide'.$peptide->id,
-                'type'=> 'peptide',
+                'type'=> 'peptide'.$type,
                 'attributes'=> [
                   'x'=> rand(1,25),
                   'y'=> rand(1,25),
