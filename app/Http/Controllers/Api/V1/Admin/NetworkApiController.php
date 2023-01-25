@@ -85,7 +85,7 @@ class NetworkApiController extends Controller
 
 
         foreach ($samples as $i => $sample) {
-            $type = $sample->sample_condition_id == 1 ? '-cancer' : 'normal';
+            $type = $sample->sample_condition_id == 1 ? '-cancer' : '';
             $nodes[] = [
                 'key'=> 'sample'.$sample->id,
                 'type'=> 'sample' . $type,
