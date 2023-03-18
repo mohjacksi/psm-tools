@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
@@ -21,8 +22,33 @@ class NetworkApiController extends Controller
 {
     public function index()
     {
+
+
+
+
         $nodes = [];
         $edges = [];
+
+
+        $psm = DB::table('channel_sample')
+        // ->distinct('sample_id','psm_id','channel_id')->get();
+        ->get()->groupBy('sample_id');
+
+        // dd($psm->first()->toArray());
+        foreach($psm as $rows){
+            foreach($rows as $row){
+            $edges[] = [
+                'key'=> $row->id.'psm'.$row->psm_id .'sample'.$row->sample_id,
+                'source'=> 'psm'.$row->psm_id,
+                'target'=> 'sample'.$row->sample_id,
+                'attributes'=> [
+                  'size'=> is_numeric($row->channel_value) ? $row->channel_value/20: 0.1,
+                ]
+            ];
+            }
+        }
+        // dd($edges);
+
 
         $projects = Project::withCount('samples')->get();
         $samples = Sample::withCount('psms')->has('project')->get();
@@ -33,19 +59,20 @@ class NetworkApiController extends Controller
 
         $x = 2;
         $y = .5;
-        $size = 5;
+        $size = 10;
 
 
         foreach ($projects as $i => $project) {
             $nodes[] = [
                 'key'=> 'project'.$project->id,
+                'type'=> 'project',
                 'attributes'=> [
-                  'x'=> 1+$i*$x,
-                  'y'=> 1+$i*$y,
+                  'x'=> rand(1,25),
+                  'y'=> rand(1,25),
                   'size'=>
                   strlen((string)$project->samples_count) * $size,
-                  'label'=> $project->name,
-                  'color'=> '#D8482D'
+                  'label'=> 'Project:'.$project->name,
+                  'color'=> 'blue'
                 ]
             ];
         }
@@ -54,17 +81,19 @@ class NetworkApiController extends Controller
 
         $x = 0.1;
         $y = 0.01;
-        $size = 3;
+        $size = 7;
 
 
         foreach ($samples as $i => $sample) {
+            $type = $sample->sample_condition_id == 1 ? '-cancer' : '';
             $nodes[] = [
                 'key'=> 'sample'.$sample->id,
+                'type'=> 'sample' . $type,
                 'attributes'=> [
-                  'x'=> 1+$i*$x,
-                  'y'=> 1+$i*$y,
+                  'x'=> rand(1,25),
+                  'y'=> rand(1,25),
                   'size'=> $size,
-                  'label'=> $sample->name,
+                  'label'=> 'Sample:'.$sample->name,
                   'color'=> $sample->sample_condition_id == 1 ? 'red' : 'green'
                 ]
             ];
@@ -84,16 +113,18 @@ class NetworkApiController extends Controller
 
         $x = 0.01;
         $y = 0.1;
-        $size = 3;
+        $size = 4;
         foreach ($peptides as $i => $peptide) {
+            $type = $peptide->canonical == 1 ? '-canonical' : '';
             $nodes[] = [
                 'key'=> 'peptide'.$peptide->id,
+                'type'=> 'peptide'.$type,
                 'attributes'=> [
-                  'x'=> 1+$i*$x,
-                  'y'=> 1+$i*$y,
+                  'x'=> rand(1,25),
+                  'y'=> rand(1,25),
                   'size'=> $size * $peptide->charge,
-                  'label'=> $peptide->sequence,
-                  'color'=> $peptide->canonical == 1 ? 'red' : 'green'
+                  'label'=> 'Pep:'.$peptide->sequence,
+                  'color'=> $peptide->canonical == 1 ? 'purple' : 'mediumpurple'
                 ]
             ];
         }
@@ -102,24 +133,25 @@ class NetworkApiController extends Controller
 
         $x = 0.01;
         $y = 0.1;
-        $size = 0.5;
+        $size = 0.8;
         foreach ($psms as $i => $psm) {
             $nodes[] = [
                 'key'=> 'psm'.$psm->id,
+                'type'=> 'psm',
                 'attributes'=> [
-                  'x'=> 1+$i*$x,
-                  'y'=> 1+$i*$y,
+                  'x'=> rand(1,25),
+                  'y'=> rand(1,25),
                   'size'=> $size * $psm->charge,
-                  'label'=> $psm->spectra,
-                  'color'=> 'yellow'
+                  'label'=>'Psm:'.$psm->spectra,
+                  'color'=> 'orange'
                 ]
             ];
 
 
             $edges[] = [
-                'key'=> 'psm'.$psm->id .'peptide'.$psm->peptide_with_modification_id,
+                'key'=> 'psm'.$psm->id .'peptide'.$psm->peptide_id,
                 'source'=> 'psm'.$psm->id,
-                'target'=> 'peptide'.$psm->peptide_with_modification_id,
+                'target'=> 'peptide'.$psm->peptide_id,
                 'attributes'=> [
                   'size'=> 1,
                 ]
@@ -130,36 +162,53 @@ class NetworkApiController extends Controller
         // This is wrong relationship between protien and peptides, but it's here for example
         $x = 0.01;
         $y = 0.1;
-        $size = 1;
+        $size = 3;
         foreach ($proteins as $i => $protein) {
             $nodes[] = [
                 'key'=> 'protein'.$protein->id,
+                'type'=> 'protein',
                 'attributes'=> [
-                  'x'=> 1+$i*$x,
-                  'y'=> 1+$i*$y,
+                  'x'=> rand(1,25),
+                  'y'=> rand(1,25),
                   'size'=> $size ,
-                  'label'=> $protein->spectra,
-                  'color'=> 'blue'
+                  'label'=> 'Protien:'.$protein->sequence,
+                  'color'=> 'grey'
                 ]
             ];
 
 
+            // $edges[] = [
+            //     'key'=> 'protein'.$protein->id .'peptide'.$protein->peptide_id,
+            //     'source'=> 'protein'.$protein->id,
+            //     'target'=> 'peptide'.$protein->peptide_id,
+            //     'attributes'=> [
+            //       'size'=> 1,
+            //     ]
+            // ];
+        }
+
+        $peptides_proteins = DB::table('peptides_proteins')->get();
+
+        foreach ($peptides_proteins as $key => $row) {
             $edges[] = [
-                'key'=> 'protein'.$protein->id .'peptide'.$protein->peptide_id,
-                'source'=> 'protein'.$protein->id,
-                'target'=> 'peptide'.$protein->peptide_id,
+                'key'=> 'protein'.$row->protein_id .'peptide'.$row->peptide_id,
+                'source'=> 'protein'.$row->protein_id,
+                'target'=> 'peptide'.$row->peptide_id,
                 'attributes'=> [
                   'size'=> 1,
                 ]
             ];
+
         }
-
-        $channel_sample = DB::table('channel_sample')->get();
-
+        /* Puse it  for now!
+        $channel_sample = DB::table('channel_sample')
+        ->distinct('sample_id','psm_id','channel_id')
+        ->get();
+        dd($channel_sample->count());
         foreach($channel_sample as $row){
 
             $edges[] = [
-                'key'=> $row->id.'psm'.$protein->id .'sample'.$protein->peptide_id,
+                'key'=> $row->id.'psm'.$row->psm_id .'sample'.$row->sample_id,
                 'source'=> 'psm'.$row->psm_id,
                 'target'=> 'sample'.$row->sample_id,
                 'attributes'=> [
@@ -168,6 +217,8 @@ class NetworkApiController extends Controller
             ];
 
         }
+        */
+
 
         return
         [

@@ -5,7 +5,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin'], 
 
 
     // Network Data
-    Route::apiResource('data', 'NetworkApiController');
+    Route::apiResource('network-data', 'NetworkApiController');
 
 
 });
