@@ -94,7 +94,7 @@ class NetworkApiController extends Controller
                   'y'=> rand(1,25),
                   'size'=> $size,
                   'label'=> 'Sample:'.$sample->name,
-                  'color'=> $sample->sample_condition_id == 1 ? 'red' : 'green'
+                  'color'=> $sample->sample_condition_id == 1 ? 'green' : 'red'
                 ]
             ];
 
