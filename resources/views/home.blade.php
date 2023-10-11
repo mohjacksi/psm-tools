@@ -17,7 +17,7 @@
                         Welcome to PSM tools project 👨‍🔬 👩‍🔬
 
 
-                        PSM: {{$psm}}
+                        PSM: {{$Psm}}
                         <br>
                         Protein: {{$Protein}}
                         <br>
