@@ -15,6 +15,17 @@
                         @endif
 
                         Welcome to PSM tools project 👨‍🔬 👩‍🔬
+
+
+                        PSM: {{$psm}}
+                        <br>
+                        Protein: {{$Protein}}
+                        <br>
+                        Peptide: {{$Peptide}}
+                        <br>
+                        Project: {{$Project}}
+                        <br>
+                        Sample: {{$Sample}}
                     </div>
                 </div>
             </div>

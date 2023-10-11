@@ -18,6 +18,16 @@
                         Welcome to PSM tools project 👨‍🔬 👩‍🔬
 
                     </h3>
+                    PSM: {{$Psm}}
+                    <br>
+                    Protein: {{$Protein}}
+                    <br>
+                    Peptide: {{$Peptide}}
+                    <br>
+                    Project: {{$Project}}
+                    <br>
+                    Sample: {{$Sample}}
+
                 </div>
             </div>
         </div>
