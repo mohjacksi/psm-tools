@@ -11,15 +11,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     /**
      * Show the application dashboard.
@@ -28,8 +20,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-
         $Psm = Psm::count();
 
         $Protein = Protein::count();
@@ -40,9 +30,12 @@ class HomeController extends Controller
 
         $Sample = Sample::count();
 
-        return view('frontend.home', [  'Psm'=>$Psm,
-                                'Protein'=>$Protein,
-                                'Peptide'=>$Peptide,
-                                'Project'=>$Project,
-                                'Sample'=>$Sample]);    }
+        return view('frontend.home',
+        [  'Psm'=>$Psm,
+            'Protein'=>$Protein,
+            'Peptide'=>$Peptide,
+            'Project'=>$Project,
+            'Sample'=>$Sample
+        ]);
+    }
 }
