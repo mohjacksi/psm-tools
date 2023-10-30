@@ -18,15 +18,15 @@
                         Welcome to PSM tools project 👨‍🔬 👩‍🔬
 
                     </h3>
-                    PSM: {{$Psm??}}
+                    PSM: {{$Psm??0}}
                     <br>
-                    Protein: {{$Protein??}}
+                    Protein: {{$Protein??0}}
                     <br>
-                    Peptide: {{$Peptide??}}
+                    Peptide: {{$Peptide??0}}
                     <br>
-                    Project: {{$Project??}}
+                    Project: {{$Project??0}}
                     <br>
-                    Sample: {{$Sample??}}
+                    Sample: {{$Sample??0}}
 
                 </div>
             </div>
