@@ -22,7 +22,6 @@ class BiologicalSetController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('biological_set_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $biologicalSets = BiologicalSet::with(['experiments', 'strip', 'fragment_method', 'created_by'])->get();
 
@@ -83,7 +82,6 @@ class BiologicalSetController extends Controller
 
     public function show(BiologicalSet $biologicalSet)
     {
-        abort_if(Gate::denies('biological_set_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $biologicalSet->load('experiments', 'strip', 'fragment_method', 'created_by');
 
