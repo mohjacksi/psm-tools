@@ -29,6 +29,7 @@ class HomeController extends Controller
     public function index()
     {
 
+
         $Psm = Psm::count();
 
         $Protein = Protein::count();
@@ -39,13 +40,9 @@ class HomeController extends Controller
 
         $Sample = Sample::count();
 
-        return view(
-            'frontend.home',
-            ['Psm'=>$Psm,
-            'Protein'=>$Protein,
-            'Peptide'=>$Peptide,
-            'Project'=>$Project,
-            'Sample'=>$Sample]
-        );
-    }
+        return view('frontend.home', [  'Psm'=>$Psm,
+                                'Protein'=>$Protein,
+                                'Peptide'=>$Peptide,
+                                'Project'=>$Project,
+                                'Sample'=>$Sample]);    }
 }
