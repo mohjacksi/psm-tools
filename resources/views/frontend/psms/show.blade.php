@@ -11,11 +11,6 @@
 
                     <div class="card-body">
                         <div class="form-group">
-                            <div class="form-group">
-                                <a class="btn btn-primary" href="{{ route('frontend.psms.index') }}">
-                                    {{ trans('global.back_to_list') }}
-                                </a>
-                            </div>
                             <table class="table table-bordered table-stripd">
                                 <tbody>
                                     <tr>
@@ -188,11 +183,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="form-group">
-                                <a class="btn btn-primary" href="{{ route('frontend.psms.index') }}">
-                                    {{ trans('global.back_to_list') }}
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
