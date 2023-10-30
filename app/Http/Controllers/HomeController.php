@@ -39,6 +39,6 @@ class HomeController extends Controller
 
         $Sample = Sample::count();
 
-        return view('home', ['Psm'=>$Psm,'Protein'=>$Protein,'Peptide'=>$Peptide,'Project'=>$Project,'Sample'=>$Sample]);
+        return view('frontend.home', ['Psm'=>$Psm,'Protein'=>$Protein,'Peptide'=>$Peptide,'Project'=>$Project,'Sample'=>$Sample]);
     }
 }
