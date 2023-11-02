@@ -8,6 +8,7 @@
         <div class="card-body">
 
            <center>
+               <span><strong>{{$batch->progress()}} %</strong></span>
             <div class="progress">
                 <div class="progress-bar" role="progressbar" style="width: {{$batch->progress()}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
