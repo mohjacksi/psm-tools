@@ -18,6 +18,7 @@ use App\Models\ProteinType;
 use App\Models\UploadForm;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -349,7 +350,7 @@ class UploadFormController extends Controller
         }else{
             $batch_protein_id=null;
         }
-
+       // Artisan::call('queue:work', ['--stop-when-empty' => true]);
         return redirect(url('admin/batch_psm/'.$batch_psm_id.'/batch_peptide/'.$batch_peptide_id.'/batch_protein/'.$batch_protein_id));
         //return redirect()->route('admin.upload-forms.index');
     }

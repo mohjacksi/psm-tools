@@ -8,26 +8,40 @@
         <div class="card-body">
 
            <center>
+               @php
+                   $m=($psm->totalJobs-$psm->pendingJobs)+$psm->failedJobs;
+                   $percent=   $m /$psm->totalJobs *100  ;
 
-               <span><strong>PSM FILE {{$psm->progress()}} %</strong></span>
+               @endphp
+
+               <span><strong>PSM FILE {{$percent}} %</strong></span>
             <div class="progress" style="margin-bottom: 25px;">
-                <div class="progress-bar" role="progressbar" style="width: {{$psm->progress()}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" style="width: {{$percent}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
                @if($peptide != null)
+                   @php
+                       $m2=($peptide->totalJobs-$peptide->pendingJobs)+$peptide->failedJobs;
+                       $percent2=   $m2 /$peptide->totalJobs *100  ;
 
-                   <span><strong>Peptide FILE {{$peptide->progress()}} %</strong></span>
+                   @endphp
+                   <span><strong>Peptide FILE {{$percent2}} %</strong></span>
                    <div class="progress" style="margin-bottom: 25px;">
-                       <div class="progress-bar" role="progressbar" style="width: {{$peptide->progress()}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                       <div class="progress-bar" role="progressbar" style="width: {{$percent2}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                    </div>
 
 
                @endif
 
                @if($protein != null)
+                   @php
+                     $m3=($protein->totalJobs-$protein->pendingJobs)+$protein->failedJobs;
+                     $percent3=   $m3 /$protein->totalJobs *100  ;
 
-                   <span><strong>Protein FILE {{$protein->progress()}} %</strong></span>
+                   @endphp
+
+                   <span><strong>Protein FILE {{$percent3}}%</strong></span>
                    <div style="margin-bottom: 25px;" class="progress">
-                       <div class="progress-bar" role="progressbar" style="width: {{$protein->progress()}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                       <div class="progress-bar" role="progressbar" style="width: {{$percent3}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                    </div>
 
 
