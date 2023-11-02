@@ -7,6 +7,8 @@ use App\Http\Controllers\Traits\CsvImportTrait;
 use App\Http\Requests\MassDestroyPeptideRequest;
 use App\Http\Requests\StorePeptideRequest;
 use App\Http\Requests\UpdatePeptideRequest;
+use App\Jobs\ProcessPeptide;
+use App\Jobs\ProcessProtein;
 use App\Models\PeptidCategory;
 use App\Models\Peptide;
 use App\Models\Protein;
@@ -14,6 +16,7 @@ use App\Models\Sample;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
@@ -156,6 +159,22 @@ class PeptideController extends Controller
         foreach ($peptideFields as $field) {
             $fieldsOrder[$field] = array_search($field, $peptideAsArray[0][0]);
         }
+
+
+        //start_edit
+        $arrays=$peptideAsArray[0];
+        unset($arrays[0]);
+        $chunks=array_chunk($arrays,300);
+        $batch=Bus::batch([])->dispatch();
+        foreach ($chunks as $chunk) {
+            $batch->add(new ProcessPeptide($chunk,$project_id,$fieldsOrder,auth()->id()));
+
+        }
+        // Artisan::call('queue:work', ['--stop-when-empty' => true]);
+        return redirect(url('admin/batch/'.$batch->id));
+
+
+        /*
         foreach ($peptideAsArray[0] as $key => $peptide) {
 
             if ($key > 0) {
@@ -216,7 +235,8 @@ class PeptideController extends Controller
             }
 
         }
+        */
 
-        return redirect()->route('admin.peptides.index');
+       // return redirect()->route('admin.peptides.index');
     }
 }

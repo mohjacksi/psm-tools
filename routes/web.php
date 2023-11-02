@@ -200,6 +200,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('upload-forms/destroy', 'UploadFormController@massDestroy')->name('upload-forms.massDestroy');
     Route::post('upload-forms/media', 'UploadFormController@storeMedia')->name('upload-forms.storeMedia');
     Route::post('upload-forms/ckmedia', 'UploadFormController@storeCKEditorImages')->name('upload-forms.storeCKEditorImages');
+    Route::get('batch_psm/{batch_psm}/batch_peptide/{batch_peptide}/batch_protein/{batch_protein}','UploadFormController@progess');
     Route::resource('upload-forms', 'UploadFormController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

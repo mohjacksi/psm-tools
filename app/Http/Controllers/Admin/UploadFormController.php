@@ -7,11 +7,18 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyUploadFormRequest;
 use App\Http\Requests\StoreUploadFormRequest;
 use App\Http\Requests\UpdateUploadFormRequest;
+use App\Jobs\ProcessPeptide;
+use App\Jobs\ProcessProtein;
+use App\Jobs\ProcessPsm;
 use App\Models\Experiment;
+use App\Models\PeptidCategory;
 use App\Models\Project;
+use App\Models\Protein;
+use App\Models\ProteinType;
 use App\Models\UploadForm;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -105,16 +112,15 @@ class UploadFormController extends Controller
         return view('admin.uploadForms.create', compact('experiments', 'projects','samples','created_bies','species','channels','tissues','sample_conditions'));
     }
 
+    /**
+     * @param StoreUploadFormRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(StoreUploadFormRequest $request)
     {
         // dd($request->all());
 
-        if($request->input('peptide_file') != null){
-            app('App\Http\Controllers\Admin\PeptideController')->uploadTsv($request);
-        }
-        if($request->input('protein_file') != null){
-            app('App\Http\Controllers\Admin\ProteinController')->uploadTsv($request);
-        }
+
 
         $uploadForm = UploadForm::create($request->all());
 
@@ -148,6 +154,19 @@ class UploadFormController extends Controller
             }
             $experiment = Experiment::find($request->input('experiment_id'));
             $project = Project::find($request->input('project_id'));
+            $arrays=$psmAsArray[0];
+            unset($arrays[0]);
+            $chunks=array_chunk($arrays,200);
+            $batch_psm=Bus::batch([])->dispatch();
+            $psm_array=$psmAsArray[0][0];
+            foreach ($chunks as $chunk) {
+                $batch_psm->add(new ProcessPsm($chunk,$project->id,$fieldsOrder,auth()->id(),$experiment,$request->all(),$psm_array));
+
+            }
+
+            $batch_psm_id=$batch_psm->id;
+
+           /*
             foreach ($psmAsArray[0] as $key => $psm) {
                 if ($key > 0) {
                     $FragmentMethod = FragmentMethod::where('name', $psm[$fieldsOrder['FragMethod']])->firstOrCreate(
@@ -227,33 +246,130 @@ class UploadFormController extends Controller
                                     ]
                                 );
                                 $channelSample = ChannelSample::where('channel_id', $newChennel->id)
-                                ->where('psm_id', $newPsm->id)
-                                ->where('sample_id', $sample)
-                                ->firstOrCreate(
-                                    [
-                                        'channel_id' => $newChennel->id,
-                                        'psm_id' => $newPsm->id,
-                                        'sample_id' => $sample,
-                                        'channel_value' => $psm[$channelOdrer],
-                                    ]
-                                );
+                                    ->where('psm_id', $newPsm->id)
+                                    ->where('sample_id', $sample)
+                                    ->firstOrCreate(
+                                        [
+                                            'channel_id' => $newChennel->id,
+                                            'psm_id' => $newPsm->id,
+                                            'sample_id' => $sample,
+                                            'channel_value' => $psm[$channelOdrer],
+                                        ]
+                                    );
                             }
 
                         }
                     }
                 }
             }
+             */
 
 
-            $uploadForm->addMedia(storage_path('tmp/uploads/' . basename($request->input('psm_file'))))->toMediaCollection('psm_file');
-            DB::commit();
+        }else{
+            $batch_psm_id=null;
         }
-
+        $uploadForm->addMedia(storage_path('tmp/uploads/' . basename($request->input('psm_file'))))->toMediaCollection('psm_file');
+        DB::commit();
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $uploadForm->id]);
         }
+        if($request->input('peptide_file') != null){
+            if ($request->input('project_id')) {
+                $project_id = $request->input('project_id');
+            } else {
+                $project_id = null;
+            }
+            $peptideFile = storage_path('tmp/uploads/' . basename($request->input('peptide_file')));
+            $peptideAsArray = Excel::toArray('', $peptideFile);
+            $peptideFields = array(
+                "Peptide",
+                "Protein_types",
+                "Transcripts",
+                "Samples",
+                "Category",
+                "is_canonical_frame",
+            );
 
-        return redirect()->route('admin.upload-forms.index');
+            $fieldsOrder = [];
+            foreach ($peptideFields as $field) {
+                $fieldsOrder[$field] = array_search($field, $peptideAsArray[0][0]);
+            }
+
+
+            //start_edit
+            $arrays=$peptideAsArray[0];
+            unset($arrays[0]);
+            $chunks=array_chunk($arrays,500);
+            $batch=Bus::batch([])->dispatch();
+            foreach ($chunks as $chunk) {
+                $batch->add(new ProcessPeptide($chunk,$project_id,$fieldsOrder,auth()->id()));
+
+            }
+
+            $batch_peptide_id=$batch->id;
+            //  app('App\Http\Controllers\Admin\PeptideController')->uploadTsv($request);
+        }else{
+            $batch_peptide_id=null;
+
+        }
+        if($request->input('protein_file') != null){
+            if ($request->input('project_id')) {
+                $project_id = $request->input('project_id');
+            } else {
+                $project_id = null;
+            }
+            $proteinFile = storage_path('tmp/uploads/' . basename($request->input('protein_file')));
+            $proteinAsArray = Excel::toArray('', $proteinFile);
+
+
+            $proteinFields = array(
+                "ProteinID",
+                "Name",
+                "Class_codes",
+                "Samples",
+                "Peptides",
+            );
+            $fieldsOrder = [];
+            foreach ($proteinFields as $field) {
+                $fieldsOrder[$field] = array_search($field, $proteinAsArray[0][0]);
+            }
+
+
+            //start_edit
+            $arrays=$proteinAsArray[0];
+            unset($arrays[0]);
+            $chunks=array_chunk($arrays,500);
+            $batch_protein=Bus::batch([])->dispatch();
+            foreach ($chunks as $chunk) {
+                $batch_protein->add(new ProcessProtein($chunk,$project_id,$fieldsOrder,auth()->id()));
+
+            }
+            $batch_protein_id=$batch_protein->id;
+            // app('App\Http\Controllers\Admin\ProteinController')->uploadTsv($request);
+        }else{
+            $batch_protein_id=null;
+        }
+
+        return redirect(url('admin/batch_psm/'.$batch_psm_id.'/batch_peptide/'.$batch_peptide_id.'/batch_protein/'.$batch_protein_id));
+        //return redirect()->route('admin.upload-forms.index');
+    }
+
+    public function progess($batch_psm,$batch_peptide,$batch_protein){
+      // dd($batch_psm,$batch_peptide,$batch_protein);
+       if ($batch_peptide!=null){
+           $peptide=Bus::findBatch($batch_peptide);
+       }else{
+           $peptide=null;
+       }
+        $psm=Bus::findBatch($batch_psm);
+        if ($batch_protein!= null){
+            $protein=Bus::findBatch($batch_protein);
+        }else{
+
+            $protein=null;
+        }
+
+      return view('admin.uploadForms.progeass',compact('psm','protein','peptide'));
     }
 
     public function edit(UploadForm $uploadForm)
