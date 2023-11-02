@@ -140,6 +140,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
         return view('admin.proteins.uploadTsv');
     })->name('proteins.uploadTsv');
     Route::post('proteins/uploadTsv', 'ProteinController@uploadTsv')->name('proteins.saveUploadTsv');
+    Route::get('batch/{id}', 'ProteinController@batch');
 
     Route::delete('proteins/destroy', 'ProteinController@massDestroy')->name('proteins.massDestroy');
     Route::post('proteins/media', 'ProteinController@storeMedia')->name('proteins.storeMedia');

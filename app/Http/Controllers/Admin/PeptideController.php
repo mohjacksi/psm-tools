@@ -151,11 +151,13 @@ class PeptideController extends Controller
             "Category",
             "is_canonical_frame",
         );
+
         $fieldsOrder = [];
         foreach ($peptideFields as $field) {
             $fieldsOrder[$field] = array_search($field, $peptideAsArray[0][0]);
         }
         foreach ($peptideAsArray[0] as $key => $peptide) {
+
             if ($key > 0) {
                 $category = PeptidCategory::where('name', $peptide[$fieldsOrder['Category']])->firstOrCreate(
                     [
@@ -163,18 +165,20 @@ class PeptideController extends Controller
                         'created_by_id' => auth()->user()->id
                     ]
                 );
+                //sapmples  ANRU_R2,KADA_R2,ANRU_R1,KADA_R3,BEHA_R1,BEHA_R3,KADA_WGS,KADA_R1,ANRU_R3,BEHA_R2
                 $samples = explode(",", $peptide[$fieldsOrder['Samples']]);
-                if (count($samples) > 0) {
+               if (count($samples) > 0) {
                     foreach ($samples as $sampleName) {
-                        $sample = Sample::where('name', $sampleName)->firstOrCreate(
+                        $sample = Sample::where('name', $peptide[$fieldsOrder['Samples']])->firstOrCreate(
                             [
-                                'name' => $sampleName,
+                                'name' => $peptide[$fieldsOrder['Samples']],
                                 'project_id' => $project_id,
                                 'created_by_id' => auth()->user()->id
                             ]
                         );
                     }
                 }
+
                 if ($peptide[$fieldsOrder['is_canonical_frame']] != 'non_canonical') {
                     $canonical = 1;
                     $canonical_frame_value = $peptide[$fieldsOrder['is_canonical_frame']];
@@ -192,24 +196,25 @@ class PeptideController extends Controller
                         'created_by_id' => auth()->user()->id
                     ]
                 );
-
-
                 $protein_ids = [];
-                $proteins = explode(',', $peptide[$fieldsOrder['Transcripts']]);
-                foreach ($proteins as $key => $value) {
+                //edit by alweseemy
+                //$proteins = explode(',', $peptide[$fieldsOrder['Transcripts']]);
+                //foreach ($proteins as $key => $value) {
                     
-                    $protein = Protein::where('sequence', $value)->firstOrCreate(
+                    $protein = Protein::where('sequence', $peptide[$fieldsOrder['Transcripts']])->firstOrCreate(
                         [
-                            'sequence' => $value,
+                            'sequence' => $peptide[$fieldsOrder['Transcripts']],
                             'created_by_id' => auth()->user()->id
                         ]
                     );
                     $protein_ids[] = $protein->id;
-                }
+               // }
 
 
                 $newPeptide->proteins()->sync($protein_ids);
+
             }
+
         }
 
         return redirect()->route('admin.peptides.index');

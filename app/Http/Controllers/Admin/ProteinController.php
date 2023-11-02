@@ -8,6 +8,9 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyProteinRequest;
 use App\Http\Requests\StoreProteinRequest;
 use App\Http\Requests\UpdateProteinRequest;
+use App\Jobs\ProcessProtein;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Bus;
 use App\Models\Sample;
 use App\Models\Peptide;
 use App\Models\Protein;
@@ -161,7 +164,7 @@ class ProteinController extends Controller
 
     public function uploadTsv(Request $request)
     {
-        // dd($request->input('protein_file'));
+
         if ($request->input('project_id')) {
             $project_id = $request->input('project_id');
         } else {
@@ -169,6 +172,8 @@ class ProteinController extends Controller
         }
         $proteinFile = storage_path('tmp/uploads/' . basename($request->input('protein_file')));
         $proteinAsArray = Excel::toArray('', $proteinFile);
+
+
         $proteinFields = array(
             "ProteinID",
             "Name",
@@ -182,45 +187,60 @@ class ProteinController extends Controller
         }
 
 
+        //start_edit
+        $arrays=$proteinAsArray[0];
+        unset($arrays[0]);
+        $chunks=array_chunk($arrays,300);
+        $batch=Bus::batch([])->dispatch();
+        foreach ($chunks as $chunk) {
+            $batch->add(new ProcessProtein($chunk,$project_id,$fieldsOrder,auth()->id()));
+
+        }
+       // Artisan::call('queue:work', ['--stop-when-empty' => true]);
+        return redirect(url('admin/batch/'.$batch->id));
+
+        /*
         foreach ($proteinAsArray[0] as $key => $protein) {
             if ($key > 0) {
                 $type_ids = [];
-                $types = explode(',', $protein[$fieldsOrder['Class_codes']]);
-                foreach ($types as $key => $value) {
-                    $type = ProteinType::where('name', $value)->firstOrCreate(
-                        [
-                            'name' => $value,
-                            'created_by_id' => auth()->user()->id
-                        ]
-                    );
-                    $type_ids[] = $type->id;
-                }
+                // edit by mahmoud  alweseemy
+                //$types = explode(',', $protein[$fieldsOrder['Class_codes']]);
+                // foreach ($types as $key => $value) {
+                $type = ProteinType::where('name', $protein[$fieldsOrder['Class_codes']])->firstOrCreate(
+                    [
+                        'name' => $protein[$fieldsOrder['Class_codes']],
+                        'created_by_id' => auth()->user()->id
+                    ]
+                );
+                $type_ids[] = $type->id;
+                //}
 
                 $peptide_ids = [];
-                $peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
-                foreach ($peptides as $key => $value) {
-                    $peptide = Peptide::where('sequence', $value)->firstOrCreate(
-                        [
-                            'sequence' => $value,
-                            'created_by_id' => auth()->user()->id
-                        ]
-                    );
-                    $peptide_ids[] = $peptide->id;
-                }
-
-
-                $samples = explode(",", $protein[$fieldsOrder['Samples']]);
-                if (count($samples) > 0) {
-                    foreach ($samples as $sampleName) {
-                        $sample = Sample::where('name', $sampleName)->firstOrCreate(
+                // edit by mahmoud  alweseemy
+                //$peptides = explode(',', $protein[$fieldsOrder['Peptides']]);
+                //foreach ($peptides as $key => $value) {
+                        $peptide = Peptide::where('sequence', $protein[$fieldsOrder['Peptides']])->firstOrCreate(
                             [
-                                'name' => $sampleName,
+                                'sequence' => $protein[$fieldsOrder['Peptides']],
+                                'created_by_id' => auth()->user()->id
+                            ]
+                        );
+                        $peptide_ids[] = $peptide->id;
+                //}
+
+                //ANRU_R2,KADA_R2,ANRU_R1,KADA_R3,BEHA_R1,BEHA_R3,KADA_WGS,KADA_R1,ANRU_R3,BEHA_R2
+                $samples = explode(",", $protein[$fieldsOrder['Samples']]);
+
+                    foreach ($samples as $sampleName) {
+                        $sample = Sample::where('name', $protein[$fieldsOrder['Samples']])->firstOrCreate(
+                            [
+                                'name' => $protein[$fieldsOrder['Samples']],
                                 'project_id' => $project_id,
                                 'created_by_id' => auth()->user()->id
                             ]
                         );
                     }
-                }
+
                 $newProtein = Protein::updateOrCreate(
                     [
                     'sequence' => $protein[$fieldsOrder['ProteinID']],
@@ -238,8 +258,14 @@ class ProteinController extends Controller
             }
         }
 
-
+       */
 
         return redirect()->route('admin.proteins.index');
+    }
+
+    public function batch($id){
+
+      $batch= Bus::findBatch($id);
+      return view('admin.proteins.progeass',compact('batch'));
     }
 }
