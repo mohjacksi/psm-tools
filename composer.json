@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "barryvdh/laravel-debugbar": "^3.8",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.0",
@@ -20,7 +19,7 @@
         "yajra/laravel-datatables-oracle": "^9.19"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.7",
+        "barryvdh/laravel-debugbar": "^3.8",
         "fakerphp/faker": "^1.9.1",
         "laravel/dusk": "^6.22",
         "laravel/sail": "^1.0.1",

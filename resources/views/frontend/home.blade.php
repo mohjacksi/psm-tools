@@ -35,7 +35,7 @@
                         <div class="col">
                             <select name="sample" class="form-control" >
                                 <option value="">Samples</option>
-                                @foreach(\App\Models\Sample::take(20)->inRandomOrder()->get() as $sm)
+                                @foreach(\App\Models\Sample::take(50)->inRandomOrder()->get() as $sm)
                                     <option value="{{$sm->name}}">{{$sm->name}}</option>
                                 @endforeach
                             </select>
