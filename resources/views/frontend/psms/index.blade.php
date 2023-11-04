@@ -1,10 +1,13 @@
 @extends('layouts.frontend')
 @section('styles')
+    <style>
+
+    </style>
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css" />
- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js" rel="stylesheet" type="text/css" /> --}}
-    {{-- <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js" rel="stylesheet" type="text/css" />
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <link href="https://nightly.datatables.net/select/css/select.dataTables.css?_=5362e195cd0aabf9b8ced350de2d5907.css"
-    rel="stylesheet" type="text/css" /> --}}
+    rel="stylesheet" type="text/css" />--}}
 @endsection
 @section('content')
     {{-- <div class="card">
@@ -159,7 +162,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="search" id="biological_set_id">
+                                <select  style="width: 100px;" class="search" id="biological_set_id">
                                     <option value>{{ trans('global.all') }}</option>
                                     @foreach ($biological_sets as $key => $item)
                                         <option value="{{ $item->name }}" idTag="{{ $item->id }}">
@@ -368,10 +371,15 @@
                     {
                         data: 'biological_set',
                         name: 'biological_set.name',
-                        render: function(data, type, row) {
+                       render: function(data, type, row) {
                             data = JSON.parse(data);
-                            return '<a href="/biological-sets/' + data.id + '">' + data.name + '</a>';
+                           if (data.name.length > 20) {
+                               return '<a href="/biological-sets/' + data.id + '">' + data.name.substr(0, 17) + '…' + '</a>';
+                           }else {
+                               return '<a href="/biological-sets/' + data.id + '">' + data.name + '</a>';
+                           }
                         }
+
                     },
                     {
                         data: 'samples',
@@ -654,5 +662,21 @@
 
             });
         }
+         /*
+        $.fn.dataTable.render.ellipsis = function () {
+            return function (data, type, row) {
+                // Return the original data for all orthogonal data types except display.
+                if (type !== 'display') {
+                    return data;
+                }
+
+                // Only truncate the text if it is longer than the cutoff.
+                if (data.length > 100) {
+                    return data.substr(0, 100) + '…';
+                } else {
+                    return data;
+                }
+            };
+        };*/
     </script>
 @endsection
