@@ -331,8 +331,10 @@
                 }
                 dtButtons.push(deleteButton)
             @endcan
-
+            var url = "";
+            //url = url.replace(':id', id);
             let dtOverrideGlobals = {
+
                 dom: 'lrtip',
                 select: {
                     items: 'cell',
@@ -343,7 +345,7 @@
                 serverSide: true,
                 retrieve: true,
                 aaSorting: [],
-                ajax: "{{ route('frontend.psms.index') }}",
+                ajax: "{{route('frontend.psms.index', ['sample' => request('sample'),'tissue' => request('tissue')])}}",
                 columns: [{
                         data: 'id',
                         name: 'id',

@@ -10,8 +10,33 @@
                     </div>
                 <div class="card">
                     <div class="card-header">
+                        <form action="{{url('psms')}}">
+                            <div class="row">
+                                <div class="col">
+                                    <select name="sample" class="form-control" >
+                                        <option value="">Samples</option>
+                                        @foreach(\App\Models\Sample::all() as $sm)
+                                        <option value="{{$sm->name}}">{{$sm->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <select name="tissue" class="form-control" >
+                                        <option value="">Tissue</option>
+                                        @foreach(\App\Models\Tissue::all() as $sm)
+                                            <option value="{{$sm->id}}">{{$sm->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+
+                            </div>
+                        </form>
 
                     </div>
+                </div>
 
 
             </div>

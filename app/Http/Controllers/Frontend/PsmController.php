@@ -32,7 +32,18 @@ class PsmController extends Controller
         $psms = Psm::with(['fraction', 'peptide_with_modification', 'created_by'])->limit(20)->get();
 
         if ($request->ajax()) {
-            $query = Psm::with(['peptide_with_modification', 'created_by', 'samples','fraction', 'project', 'experiment', 'biological_set'])->select(sprintf('%s.*', (new Psm())->table));
+
+
+            if (isset($request->tissue) && $request->tissue != null || isset($request['amp;tissue'])&& $request->tissue != null  ){
+
+                $query = Psm::where('tissue_id',$request->tissue)->with(['peptide_with_modification', 'created_by', 'samples','fraction', 'project', 'experiment', 'biological_set'])->select(sprintf('%s.*', (new Psm())->table));
+
+            }else{
+
+                $query = Psm::with(['peptide_with_modification', 'created_by', 'samples','fraction', 'project', 'experiment', 'biological_set'])->select(sprintf('%s.*', (new Psm())->table));
+
+            }
+            //$query = Psm::with(['peptide_with_modification', 'created_by', 'samples','fraction', 'project', 'experiment', 'biological_set'])->select(sprintf('%s.*', (new Psm())->table));
             $table = DataTables::of($query);
 
             // dd($query->samples->project);
@@ -61,15 +72,31 @@ class PsmController extends Controller
             $table->editColumn('spectra', function ($row) {
                 return $row->spectra ? $row->spectra : '';
             });
-            $table->addColumn('samples', function ($row) {
-                $samples['name']='';
-                if ($row->samples->count()>0) {
-                    foreach ($row->samples as $sample) {
-                        $samples['name'] = $samples['name'] ."\r\n".$sample->name;
+            if (isset($request->sample) && $request->sample != null){
+                $table->addColumn('samples', function ($row) {
+
+                    $samples['name']=request('sample');
+                    if ($row->samples->count()>0) {
+                        foreach ($row->samples as $sample) {
+                            $samples['name'] = $samples['name'] ."\r\n".$sample->name;
+                        }
                     }
-                }
-                return $samples['name'];
-            });
+                    return $samples['name'];
+                });
+            }else{
+
+                $table->addColumn('samples', function ($row) {
+
+                    $samples['name']='';
+                    if ($row->samples->count()>0) {
+                        foreach ($row->samples as $sample) {
+                            $samples['name'] = $samples['name'] ."\r\n".$sample->name;
+                        }
+                    }
+                    return $samples['name'];
+                });
+            }
+
             $table->addColumn('project', function ($row) {
                 return $row->project ? $row->project : '';
             });
