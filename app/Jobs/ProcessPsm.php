@@ -124,7 +124,7 @@ class ProcessPsm implements ShouldQueue
                 if($this->request['sample_number'] > 0){
                     foreach ($this->request['samples'] as $key=>$sample){
                         $channelOdrer=array_search($this->request['chennels'][$key],  $this->psm_array);
-                        if($channelOdrer){
+                        if($channelOdrer && $key % 4 == 0){
                             $newChennel = Channel::where('name', $this->request['chennels'][$key])->firstOrCreate(
                                 [
                                     'name' => $this->request['chennels'][$key],
