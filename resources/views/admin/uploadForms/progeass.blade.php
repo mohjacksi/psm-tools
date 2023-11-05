@@ -10,11 +10,11 @@
            <center>
                @php
                    $m=($psm->totalJobs-$psm->pendingJobs)+$psm->failedJobs;
-                   $percent=   $m /$psm->totalJobs *100  ;
+                   $percent =   $m /$psm->totalJobs *100  ;
 
                @endphp
 
-               <span><strong>PSM FILE {{$percent}} %</strong></span>
+               <span><strong>PSM FILE {{round($percent)}} %</strong></span>
             <div class="progress" style="margin-bottom: 25px;">
                 <div class="progress-bar" role="progressbar" style="width: {{$percent}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
