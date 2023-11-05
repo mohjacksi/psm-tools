@@ -56,4 +56,10 @@
         </div>
     </div>
 
+    <script>
+        setInterval(function () {
+            window.location.href='{{url()->current()}}';
+        }, 1000 * 5);
+    </script>
+
 @endsection
