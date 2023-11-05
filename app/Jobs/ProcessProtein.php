@@ -71,18 +71,18 @@ class ProcessProtein implements ShouldQueue
             $peptide_ids[] = $peptide->id;
             //}
 
-            //ANRU_R2,KADA_R2,ANRU_R1,KADA_R3,BEHA_R1,BEHA_R3,KADA_WGS,KADA_R1,ANRU_R3,BEHA_R2
-            $samples = explode(",", $protein[$this->fieldsOrder['Samples']]);
+            // //ANRU_R2,KADA_R2,ANRU_R1,KADA_R3,BEHA_R1,BEHA_R3,KADA_WGS,KADA_R1,ANRU_R3,BEHA_R2
+            // $samples = explode(",", $protein[$this->fieldsOrder['Samples']]);
 
-            foreach ($samples as $sampleName) {
-                $sample = Sample::where('name', $protein[$this->fieldsOrder['Samples']])->firstOrCreate(
-                    [
-                        'name' => $protein[$this->fieldsOrder['Samples']],
-                        'project_id' => $project_id,
-                        'created_by_id' => $this->user
-                    ]
-                );
-            }
+            // foreach ($samples as $sampleName) {
+            //     $sample = Sample::where('name', $protein[$this->fieldsOrder['Samples']])->firstOrCreate(
+            //         [
+            //             'name' => $protein[$this->fieldsOrder['Samples']],
+            //             'project_id' => $project_id,
+            //             'created_by_id' => $this->user
+            //         ]
+            //     );
+            // }
 
             $newProtein = Protein::updateOrCreate(
                 [
