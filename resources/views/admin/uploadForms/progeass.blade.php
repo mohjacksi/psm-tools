@@ -56,6 +56,7 @@
         </div>
     </div>
 
+
     <script>
         setInterval(function () {
             window.location.href='{{url()->current()}}';
