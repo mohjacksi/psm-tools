@@ -538,6 +538,9 @@
                     experiment.empty();
                     sample.empty();
                     biological_set.empty();
+                    experiment.append('<option value="">'+ 'All' + '</option>');
+                    sample.append('<option value="">'+ 'All' + '</option>');
+                    biological_set.append('<option value="">'+ 'All' + '</option>');
                     for (var i = 0; i < data['experiments'].length; i++) {
                         experiment.append('<option value=' + data['experiments'][i].id + '>' + data[
                             'experiments'][i].name + '</option>');
@@ -548,8 +551,8 @@
                         ].name + '</option>');
                     };
                     for (var i = 0; i < data['biologicalSets'].length; i++) {
-                        biological_set.append('<option value=' + data['samples'][i].id + '>' + data[
-                            'samples'][
+                        biological_set.append('<option value=' + data['biologicalSets'][i].id + '>' + data[
+                            'biologicalSets'][
                             i
                         ].name + '</option>');
                     };

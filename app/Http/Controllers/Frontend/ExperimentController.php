@@ -117,13 +117,21 @@ class ExperimentController extends Controller
 
     public function experimentsOfProject($project_id)
     {
-        if($project_id > 0){
+
+        if ($project_id=='undefined'){
+
+            $experiments = Experiment::get();
+            $samples = Sample::get();
+            $biologicalSets = BiologicalSet::get();
+        }elseif ($project_id != 'undefined'){
+
             $experiments = Experiment::where('project_id', $project_id)->get();
             $samples = Sample::where('project_id', $project_id)->get();
             $biologicalSets = BiologicalSet::whereHas('experiment', function($q) use ($project_id){
                 $q->where('project_id', $project_id);
             })->get();
         }else{
+
             $experiments = Experiment::get();
             $samples = Sample::get();
             $biologicalSets = BiologicalSet::get();
@@ -134,7 +142,6 @@ class ExperimentController extends Controller
             'samples'=>$samples,
             'biologicalSets'=>$biologicalSets,
         ];
-
         return $response;
     }
 }
