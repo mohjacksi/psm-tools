@@ -52,19 +52,19 @@ class ProcessPeptide implements ShouldQueue
                         'created_by_id' => $this->user
                     ]
                 );
-                //sapmples  ANRU_R2,KADA_R2,ANRU_R1,KADA_R3,BEHA_R1,BEHA_R3,KADA_WGS,KADA_R1,ANRU_R3,BEHA_R2
-                $samples = explode(",", $peptide[$this->fieldsOrder['Samples']]);
-                if (count($samples) > 0) {
-                    foreach ($samples as $sampleName) {
-                        $sample = Sample::where('name', $peptide[$this->fieldsOrder['Samples']])->firstOrCreate(
-                            [
-                                'name' => $peptide[$this->fieldsOrder['Samples']],
-                                'project_id' => $this->project_id,
-                                'created_by_id' => $this->user
-                            ]
-                        );
-                    }
-                }
+                // //sapmples  ANRU_R2,KADA_R2,ANRU_R1,KADA_R3,BEHA_R1,BEHA_R3,KADA_WGS,KADA_R1,ANRU_R3,BEHA_R2
+                // $samples = explode(",", $peptide[$this->fieldsOrder['Samples']]);
+                // if (count($samples) > 0) {
+                //     foreach ($samples as $sampleName) {
+                //         $sample = Sample::where('name', $peptide[$this->fieldsOrder['Samples']])->firstOrCreate(
+                //             [
+                //                 'name' => $peptide[$this->fieldsOrder['Samples']],
+                //                 'project_id' => $this->project_id,
+                //                 'created_by_id' => $this->user
+                //             ]
+                //         );
+                //     }
+                // }
 
                 if ($peptide[$this->fieldsOrder['is_canonical_frame']] != 'non_canonical') {
                     $canonical = 1;
