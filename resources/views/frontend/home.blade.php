@@ -18,15 +18,15 @@
                         Welcome to PSM tools project 👨‍🔬 👩‍🔬
 
                     </h3>
-                    PSM: {{$Psm??0}}
+                    PSM: {{\App\Models\Psm::count()??0}}
                     <br>
-                    Protein: {{$Protein??0}}
+                    Protein: {{\App\Models\Protein::count()??0}}
                     <br>
-                    Peptide: {{$Peptide??0}}
+                    Peptide: {{\App\Models\Peptide::count()??0}}
                     <br>
-                    Project: {{$Project??0}}
+                    Project: {{\App\Models\Project::count()??0}}
                     <br>
-                    Sample: {{$Sample??0}}
+                    Sample: {{\App\Models\Sample::count()??0}}
 
                 </div>
 
