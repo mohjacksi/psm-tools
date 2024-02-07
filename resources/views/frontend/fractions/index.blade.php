@@ -47,10 +47,8 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                        </td>
-                                        <td>
                                             <input class="search" type="text"
-                                                placeholder="{{ trans('global.search') }}">
+                                                   placeholder="{{ trans('global.search') }}">
                                         </td>
                                         <td>
                                             <input class="search" type="text"
